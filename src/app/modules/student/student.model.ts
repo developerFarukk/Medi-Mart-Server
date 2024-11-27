@@ -150,7 +150,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     
 );
 
-// virtual
+// virtual  (database stor hoy na, but application e use kora hoy, then full name akare database e store hoy)
 studentSchema.virtual('fullName').get(function () {
     return this.name.firstName + this.name.middleName + this.name.lastName;
 });
@@ -175,7 +175,7 @@ studentSchema.pre('save', function(next) {
 
 // Query Middleware
 studentSchema.pre('find', function (next) {
-    this.find({ isDeleted: { $ne: true } });
+    this.find({ isDeleted: { $ne: true } });  // ( $ne : active/inactive/true/false value find korte use kora hoy)
     next();
 });
 
