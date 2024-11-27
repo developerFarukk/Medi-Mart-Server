@@ -1,22 +1,27 @@
 
-import express, { Request, Response } from 'express'
+import cors from 'cors';
+import express, { Application, Request, Response } from 'express';
+import router from './app/routes';
 
+const app: Application = express();
 
-const app = express()
+//parsers
+app.use(express.json());
+app.use(cors());
 
-// middleware
-app.use(express.json())
+// application routes
+app.use('/api/v1', router);
 
-// app.use('/api/user', userRouter)
-// app.use('/api/tour', tourRouter)
+const test = (req: Request, res: Response) => {
+    const a = 10;
+    res.send(a);
+};
 
-// POST: /api/user/create-user
+app.get('/', test);
 
-app.get('/', (req: Request, res: Response) => {
-    res.send({
-        status: true,
-        message: 'Univercity Management Server is Rouning Live ⚡',
-    })
-})
+app.use(globalErrorHandler);
 
-export default app
+//Not Found
+app.use(notFound);
+
+export default app;
