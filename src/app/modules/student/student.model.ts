@@ -12,7 +12,7 @@ const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
         required: [true, 'First Name is required'],
-        trim: true,  // অপ্রয়োজনিয় স্পেস থাকলে তা সরিয়ে দে। ( Remove unnecessary space)
+        trim: true,  // অপ্রয়োজনিয় স্পেস থাকলে তা সরিয়ে দেয়। ( Remove unnecessary space)
         maxlength: [20, 'Name can not be more than 20 characters'],
     },
     middleName: {
@@ -175,7 +175,7 @@ studentSchema.pre('save', function(next) {
 
 // Query Middleware
 studentSchema.pre('find', function (next) {
-    this.find({ isDeleted: { $ne: true } });  // ( $ne : active/inactive/true/false value find korte use kora hoy)
+    this.find({ isDeleted: { $ne: true } });  // ( $ne = active/inactive/true/false value find korte use kora hoy)
     next();
 });
 
