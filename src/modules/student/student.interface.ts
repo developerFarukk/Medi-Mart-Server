@@ -9,7 +9,7 @@ export type TUserName = {
 
 export type TGuardian = {
     fatherName: string;
-    farherOccupation: string;
+    fatherOccupation: string;
     fatherContactNo: string;
     motherName: string;
     motherOccupation: string;
