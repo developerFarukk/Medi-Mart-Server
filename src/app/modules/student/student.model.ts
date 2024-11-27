@@ -12,7 +12,7 @@ const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
         required: [true, 'First Name is required'],
-        trim: true,
+        trim: true,  // অপ্রয়োজনিয় স্পেস থাকলে তা সরিয়ে দে। ( Remove unnecessary space)
         maxlength: [20, 'Name can not be more than 20 characters'],
     },
     middleName: {
@@ -151,6 +151,24 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 studentSchema.virtual('fullName').get(function () {
     return this.name.firstName + this.name.middleName + this.name.lastName;
 });
+
+//  First word capitalize functionality
+function capitalizeFirstLetter(string: string): string {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+userNameSchema.pre('save', function(next) {
+    if (this.firstName) {
+        this.firstName = capitalizeFirstLetter( this.firstName )
+    }
+    if (this.middleName) {
+        this.middleName = capitalizeFirstLetter( this.middleName )
+    }
+    if (this.lastName) {
+        this.lastName = capitalizeFirstLetter( this.lastName )
+    }
+    next();
+})
 
 // Query Middleware
 studentSchema.pre('find', function (next) {
