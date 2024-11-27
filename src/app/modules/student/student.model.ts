@@ -111,7 +111,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
             type: String,
             required: [true, 'Emergency contact number is required'],
         },
-        bloogGroup: {
+        bloodGroup: {
             type: String,
             enum: {
                 values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
@@ -144,7 +144,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
         toJSON: {
             virtuals: true,
         },
+        timestamps: true,
+        versionKey: false
     },
+    
 );
 
 // virtual
@@ -157,15 +160,15 @@ function capitalizeFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-userNameSchema.pre('save', function(next) {
-    if (this.firstName) {
-        this.firstName = capitalizeFirstLetter( this.firstName )
+studentSchema.pre('save', function(next) {
+    if (this.name.firstName) {
+        this.name.firstName = capitalizeFirstLetter( this.name.firstName )
     }
-    if (this.middleName) {
-        this.middleName = capitalizeFirstLetter( this.middleName )
+    if (this.name.middleName) {
+        this.name.middleName = capitalizeFirstLetter( this.name.middleName )
     }
-    if (this.lastName) {
-        this.lastName = capitalizeFirstLetter( this.lastName )
+    if (this.name.lastName) {
+        this.name.lastName = capitalizeFirstLetter( this.name.lastName )
     }
     next();
 })
