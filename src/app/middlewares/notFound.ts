@@ -9,6 +9,7 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
         message: 'API Not Found !!',
         error: '',
     });
+    next();
 };
 
 export default notFound;
