@@ -1,6 +1,7 @@
 
 import httpStatus from 'http-status';
 
+// import {  Request, Response } from 'express';
 import { NextFunction, Request, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
 import { UserServices } from './user.service';
@@ -26,8 +27,24 @@ const createStudent = async (
             message: 'Student is created succesfully',
             data: result,
         });
-    } catch (err) {
+
+        // res.json({
+        //     success: true,
+        //     message: 'Bicycle created successfully',
+        //     data: result,
+        // })
+    }
+    // catch (error) {
+    //     res.json({
+    //         success: false,
+    //         message: 'Validation failed',
+    //         error,
+    //     })
+    // }
+    catch (err) {
         next(err);
+        console.log(err);
+        
     }
 };
 
