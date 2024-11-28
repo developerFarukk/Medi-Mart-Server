@@ -1,9 +1,7 @@
 
 
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
-import sendResponse from '../../utils/sendResponse';
-import httpStatus from 'http-status';
 import studentValidationSchema from './student.validation';
 
 // Create student Mathod
@@ -17,7 +15,7 @@ const createStudent = async (req: Request, res: Response) => {
         const zodParsedData = studentValidationSchema.parse(studentData);
 
         const result = await StudentServices.createStudentIntoDB(zodParsedData);
-        
+
 
 
         res.status(200).json({
@@ -35,69 +33,96 @@ const createStudent = async (req: Request, res: Response) => {
 
 };
 
-const getSingleStudent = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-) => {
-    try {
-        const { studentId } = req.params;
-        const result = await StudentServices.getSingleStudentFromDB(studentId);
-
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
-            success: true,
-            message: 'Student is retrieved succesfully',
-            data: result,
-        });
-    } catch (err) {
-        next(err);
-    }
-};
-
 const getAllStudents = async (
     req: Request,
     res: Response,
-    next: NextFunction,
 ) => {
     try {
         const result = await StudentServices.getAllStudentsFromDB();
 
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
-            success: true,
-            message: 'Student are retrieved succesfully',
-            data: result,
+        res.status(200).send({
+            status: true,
+            message: 'Student Data getting successfully',
+            Data: result,
+        })
+    } catch (error: unknown) {
+        res.status(404).json({
+            success: false,
+            message: error instanceof Error ? error.message : "An error occurred",
         });
-    } catch (err) {
-        next(err);
+    }
+};
+
+const getSingleStudent = async (req: Request, res: Response) => {
+    try {
+        const studentId = req.params.studentId;
+
+        const result = await StudentServices.getSingleStudentFromDB(studentId);
+
+        // const bikId = req.params.bikId
+
+        // const result = await bikService.getSinglBik(bikId)
+
+        res.status(200).json({
+            success: true,
+            message: 'Student is retrieved succesfully',
+            Data: result,
+        });
+    } catch (error: unknown) {
+        res.status(404).json({
+            success: false,
+            message: error instanceof Error ? error.message : "An error occurred",
+        });
     }
 };
 
 const deleteStudent = async (
     req: Request,
     res: Response,
-    next: NextFunction,
 ) => {
     try {
         const { studentId } = req.params;
         const result = await StudentServices.deleteStudentFromDB(studentId);
 
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
+        res.status(200).json({
             success: true,
-            message: 'Student is deleted succesfully',
-            data: result,
+            message: 'Student is Delated succesfully',
+            Data: result,
         });
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        res.json({
+            success: false,
+            message: 'Validation failed',
+            error,
+        })
     }
 };
+
+const updateStudent = async (req: Request, res: Response) => {
+    try {
+        const studentId = req.params.studentId
+        const body = req.body
+        const result = await StudentServices.updateStudent(studentId, body)
+
+        res.status(200).json({
+            success: true,
+            message: 'Student Data Updated succesfully',
+            Data: result,
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: 'Validation failed',
+            error,
+        })
+    }
+}
 
 export const StudentControllers = {
     createStudent,
     getAllStudents,
     getSingleStudent,
     deleteStudent,
+    updateStudent
 
 };
