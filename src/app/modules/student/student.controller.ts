@@ -7,16 +7,18 @@ import studentValidationSchema from './student.validation';
 // Create student Mathod
 const createStudent = async (req: Request, res: Response) => {
     try {
-        // const { student: studentData } = req.body;
-        // const result = await StudentServices.createStudentIntoDB(studentData);
+
+        // console.log("Request Body: ", req.body);
 
         const { student: studentData } = req.body;
+
+        if (!studentData) {
+            throw new Error('Student data is missing from request body');
+        }
 
         const zodParsedData = studentValidationSchema.parse(studentData);
 
         const result = await StudentServices.createStudentIntoDB(zodParsedData);
-
-
 
         res.status(200).json({
             success: true,
@@ -27,7 +29,7 @@ const createStudent = async (req: Request, res: Response) => {
         res.json({
             success: false,
             message: 'Validation failed',
-            error,
+            error: error
         })
     }
 
