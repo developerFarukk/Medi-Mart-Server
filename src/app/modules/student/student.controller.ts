@@ -2,38 +2,38 @@
 
 import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
-import studentValidationSchema from './student.validation';
+// import studentValidationSchema from './student.validation';
 
 // Create student Mathod
-const createStudent = async (req: Request, res: Response) => {
-    try {
+// const createStudent = async (req: Request, res: Response) => {
+//     try {
 
-        // console.log("Request Body: ", req.body);
+//         // console.log("Request Body: ", req.body);
 
-        const { student: studentData } = req.body;
+//         const { student: studentData } = req.body;
 
-        if (!studentData) {
-            throw new Error('Student data is missing from request body');
-        }
+//         if (!studentData) {
+//             throw new Error('Student data is missing from request body');
+//         }
 
-        const zodParsedData = studentValidationSchema.parse(studentData);
+//         const zodParsedData = studentValidationSchema.parse(studentData);
 
-        const result = await StudentServices.createStudentIntoDB(zodParsedData);
+//         const result = await StudentServices.createStudentIntoDB(zodParsedData);
 
-        res.status(200).json({
-            success: true,
-            message: 'Student is created succesfully',
-            data: result,
-        });
-    } catch (error) {
-        res.json({
-            success: false,
-            message: 'Validation failed',
-            error: error
-        })
-    }
+//         res.status(200).json({
+//             success: true,
+//             message: 'Student is created succesfully',
+//             data: result,
+//         });
+//     } catch (error) {
+//         res.json({
+//             success: false,
+//             message: 'Validation failed',
+//             error: error
+//         })
+//     }
 
-};
+// };
 
 const getAllStudents = async (
     req: Request,
@@ -121,7 +121,7 @@ const updateStudent = async (req: Request, res: Response) => {
 }
 
 export const StudentControllers = {
-    createStudent,
+    // createStudent,
     getAllStudents,
     getSingleStudent,
     deleteStudent,

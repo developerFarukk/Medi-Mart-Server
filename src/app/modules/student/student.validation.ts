@@ -47,10 +47,10 @@ const localGuardianSchema = z.object({
 // Student validation schema
 export const studentValidationSchema = z.object({
     id: z.string().min(1, { message: 'ID is required' }),
-    password: z
-        .string()
-        .min(6, { message: 'Password must be at least 6 characters' })
-        .max(20, { message: 'Password must be less than 20 characters' }),
+    // password: z
+    //     .string()
+    //     .min(6, { message: 'Password must be at least 6 characters' })
+    //     .max(20, { message: 'Password must be less than 20 characters' }),
     name: userNameSchema,
     gender: z.enum(['male', 'female', 'other']),
     dateOfBirth: z

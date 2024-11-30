@@ -1,15 +1,11 @@
 
-import httpStatus from 'http-status';
 
-// import {  Request, Response } from 'express';
-import { NextFunction, Request, Response } from 'express';
-import sendResponse from '../../utils/sendResponse';
+import { Request, Response } from 'express';
 import { UserServices } from './user.service';
 
 const createStudent = async (
     req: Request,
     res: Response,
-    next: NextFunction,
 ) => {
     try {
         const { password, student: studentData } = req.body;
@@ -21,30 +17,17 @@ const createStudent = async (
             studentData,
         );
 
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
+        res.status(200).json({
             success: true,
             message: 'Student is created succesfully',
             data: result,
         });
-
-        // res.json({
-        //     success: true,
-        //     message: 'Bicycle created successfully',
-        //     data: result,
-        // })
-    }
-    // catch (error) {
-    //     res.json({
-    //         success: false,
-    //         message: 'Validation failed',
-    //         error,
-    //     })
-    // }
-    catch (err) {
-        next(err);
-        console.log(err);
-        
+    } catch (error) {
+        res.json({
+            success: false,
+            message: 'Validation failed',
+            error: error
+        })
     }
 };
 

@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 import { StudentModel, TGuardian, TLocalGuardian, TStudent, TUserName } from "./student.interface";
-import bcrypt from 'bcrypt';
-import config from "../../config";
+// import bcrypt from 'bcrypt';
+// import config from "../../config";
 
 // User/student Name Schema
 const userNameSchema = new Schema<TUserName>({
@@ -81,17 +81,17 @@ const studentSchema = new Schema<TStudent, StudentModel>(
             required: [true, 'ID is required'],
             unique: true,
         },
-        password: {
-            type: String,
-            required: [true, 'Password is required'],
-            maxlength: [20, 'Password can not be more than 20 characters'],
-        },
-        // user: {
-        //     type: Schema.Types.ObjectId,
-        //     required: [true, 'User id is required'],
-        //     unique: true,
-        //     ref: 'User',
+        // password: {
+        //     type: String,
+        //     required: [true, 'Password is required'],
+        //     maxlength: [20, 'Password can not be more than 20 characters'],
         // },
+        user: {
+            type: Schema.Types.ObjectId,
+            required: [true, 'User id is required'],
+            unique: true,
+            ref: 'User',
+        },
         name: {
             type: userNameSchema,
             required: [true, 'Name is required'],
@@ -158,24 +158,24 @@ studentSchema.virtual('fullName').get(function () {
     return this.name.firstName + this.name.middleName + this.name.lastName;
 });
 
-// pre save middleware/ hook : will work on create()  save()
-studentSchema.pre('save', async function (next) {
-    // console.log(this, 'pre hook : we will save  data');
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const user = this; // doc
-    // hashing password and save into DB
-    user.password = await bcrypt.hash(
-        user.password,
-        Number(config.bcrypt_salt_rounds),
-    );
-    next();
-});
+// // pre save middleware/ hook : will work on create()  save()
+// studentSchema.pre('save', async function (next) {
+//     // console.log(this, 'pre hook : we will save  data');
+//     // eslint-disable-next-line @typescript-eslint/no-this-alias
+//     const user = this; // doc
+//     // hashing password and save into DB
+//     user.password = await bcrypt.hash(
+//         user.password,
+//         Number(config.bcrypt_salt_rounds),
+//     );
+//     next();
+// });
 
-// post save middleware / hook
-studentSchema.post('save', function (doc, next) {
-    doc.password = '';
-    next();
-});
+// // post save middleware / hook
+// studentSchema.post('save', function (doc, next) {
+//     doc.password = '';
+//     next();
+// });
 
 // Query Middleware
 studentSchema.pre('find', function (next) {
