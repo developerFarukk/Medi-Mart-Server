@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StudentServices } from './student.service';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 // import studentValidationSchema from './student.validation';
 
 // Create student Mathod
@@ -33,24 +34,18 @@ import httpStatus from 'http-status';
 
 // };
 
-const getAllStudents = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    try {
-        const result = await StudentServices.getAllStudentsFromDB();
+const getAllStudents = catchAsync(async ( req, res ) => {
 
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
-            success: true,
-            message: 'All Student Data get successfully',
-            data: result,
-        });
-    } catch (err) {
-        next(err);
-    }
-};
+    const result = await StudentServices.getAllStudentsFromDB();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'All Student Data get successfully',
+        data: result,
+    });
+
+});
 
 const getSingleStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
