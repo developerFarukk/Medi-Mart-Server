@@ -1,6 +1,6 @@
 
 
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { StudentServices } from './student.service';
 // import studentValidationSchema from './student.validation';
 
@@ -38,6 +38,7 @@ import { StudentServices } from './student.service';
 const getAllStudents = async (
     req: Request,
     res: Response,
+    next: NextFunction
 ) => {
     try {
         const result = await StudentServices.getAllStudentsFromDB();
@@ -47,11 +48,8 @@ const getAllStudents = async (
             message: 'Student Data getting successfully',
             Data: result,
         })
-    } catch (error: unknown) {
-        res.status(404).json({
-            success: false,
-            message: error instanceof Error ? error.message : "An error occurred",
-        });
+    } catch (err) {
+        next(err);
     }
 };
 

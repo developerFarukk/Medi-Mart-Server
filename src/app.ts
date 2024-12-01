@@ -1,8 +1,8 @@
 
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
-// import { StudentRoutes } from './app/modules/student/student.route';
 import router from './app/routes';
+import globalErrorHandler from './app/middlewares/globalErrorhandler';
 
 const app: Application = express();
 
@@ -22,11 +22,13 @@ app.use('/api/v1', router);
 
 const getAController = (req: Request, res: Response) => {
     res.send({
-                status: true,
-                message: 'Univercity Management Systen Server is Runing Live ⚡',
-            })
-    }
+        status: true,
+        message: 'Univercity Management Systen Server is Runing Live ⚡',
+    })
+}
 
 app.get('/', getAController);
+
+app.use(globalErrorHandler);
 
 export default app;
