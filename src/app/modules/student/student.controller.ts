@@ -62,10 +62,11 @@ const getSingleStudent = async (req: Request, res: Response, next: NextFunction)
 
         // const result = await bikService.getSinglBik(bikId)
 
-        res.status(200).json({
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
             success: true,
-            message: 'Student is retrieved succesfully',
-            Data: result,
+            message: 'Single Student data get succesfully',
+            data: result,
         });
     } catch (err) {
         next(err);
@@ -81,10 +82,11 @@ const deleteStudent = async (
         const { studentId } = req.params;
         const result = await StudentServices.deleteStudentFromDB(studentId);
 
-        res.status(200).json({
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
             success: true,
-            message: 'Student is Delated succesfully',
-            Data: result,
+            message: 'Delete Student data succesfully',
+            data: result,
         });
     } catch (err) {
         next(err);
@@ -97,10 +99,11 @@ const updateStudent = async (req: Request, res: Response, next: NextFunction) =>
         const body = req.body
         const result = await StudentServices.updateStudent(studentId, body)
 
-        res.status(200).json({
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
             success: true,
-            message: 'Student Data Updated succesfully',
-            Data: result,
+            message: 'Update Student data succesfully',
+            data: result,
         });
     } catch (err) {
         next(err);
