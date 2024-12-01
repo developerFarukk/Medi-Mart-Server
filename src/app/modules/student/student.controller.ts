@@ -5,7 +5,7 @@ import { StudentServices } from './student.service';
 // import studentValidationSchema from './student.validation';
 
 // Create student Mathod
-// const createStudent = async (req: Request, res: Response) => {
+// const createStudent = async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 
 //         // console.log("Request Body: ", req.body);
@@ -25,12 +25,8 @@ import { StudentServices } from './student.service';
 //             message: 'Student is created succesfully',
 //             data: result,
 //         });
-//     } catch (error) {
-//         res.json({
-//             success: false,
-//             message: 'Validation failed',
-//             error: error
-//         })
+//     } catch (err) {
+//         next(err);
 //     }
 
 // };
@@ -53,7 +49,7 @@ const getAllStudents = async (
     }
 };
 
-const getSingleStudent = async (req: Request, res: Response) => {
+const getSingleStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const studentId = req.params.studentId;
 
@@ -68,17 +64,15 @@ const getSingleStudent = async (req: Request, res: Response) => {
             message: 'Student is retrieved succesfully',
             Data: result,
         });
-    } catch (error: unknown) {
-        res.status(404).json({
-            success: false,
-            message: error instanceof Error ? error.message : "An error occurred",
-        });
+    } catch (err) {
+        next(err);
     }
 };
 
 const deleteStudent = async (
     req: Request,
     res: Response,
+    next: NextFunction
 ) => {
     try {
         const { studentId } = req.params;
@@ -89,16 +83,12 @@ const deleteStudent = async (
             message: 'Student is Delated succesfully',
             Data: result,
         });
-    } catch (error) {
-        res.json({
-            success: false,
-            message: 'Validation failed',
-            error,
-        })
+    } catch (err) {
+        next(err);
     }
 };
 
-const updateStudent = async (req: Request, res: Response) => {
+const updateStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const studentId = req.params.studentId
         const body = req.body
@@ -109,12 +99,8 @@ const updateStudent = async (req: Request, res: Response) => {
             message: 'Student Data Updated succesfully',
             Data: result,
         });
-    } catch (error) {
-        res.json({
-            success: false,
-            message: 'Validation failed',
-            error,
-        })
+    } catch (err) {
+        next(err);
     }
 }
 
