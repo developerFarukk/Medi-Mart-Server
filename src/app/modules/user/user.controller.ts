@@ -16,7 +16,6 @@ const createStudent = async (req: Request, res: Response, next: NextFunction) =>
             studentData,
         );
 
-        
         sendResponse(res, {
             statusCode: httpStatus.OK,
             success: true,
