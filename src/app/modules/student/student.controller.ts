@@ -2,6 +2,8 @@
 
 import { NextFunction, Request, Response } from 'express';
 import { StudentServices } from './student.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
 // import studentValidationSchema from './student.validation';
 
 // Create student Mathod
@@ -39,11 +41,12 @@ const getAllStudents = async (
     try {
         const result = await StudentServices.getAllStudentsFromDB();
 
-        res.status(200).send({
-            status: true,
-            message: 'Student Data getting successfully',
-            Data: result,
-        })
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'All Student Data get successfully',
+            data: result,
+        });
     } catch (err) {
         next(err);
     }
