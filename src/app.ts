@@ -13,13 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 // application routes
-// app.use('/api/v1/students', StudentRoutes);
 app.use('/api/v1', router);
-
-// const getAController = (req: Request, res: Response) => {
-//     const a = 10;
-//     res.send(a);
-// };
 
 
 const getAController = (req: Request, res: Response) => {
@@ -31,9 +25,10 @@ const getAController = (req: Request, res: Response) => {
 
 app.get('/', getAController);
 
+// Global Error Handelar
 app.use(globalErrorHandler);
 
-//Not Found
+//Not Found Page
 app.use(notFound);
 
 
