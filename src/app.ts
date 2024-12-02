@@ -28,7 +28,7 @@ app.get('/', getAController);
 // Global Error Handelar
 app.use(globalErrorHandler);
 
-//Not Found Page
+//Not Found Page function
 app.use(notFound);
 
 
