@@ -1,8 +1,9 @@
 
 import httpStatus from 'http-status';
-import catchAsync from '../../utils/catchAsync';
+import { AcademicSemesterServices } from './acSemester.service';
 import sendResponse from '../../utils/sendResponse';
-import { AcademicSemesterServices } from './academicSemester.service';
+import catchAsync from '../../utils/catchAsync';
+
 
 const createAcademicSemester = catchAsync(async (req, res) => {
     const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
@@ -17,6 +18,7 @@ const createAcademicSemester = catchAsync(async (req, res) => {
     });
 });
 
+
 const getAllAcademicSemesters = catchAsync(async (req, res) => {
     const result = await AcademicSemesterServices.getAllAcademicSemestersFromDB();
 
@@ -27,6 +29,7 @@ const getAllAcademicSemesters = catchAsync(async (req, res) => {
         data: result,
     });
 });
+
 
 const getSingleAcademicSemester = catchAsync(async (req, res) => {
     const { semesterId } = req.params;
@@ -40,6 +43,7 @@ const getSingleAcademicSemester = catchAsync(async (req, res) => {
         data: result,
     });
 });
+
 
 const updateAcademicSemester = catchAsync(async (req, res) => {
     const { semesterId } = req.params;
@@ -55,6 +59,7 @@ const updateAcademicSemester = catchAsync(async (req, res) => {
         data: result,
     });
 });
+
 
 export const AcademicSemesterControllers = {
     createAcademicSemester,
