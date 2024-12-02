@@ -19,7 +19,7 @@ const acdemicSemesterSchema = new Schema<TAcademicSemester>(
         code: {
             type: String,
             trim: true,
-            required: [true, "Academic code is required"],
+            required: [true, "Academic code inpute is required"],
             enum: AcademicSemesterCode,
         },
         startMonth: {
