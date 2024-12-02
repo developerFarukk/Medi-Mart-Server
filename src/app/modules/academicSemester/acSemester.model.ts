@@ -29,7 +29,7 @@ const acdemicSemesterSchema = new Schema<TAcademicSemester>(
         },
         endMonth: {
             type: String,
-            required: [true, "Academic End Month is Required"],
+            required: [true, "Academic End Month inpute is Required"],
             enum: Months
         }
     },
