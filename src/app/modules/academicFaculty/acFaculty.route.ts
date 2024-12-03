@@ -19,13 +19,13 @@ router.post(
 // router.get('/:facultyId', AcademicFacultyControllers.getSingleAcademicFaculty);
 
 // Update faculty data
-// router.patch(
-//     '/:facultyId',
-//     validateRequest(
-//         AcademicFacultyValidation.updateAcademicFacultyValidationSchema,
-//     ),
-//     AcademicFacultyControllers.updateAcademicFaculty,
-// );
+router.patch(
+    '/:facultyId',
+    validateRequest(
+        AcademicFacultyValidation.updateAcademicFacultyValidationSchema,
+    ),
+    AcademicFacultyControllers.updateAcademicFaculty,
+);
 
 // All data get faculty data
 // router.get('/', AcademicFacultyControllers.getAllAcademicFaculties);
