@@ -2,6 +2,7 @@
 import httpStatus from 'http-status';
 import { Schema, model } from 'mongoose';
 import { TAcademicDepartment } from './acDepartment.interface';
+import AppError from '../../errors/AppError';
 
 const academicDepartmentSchema = new Schema<TAcademicDepartment>(
     {
