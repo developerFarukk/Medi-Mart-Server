@@ -28,6 +28,6 @@ router.patch(
 );
 
 // All data get faculty data
-// router.get('/', AcademicFacultyControllers.getAllAcademicFaculties);
+router.get('/', AcademicFacultyControllers.getAllAcademicFaculties);
 
 export const AcademicFacultyRoutes = router;

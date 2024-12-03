@@ -7,10 +7,10 @@ const createAcademicFacultyIntoDB = async (payload: TAcademicFaculty) => {
     return result;
 };
 
-// const getAllAcademicFacultiesFromDB = async () => {
-//     const result = await AcademicFaculty.find();
-//     return result;
-// };
+const getAllAcademicFacultiesFromDB = async () => {
+    const result = await AcademicFaculty.find();
+    return result;
+};
 
 // const getSingleAcademicFacultyFromDB = async (id: string) => {
 //     const result = await AcademicFaculty.findById(id);
@@ -31,7 +31,7 @@ const updateAcademicFacultyIntoDB = async (
 
 export const AcademicFacultyServices = {
     createAcademicFacultyIntoDB,
-    // getAllAcademicFacultiesFromDB,
+    getAllAcademicFacultiesFromDB,
     // getSingleAcademicFacultyFromDB,
     updateAcademicFacultyIntoDB,
 };
