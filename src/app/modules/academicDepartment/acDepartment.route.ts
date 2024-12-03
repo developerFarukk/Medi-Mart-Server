@@ -16,10 +16,12 @@ router.post(
     AcademicDepartmentControllers.createAcademicDepartmemt,
 );
 
-// router.get(
-//     '/:departmentId',
-//     AcademicDepartmentControllers.getSingleAcademicDepartment,
-// );
+
+// Single department Data get
+router.get(
+    '/:departmentId',
+    AcademicDepartmentControllers.getSingleAcademicDepartment,
+);
 
 // router.patch(
 //     '/:departmentId',

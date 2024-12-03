@@ -13,11 +13,12 @@ const getAllAcademicDepartmentsFromDB = async () => {
     return result;
 };
 
-// const getSingleAcademicDepartmentFromDB = async (id: string) => {
-//     const result =
-//         await AcademicDepartment.findById(id).populate('academicFaculty');
-//     return result;
-// };
+// Single data get of department
+const getSingleAcademicDepartmentFromDB = async (id: string) => {
+    const result =
+        await AcademicDepartment.findById(id).populate('academicFaculty');
+    return result;
+};
 
 // const updateAcademicDepartmentIntoDB = async (
 //     id: string,
@@ -36,6 +37,6 @@ const getAllAcademicDepartmentsFromDB = async () => {
 export const AcademicDepartmentServices = {
     createAcademicDepartmentIntoDB,
     getAllAcademicDepartmentsFromDB,
-    // getSingleAcademicDepartmentFromDB,
+    getSingleAcademicDepartmentFromDB,
     // updateAcademicDepartmentIntoDB,
 };
