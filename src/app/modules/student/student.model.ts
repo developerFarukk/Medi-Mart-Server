@@ -81,11 +81,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
             required: [true, 'ID is required'],
             unique: true,
         },
-        // password: {
-        //     type: String,
-        //     required: [true, 'Password is required'],
-        //     maxlength: [20, 'Password can not be more than 20 characters'],
-        // },
         user: {
             type: Schema.Types.ObjectId,
             required: [true, 'User id is required'],
@@ -138,11 +133,20 @@ const studentSchema = new Schema<TStudent, StudentModel>(
             type: localGuradianSchema,
             required: [true, 'Local guardian information is required'],
         },
-        profileImg: { type: String },
+        admissionSemester: {
+            type: Schema.Types.ObjectId,
+            ref: 'AcademicSemester',
+        },
         isDeleted: {
             type: Boolean,
             default: false,
         },
+        academicDepartment: {
+            type: Schema.Types.ObjectId,
+            ref: 'AcademicDepartment',
+        },
+        profileImg: { type: String },
+
     },
     {
         toJSON: {
