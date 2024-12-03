@@ -29,6 +29,8 @@ router.post(
 //     AcademicDepartmentControllers.updateAcademicDeartment,
 // );
 
-// router.get('/', AcademicDepartmentControllers.getAllAcademicDepartments);
+
+// All Data get of Department
+router.get('/', AcademicDepartmentControllers.getAllAcademicDepartments);
 
 export const AcademicDepartmentRoutes = router;

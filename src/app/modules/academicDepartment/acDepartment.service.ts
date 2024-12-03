@@ -8,10 +8,10 @@ const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
     return result;
 };
 
-// const getAllAcademicDepartmentsFromDB = async () => {
-//     const result = await AcademicDepartment.find().populate('academicFaculty');
-//     return result;
-// };
+const getAllAcademicDepartmentsFromDB = async () => {
+    const result = await AcademicDepartment.find().populate('academicFaculty');  // populate অন্য কালেকশন থেকে রেফার করা ডাটা নিয়ে আসে।
+    return result;
+};
 
 // const getSingleAcademicDepartmentFromDB = async (id: string) => {
 //     const result =
@@ -35,7 +35,7 @@ const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
 
 export const AcademicDepartmentServices = {
     createAcademicDepartmentIntoDB,
-    // getAllAcademicDepartmentsFromDB,
+    getAllAcademicDepartmentsFromDB,
     // getSingleAcademicDepartmentFromDB,
     // updateAcademicDepartmentIntoDB,
 };
