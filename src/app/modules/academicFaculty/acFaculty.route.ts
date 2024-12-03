@@ -16,7 +16,7 @@ router.post(
 );
 
 // Single Data get route
-// router.get('/:facultyId', AcademicFacultyControllers.getSingleAcademicFaculty);
+router.get('/:facultyId', AcademicFacultyControllers.getSingleAcademicFaculty);
 
 // Update faculty data
 router.patch(
