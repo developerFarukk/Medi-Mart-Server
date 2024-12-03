@@ -23,13 +23,15 @@ router.get(
     AcademicDepartmentControllers.getSingleAcademicDepartment,
 );
 
-// router.patch(
-//     '/:departmentId',
-//     validateRequest(
-//         AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema,
-//     ),
-//     AcademicDepartmentControllers.updateAcademicDeartment,
-// );
+
+// Update department Data
+router.patch(
+    '/:departmentId',
+    validateRequest(
+        AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema,
+    ),
+    AcademicDepartmentControllers.updateAcademicDeartment,
+);
 
 
 // All Data get of Department
