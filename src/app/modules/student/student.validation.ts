@@ -1,8 +1,10 @@
 
 import { z } from 'zod';
 
-// User name validation schema
-const userValidationNameSchema = z.object({
+// ****************************************  Creat  Student Validation    ***************************
+
+// Creat User name validation schema
+const createUserNameValidationNameSchema = z.object({
     firstName: z
         .string()
         .min(1, { message: 'First Name is required' })
@@ -14,8 +16,8 @@ const userValidationNameSchema = z.object({
     lastName: z.string().min(1, { message: 'Last Name is required' }),
 });
 
-// Guardian validation schema
-const guardianValidationSchema = z.object({
+// Creat Guardian validation schema
+const creatGuardianValidationSchema = z.object({
     fatherName: z.string().min(1, { message: "Father's Name is required" }),
     fatherOccupation: z
         .string()
@@ -32,8 +34,8 @@ const guardianValidationSchema = z.object({
         .min(1, { message: "Mother's Contact Number is required" }),
 });
 
-// Local Guardian validation schema
-const localGuardianValidationSchema = z.object({
+// Creat Local Guardian validation schema
+const creatLocalGuardianValidationSchema = z.object({
     name: z.string().min(1, { message: "Local Guardian's Name is required" }),
     occupation: z
         .string()
@@ -53,7 +55,7 @@ export const createStudentValidationSchema = z.object({
             .min(6, { message: 'Password must be at least 6 characters' })
             .max(20, { message: 'Password must be less than 20 characters' }),
         student: z.object({
-            name: userValidationNameSchema,
+            name: createUserNameValidationNameSchema,
             gender: z.enum(['male', 'female', 'other']),
             dateOfBirth: z
                 .string()
@@ -70,14 +72,16 @@ export const createStudentValidationSchema = z.object({
             bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
             presentAddress: z.string().min(1, { message: 'Present Address is required' }),
             permanentAddress: z.string().min(1, { message: 'Permanent Address is required' }),
-            guardian: guardianValidationSchema,
-            localGuardian: localGuardianValidationSchema,
+            guardian: creatGuardianValidationSchema,
+            localGuardian: creatLocalGuardianValidationSchema,
+            admissionSemester: z.string(),
             profileImg: z
                 .string()
                 .optional()
                 .refine((value) => !value || /^(https?:\/\/[^\s$.?#].[^\s]*)$/i.test(value), {
                     message: 'Invalid URL for Profile Image',
                 }),
+            academicDepartment: z.string(),
         })
     })
 
@@ -86,3 +90,8 @@ export const createStudentValidationSchema = z.object({
 export const studentValidation = {
     createStudentValidationSchema
 };
+
+
+// ****************************************  Update  Student Validation    ***************************
+
+
