@@ -3,10 +3,10 @@ import { Student } from "./student.model";
 
 
 
-const createStudentIntoDB = async (student: TStudent) => {
-    const result = await Student.create(student);
-    return result;
-};
+// const createStudentIntoDB = async (student: TStudent) => {
+//     const result = await Student.create(student);
+//     return result;
+// };
 
 // const createStudentIntoDB = async (studentData: TStudent) => {
 //     if (await Student.isUserExists(studentData.id)) {
@@ -42,6 +42,6 @@ export const StudentServices = {
     getAllStudentsFromDB,
     getSingleStudentFromDB,
     deleteStudentFromDB,
-    createStudentIntoDB,
+    // createStudentIntoDB,
     updateStudent
 };

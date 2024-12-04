@@ -99,5 +99,4 @@ export const StudentControllers = {
     getSingleStudent,
     deleteStudent,
     updateStudent
-
 };
