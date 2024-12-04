@@ -12,6 +12,4 @@ userRouter.post(
     UserControllers.createStudent,
 );
 
-// userRouter.post('/create-student', UserControllers.createStudent);
-
 export const UserRoutes = userRouter;
