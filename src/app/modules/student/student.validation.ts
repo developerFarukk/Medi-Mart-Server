@@ -94,4 +94,33 @@ export const studentValidation = {
 
 // ****************************************  Update  Student Validation    ***************************
 
+// Update User name validation schema
+const updateUserNameValidationNameSchema = z.object({
+    firstName: z
+        .string()
+        .min(1, { message: 'First Name is required' })
+        .max(20, { message: 'First Name must be less than 20 characters' })
+        .refine((value) => /^[A-Z]/.test(value), {
+            message: 'First Name must start with a capital letter',
+        }).optional(),
+    middleName: z.string().optional(),
+    lastName: z.string().min(1, { message: 'Last Name is required' }).optional(),
+});
 
+// Update Guardian validation schema
+const UpdateGuardianValidationSchema = z.object({
+    fatherName: z.string().min(1, { message: "Father's Name is required" }).optional(),
+    fatherOccupation: z
+        .string()
+        .min(1, { message: "Father's Occupation is required" }).optional(),
+    fatherContactNo: z
+        .string()
+        .min(1, { message: "Father's Contact Number is required" }).optional(),
+    motherName: z.string().min(1, { message: "Mother's Name is required" }).optional(),
+    motherOccupation: z
+        .string()
+        .min(1, { message: "Mother's Occupation is required" }).optional(),
+    motherContactNo: z
+        .string()
+        .min(1, { message: "Mother's Contact Number is required" }).optional(),
+});
