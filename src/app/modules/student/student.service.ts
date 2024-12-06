@@ -18,7 +18,7 @@ import { Student } from "./student.model";
 
 const getAllStudentsFromDB = async () => {
     const result = await Student.find().populate('user').populate('admissionSemester').populate({
-        path: 'academicDepartment', 
+        path: 'academicDepartment',
         populate: {
             path: 'academicFaculty',
         }
@@ -36,17 +36,54 @@ const deleteStudentFromDB = async (id: string) => {
     return result;
 };
 
-const updateStudent = async (id: string, data: TStudent) => {
-    const result = await Student.findByIdAndUpdate(id, data, {
+// const updateStudent = async (id: string, data: TStudent) => {
+//     const result = await Student.findByIdAndUpdate(id, data, {
+//         new: true,
+//     })
+//     return result
+// }
+
+
+const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
+    const { name, guardian, localGuardian, ...remainingStudentData } = payload;
+
+    const modifiedUpdatedData: Record<string, unknown> = {
+        ...remainingStudentData,
+    };
+
+    if (name && Object.keys(name).length) {
+        for (const [key, value] of Object.entries(name)) {
+            modifiedUpdatedData[`name.${key}`] = value;
+        }
+    }
+
+    if (guardian && Object.keys(guardian).length) {
+        for (const [key, value] of Object.entries(guardian)) {
+            modifiedUpdatedData[`guardian.${key}`] = value;
+        }
+    }
+
+    if (localGuardian && Object.keys(localGuardian).length) {
+        for (const [key, value] of Object.entries(localGuardian)) {
+            modifiedUpdatedData[`localGuardian.${key}`] = value;
+        }
+    }
+
+    console.log(modifiedUpdatedData);
+
+    const result = await Student.findOneAndUpdate({ id }, modifiedUpdatedData, {
         new: true,
-    })
-    return result
-}
+        runValidators: true,
+    });
+    return result;
+};
+
 
 export const StudentServices = {
     getAllStudentsFromDB,
     getSingleStudentFromDB,
     deleteStudentFromDB,
     // createStudentIntoDB,
-    updateStudent
+    // updateStudent
+    updateStudentIntoDB
 };
