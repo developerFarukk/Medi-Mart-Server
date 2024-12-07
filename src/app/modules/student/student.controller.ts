@@ -46,15 +46,27 @@ const getAllStudents = catchAsync(async (req, res) => {
 });
 
 
+// const getSingleStudent = catchAsync(async (req, res) => {
+
+//     const studentId = req.params.studentId;
+
+//     const result = await StudentServices.getSingleStudentFromDB(studentId);
+
+//     // const bikId = req.params.bikId
+
+//     // const result = await bikService.getSinglBik(bikId)
+
+//     sendResponse(res, {
+//         statusCode: httpStatus.OK,
+//         success: true,
+//         message: 'Single Student data get succesfully',
+//         data: result,
+//     });
+// });
+
 const getSingleStudent = catchAsync(async (req, res) => {
-
-    const studentId = req.params.studentId;
-
+    const { studentId } = req.params;
     const result = await StudentServices.getSingleStudentFromDB(studentId);
-
-    // const bikId = req.params.bikId
-
-    // const result = await bikService.getSinglBik(bikId)
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -63,7 +75,6 @@ const getSingleStudent = catchAsync(async (req, res) => {
         data: result,
     });
 });
-
 
 const deleteStudent = catchAsync(async (req, res) => {
 
@@ -92,6 +103,7 @@ const deleteStudent = catchAsync(async (req, res) => {
 //         data: result,
 //     })
 // });
+
 
 const updateStudent = catchAsync(async (req, res) => {
     const { studentId } = req.params;
