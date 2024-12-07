@@ -5,6 +5,9 @@
 
 import { ErrorRequestHandler } from 'express';
 import { TErrorSources } from '../interface/error';
+import { ZodError } from 'zod';
+import handleZodError from '../errors/handleZodError';
+import config from '../config';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
@@ -18,11 +21,20 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         },
     ];
 
+    if (err instanceof ZodError) {
+        const simplifiedError = handleZodError(err);
+        statusCode = simplifiedError?.statusCode;
+        message = simplifiedError?.message;
+        errorSources = simplifiedError?.errorSources;
+    }
+
+    // Main Return
     return res.status(statusCode).json({
         success: false,
         message,
         errorSources,
-        err
+        // err,
+        stack: config.node_env === 'development' ? err?.stack : null,
         // error: err,
     });
 };
