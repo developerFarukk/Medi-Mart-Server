@@ -139,7 +139,7 @@ export const updateStudentValidationSchema = z.object({
     // id: z.string().min(1, { message: 'ID is required' }),
     body: z.object({
         student: z.object({
-            name: updateUserNameValidationNameSchema,
+            name: updateUserNameValidationNameSchema.optional(),
             gender: z.enum(['male', 'female', 'other']).optional(),
             dateOfBirth: z
                 .string()
@@ -155,8 +155,8 @@ export const updateStudentValidationSchema = z.object({
             bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
             presentAddress: z.string().min(1, { message: 'Present Address is required' }).optional(),
             permanentAddress: z.string().min(1, { message: 'Permanent Address is required' }).optional(),
-            guardian: UpdateGuardianValidationSchema,
-            localGuardian: UpdateLocalGuardianValidationSchema,
+            guardian: UpdateGuardianValidationSchema.optional(),
+            localGuardian: UpdateLocalGuardianValidationSchema.optional(),
             admissionSemester: z.string().optional(),
             profileImg: z
                 .string()
