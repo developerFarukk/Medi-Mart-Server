@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 
@@ -19,7 +20,7 @@ const handleDuplicateError = (err: any): TGenericErrorResponse => {
 
     return {
         statusCode,
-        message: 'Invalid ID',
+        message: 'Duplicate error ',
         errorSources,
     };
 };
