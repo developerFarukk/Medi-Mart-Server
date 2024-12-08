@@ -72,7 +72,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         // err,
         stack: config.node_env === 'development' ? err?.stack : null,
         // error: err,
-    });
+    }) as unknown as void;
 };
 
 export default globalErrorHandler;
