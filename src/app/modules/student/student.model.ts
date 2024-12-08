@@ -153,7 +153,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
             virtuals: true,
         },
         timestamps: true,
-        versionKey: false
+        // versionKey: false
     },
 );
 

@@ -32,7 +32,7 @@ const userSchema = new Schema<TUser>(
     },
     {
         timestamps: true,
-        versionKey: false
+        // versionKey: false
     },
 );
 
