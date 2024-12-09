@@ -12,14 +12,14 @@ const router = express.Router();
 router.get('/', StudentControllers.getAllStudents);
 
 // Single student data get route
-router.get('/:studentId', StudentControllers.getSingleStudent);
+router.get('/:id', StudentControllers.getSingleStudent);
 
 // Delete student data get route
-router.delete('/:studentId', StudentControllers.deleteStudent);
+router.delete('/:id', StudentControllers.deleteStudent);
 
 // Update Route
 router.patch(
-    '/:studentId',
+    '/:id',
     validateRequest(updateStudentValidationSchema),
     StudentControllers.updateStudent,
 );
