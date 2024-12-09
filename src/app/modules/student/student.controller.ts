@@ -77,6 +77,8 @@ const getSingleStudent = catchAsync(async (req, res) => {
     });
 });
 
+
+
 const deleteStudent = catchAsync(async (req, res) => {
 
     const { studentId } = req.params;
