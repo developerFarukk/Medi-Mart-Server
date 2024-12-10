@@ -3,7 +3,7 @@ import { model, Schema } from "mongoose";
 import { TCourse, TCoursefaculty, TPreRequisiteCourses } from "./course.interface";
 
 
-
+// Pre Request Course Schema
 const preRequisiteCoursesSchema = new Schema<TPreRequisiteCourses>(
     {
         course: {
@@ -20,6 +20,7 @@ const preRequisiteCoursesSchema = new Schema<TPreRequisiteCourses>(
     },
 );
 
+// Course Schema Model
 const courseSchema = new Schema<TCourse>(
     {
         title: {
@@ -56,6 +57,8 @@ const courseSchema = new Schema<TCourse>(
 
 export const Course = model<TCourse>('Course', courseSchema);
 
+
+// Course Faculty Schema
 const courseFacultySchema = new Schema<TCoursefaculty>({
     course: {
         type: Schema.Types.ObjectId,
