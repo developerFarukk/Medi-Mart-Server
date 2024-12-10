@@ -17,5 +17,8 @@ router.post(
 // All Course data get route
 router.get('/', CourseControllers.getAllCourses);
 
+// Single Course Data get Route
+router.get('/:id', CourseControllers.getSingleCourse);
+
 
 export const CourseRoutes = router;
