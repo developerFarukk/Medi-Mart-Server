@@ -57,13 +57,27 @@ const deleteCourse = catchAsync(async (req, res) => {
     });
 });
 
+// Update Course Data
+const updateCourse = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await CourseServices.updateCourseIntoDB(id, req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'course is updated succesfully',
+        data: result,
+    });
+});
+
+
 
 
 export const CourseControllers = {
     createCourse,
     getSingleCourse,
     getAllCourses,
-    // updateCourse,
+    updateCourse,
     deleteCourse,
     // assignFacultiesWithCourse,
     // removeFacultiesFromCourse,
