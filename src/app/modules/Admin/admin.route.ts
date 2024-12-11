@@ -1,6 +1,8 @@
 
 import express from 'express';
 import { AdminControllers } from './admin.controller';
+import validateRequest from '../../middlewares/validateRequest';
+import { updateAdminValidationSchema } from './admin.validation';
 
 const router = express.Router();
 
@@ -12,6 +14,13 @@ router.get('/:id', AdminControllers.getSingleAdmin);
 
 // Delete Admin Route
 router.delete('/:id', AdminControllers.deleteAdmin);
+
+// Update Admin Route
+router.patch(
+    '/:id',
+    validateRequest(updateAdminValidationSchema),
+    AdminControllers.updateAdmin,
+);
 
 
 

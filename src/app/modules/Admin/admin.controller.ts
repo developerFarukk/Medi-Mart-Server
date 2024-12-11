@@ -2,7 +2,6 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { AdminServices } from "./admin.service";
-import { any } from "zod";
 
 
 // All Admin Data get
@@ -36,7 +35,7 @@ const getSingleAdmin = catchAsync(async (req, res) => {
 const deleteAdmin = catchAsync(async (req, res) => {
     const { id } = req.params;
 
-    const result = await AdminServices.deleteAdminFromDB( id );
+    const result = await AdminServices.deleteAdminFromDB(id);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -46,9 +45,25 @@ const deleteAdmin = catchAsync(async (req, res) => {
     });
 });
 
+// Update Admin
+const updateAdmin = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const { admin } = req.body;
+    
+    const result = await AdminServices.updateAdminIntoDB(id, admin);
+    
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Admin is updated succesfully',
+        data: result,
+    });
+});
+
 export const AdminControllers = {
     getAllAdmins,
     getSingleAdmin,
     deleteAdmin,
-    // updateAdmin,
+    updateAdmin,
 };
