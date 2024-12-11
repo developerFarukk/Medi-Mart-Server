@@ -119,6 +119,9 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     }
 };
 
+//  Faculty & User Create Funtionality
+
+
 export const UserServices = {
     createStudentIntoDB,
     createAdminIntoDB
