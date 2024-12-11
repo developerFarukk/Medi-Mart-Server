@@ -7,7 +7,7 @@ import { AcademicFacultyRoutes } from '../modules/academicFaculty/acFaculty.rout
 import { AcademicDepartmentRoutes } from '../modules/academicDepartment/acDepartment.route';
 import { CourseRoutes } from '../modules/Course/course.route';
 
-const routers = Router();
+const router = Router();
 
 const moduleRoutes = [
     {
@@ -37,6 +37,6 @@ const moduleRoutes = [
 
 ];
 
-moduleRoutes.forEach((route) => routers.use(route.path, route.route));
+moduleRoutes.forEach((route) => router.use(route.path, route.route));
 
-export default routers;
+export default router;
