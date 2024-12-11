@@ -16,13 +16,17 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
     return result;
 };
 
-
+// Single Admin data get
+const getSingleAdminFromDB = async (id: string) => {
+    const result = await Admin.findById(id);
+    return result;
+};
 
 
 
 export const AdminServices = {
     getAllAdminsFromDB,
-    // getSingleAdminFromDB,
+    getSingleAdminFromDB,
     // updateAdminIntoDB,
     // deleteAdminFromDB,
 };

@@ -4,7 +4,7 @@ import sendResponse from "../../utils/sendResponse";
 import { AdminServices } from "./admin.service";
 
 
-
+// All Admin Data get
 const getAllAdmins = catchAsync(async (req, res) => {
     const result = await AdminServices.getAllAdminsFromDB(req.query);
 
@@ -17,9 +17,23 @@ const getAllAdmins = catchAsync(async (req, res) => {
 });
 
 
+// Single Admin Data Get
+const getSingleAdmin = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await AdminServices.getSingleAdminFromDB(id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Admin is retrieved succesfully',
+        data: result,
+    });
+});
+
+
 export const AdminControllers = {
     getAllAdmins,
-    // getSingleAdmin,
+    getSingleAdmin,
     // deleteAdmin,
     // updateAdmin,
 };
