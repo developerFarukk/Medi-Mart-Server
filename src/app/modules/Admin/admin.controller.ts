@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { AdminServices } from "./admin.service";
+import { any } from "zod";
 
 
 // All Admin Data get
@@ -31,9 +32,23 @@ const getSingleAdmin = catchAsync(async (req, res) => {
 });
 
 
+// Delete Admin Single Function
+const deleteAdmin = catchAsync(async (req, res) => {
+    const { id } = req.params;
+
+    const result = await AdminServices.deleteAdminFromDB( id );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Admin is deleted succesfully',
+        data: result,
+    });
+});
+
 export const AdminControllers = {
     getAllAdmins,
     getSingleAdmin,
-    // deleteAdmin,
+    deleteAdmin,
     // updateAdmin,
 };
