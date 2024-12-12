@@ -1,8 +1,11 @@
 
+import mongoose from "mongoose";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { FacultySearchableFields } from "./faculty.constant";
 import { TFaculty } from "./faculty.interface";
 import { Faculty } from "./faculty.model";
+import AppError from "../../errors/AppError";
+import { User } from "../user/user.model";
 
 
 // All Faculty Data Get
@@ -64,10 +67,53 @@ const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
 };
 
 
+// Delete Faculty 
+const deleteFacultyFromDB = async (id: string) => {
+    const session = await mongoose.startSession();
+
+    try {
+        session.startTransaction();
+
+        const deletedFaculty = await Faculty.findByIdAndUpdate(
+            id,
+            { isDeleted: true },
+            { new: true, session },
+        );
+
+        if (!deletedFaculty) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete faculty');
+        }
+
+        // get user _id from deletedFaculty
+        const userId = deletedFaculty.user;
+
+        const deletedUser = await User.findByIdAndUpdate(
+            userId,
+            { isDeleted: true },
+            { new: true, session },
+        );
+
+        if (!deletedUser) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user');
+        }
+
+        await session.commitTransaction();
+        await session.endSession();
+
+        return deletedFaculty;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw new Error(err);
+    }
+};
+
+
 
 export const FacultyServices = {
     getAllFacultiesFromDB,
     getSingleFacultyFromDB,
     updateFacultyIntoDB,
-    // deleteFacultyFromDB,
+    deleteFacultyFromDB,
 };
