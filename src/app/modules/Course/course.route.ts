@@ -30,5 +30,12 @@ router.patch(
     CourseControllers.updateCourse,
 );
 
+// Assin Faculty Route
+router.put(
+    '/:courseId/assign-faculties',
+    validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
+    CourseControllers.assignFacultiesWithCourse,
+);
+
 
 export const CourseRoutes = router;
