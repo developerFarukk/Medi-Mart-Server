@@ -28,4 +28,10 @@ router.patch(
     OfferedCourseControllers.updateOfferedCourse,
 );
 
+// Delete Offer Course Route
+router.delete(
+    '/:id',
+    OfferedCourseControllers.deleteOfferedCourseFromDB,
+);
+
 export const offeredCourseRoutes = router;
