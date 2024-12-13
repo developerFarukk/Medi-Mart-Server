@@ -63,7 +63,7 @@ const getSingleSemesterRegistration = catchAsync(
 
 // Update semister Reg
 const updateSemesterRegistration = catchAsync(
-    async ( req, res ) => {
+    async (req, res) => {
         const { id } = req.params;
         const result =
             await SemesterRegistrationService.updateSemesterRegistrationIntoDB(
@@ -80,11 +80,27 @@ const updateSemesterRegistration = catchAsync(
     },
 );
 
+// Delete Semister Course
+const deleteSemesterRegistration = catchAsync(
+    async  (req, res ) => {
+        const { id } = req.params;
+        const result =
+            await SemesterRegistrationService.deleteSemesterRegistrationFromDB(id);
+
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Semester Registration is updated successfully',
+            data: result,
+        });
+    },
+);
+
 
 export const SemesterRegistrationController = {
     createSemesterRegistration,
     getAllSemesterRegistrations,
     getSingleSemesterRegistration,
     updateSemesterRegistration,
-    // deleteSemesterRegistration,
+    deleteSemesterRegistration,
 };
