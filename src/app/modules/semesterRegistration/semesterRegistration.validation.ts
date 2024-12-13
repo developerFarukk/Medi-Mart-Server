@@ -15,6 +15,7 @@ const createSemesterRegistrationValidationSchema = z.object({
     }),
 });
 
+
 // Update semister registation  validation schema
 const upadateSemesterRegistrationValidationSchema = z.object({
     body: z.object({
