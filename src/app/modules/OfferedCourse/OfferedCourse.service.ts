@@ -9,8 +9,10 @@ import { SemesterRegistration } from "../semesterRegistration/semesterRegistrati
 import { TOfferedCourse } from "./OfferedCourse.interface";
 import { OfferedCourse } from "./OfferedCourse.model";
 import { hasTimeConflict } from "./OfferedCourse.utils";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 
+// Create Offer Cource
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
     const {
         semesterRegistration,
@@ -133,9 +135,22 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
 };
 
 
+// All Offer Cource Data
+const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
+    const offeredCourseQuery = new QueryBuilder(OfferedCourse.find(), query)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+
+    const result = await offeredCourseQuery.modelQuery;
+    return result;
+};
+
+
 export const OfferedCourseServices = {
     createOfferedCourseIntoDB,
-    // getAllOfferedCoursesFromDB,
+    getAllOfferedCoursesFromDB,
     // getSingleOfferedCourseFromDB,
     // deleteOfferedCourseFromDB,
     // updateOfferedCourseIntoDB,

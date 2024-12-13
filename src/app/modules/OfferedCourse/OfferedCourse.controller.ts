@@ -5,8 +5,8 @@ import sendResponse from "../../utils/sendResponse";
 import { OfferedCourseServices } from "./OfferedCourse.service";
 
 
-
-const createOfferedCourse = catchAsync(async ( req, res ) => {
+// Create Offer Cource
+const createOfferedCourse = catchAsync(async (req, res) => {
     const result = await OfferedCourseServices.createOfferedCourseIntoDB(
         req.body,
     );
@@ -19,9 +19,27 @@ const createOfferedCourse = catchAsync(async ( req, res ) => {
 });
 
 
+// All Offer Cource
+const getAllOfferedCourses = catchAsync(
+    async (req, res) => {
+        const result =
+            await OfferedCourseServices.getAllOfferedCoursesFromDB(
+                req.query,
+            );
+
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'All Offer Course Get successfully !',
+            data: result,
+        });
+    },
+);
+
+
 export const OfferedCourseControllers = {
     createOfferedCourse,
-    // getAllOfferedCourses,
+    getAllOfferedCourses,
     // getSingleOfferedCourses,
     // updateOfferedCourse,
     // deleteOfferedCourseFromDB,

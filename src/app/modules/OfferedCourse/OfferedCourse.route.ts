@@ -15,5 +15,8 @@ router.post(
     OfferedCourseControllers.createOfferedCourse,
 );
 
+// All Offer Cource Route
+router.get('/', OfferedCourseControllers.getAllOfferedCourses);
+
 
 export const offeredCourseRoutes = router;
