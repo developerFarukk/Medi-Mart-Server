@@ -5,10 +5,11 @@ import { AcademicSemester } from "../academicSemester/acSemester.model";
 import { RegistrationStatus } from "./semesterRegistration.constant";
 import { TSemesterRegistration } from "./semesterRegistration.interface";
 import { SemesterRegistration } from "./semesterRegistration.model";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 
 // Creat semister Registation
-const createSemesterRegistrationIntoDB = async ( payload: TSemesterRegistration ) => {
+const createSemesterRegistrationIntoDB = async (payload: TSemesterRegistration) => {
     /**
      * Step1: Check if there any registered semester that is already 'UPCOMING'|'ONGOING'
      * Step2: Check if the semester is exist
@@ -61,11 +62,32 @@ const createSemesterRegistrationIntoDB = async ( payload: TSemesterRegistration 
 };
 
 
+// All Semister registation data
+const getAllSemesterRegistrationsFromDB = async (
+    query: Record<string, unknown>,
+) => {
+    const semesterRegistrationQuery = new QueryBuilder(
+        SemesterRegistration.find().populate('academicSemester'),
+        query,
+    )
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+
+    const result = await semesterRegistrationQuery.modelQuery;
+    return result;
+};
+
+
+
+
+
 
 
 export const SemesterRegistrationService = {
     createSemesterRegistrationIntoDB,
-    // getAllSemesterRegistrationsFromDB,
+    getAllSemesterRegistrationsFromDB,
     // getSingleSemesterRegistrationsFromDB,
     // updateSemesterRegistrationIntoDB,
     // deleteSemesterRegistrationFromDB,

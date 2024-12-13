@@ -7,7 +7,7 @@ import { SemesterRegistrationService } from "./semesterRegistration.service";
 
 // Create semister registation
 const createSemesterRegistration = catchAsync(
-    async ( req, res ) => {
+    async (req, res) => {
         const result =
             await SemesterRegistrationService.createSemesterRegistrationIntoDB(
                 req.body,
@@ -23,9 +23,28 @@ const createSemesterRegistration = catchAsync(
 );
 
 
+// All Semister registation
+const getAllSemesterRegistrations = catchAsync(
+    async ( req, res ) => {
+        const result =
+            await SemesterRegistrationService.getAllSemesterRegistrationsFromDB(
+                req.query,
+            );
+
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Semester Registration is retrieved successfully !',
+            data: result,
+        });
+    },
+);
+
+
+
 export const SemesterRegistrationController = {
     createSemesterRegistration,
-    // getAllSemesterRegistrations,
+    getAllSemesterRegistrations,
     // getSingleSemesterRegistration,
     // updateSemesterRegistration,
     // deleteSemesterRegistration,
