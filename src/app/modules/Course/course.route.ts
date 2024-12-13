@@ -30,14 +30,14 @@ router.patch(
     CourseControllers.updateCourse,
 );
 
-// Assin Faculty Route
+// Assin Course Faculty Route
 router.put(
     '/:courseId/assign-faculties',
     validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
     CourseControllers.assignFacultiesWithCourse,
 );
 
-// Remove Course faculty
+// Remove Course faculty Route
 router.delete(
     '/:courseId/remove-faculties',
     validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
