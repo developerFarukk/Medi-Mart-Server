@@ -24,5 +24,14 @@ router.get(
     SemesterRegistrationController.getSingleSemesterRegistration,
 );
 
+// Update Semister Route
+router.patch(
+    '/:id',
+    validateRequest(
+        SemesterRegistrationValidations.upadateSemesterRegistrationValidationSchema,
+    ),
+    SemesterRegistrationController.updateSemesterRegistration,
+);
+
 
 export const semesterRegistrationRoutes = router;
