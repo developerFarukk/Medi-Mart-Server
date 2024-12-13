@@ -7,6 +7,7 @@ import { TSemesterRegistration } from "./semesterRegistration.interface";
 import { SemesterRegistration } from "./semesterRegistration.model";
 import QueryBuilder from "../../builder/QueryBuilder";
 import mongoose from "mongoose";
+import { OfferedCourse } from "../OfferedCourse/OfferedCourse.model";
 
 
 // Creat semister Registation
