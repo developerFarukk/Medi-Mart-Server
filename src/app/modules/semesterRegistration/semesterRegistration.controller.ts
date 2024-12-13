@@ -90,7 +90,7 @@ const deleteSemesterRegistration = catchAsync(
         sendResponse(res, {
             statusCode: httpStatus.OK,
             success: true,
-            message: 'Semester Registration is updated successfully',
+            message: 'Semester Registration is Deleted successfully',
             data: result,
         });
     },
