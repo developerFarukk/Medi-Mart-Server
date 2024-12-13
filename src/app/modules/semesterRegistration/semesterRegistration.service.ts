@@ -79,7 +79,12 @@ const getAllSemesterRegistrationsFromDB = async (
     return result;
 };
 
+// Single Semister Reg
+const getSingleSemesterRegistrationsFromDB = async (id: string) => {
+    const result = await SemesterRegistration.findById(id);
 
+    return result;
+};
 
 
 
@@ -88,7 +93,7 @@ const getAllSemesterRegistrationsFromDB = async (
 export const SemesterRegistrationService = {
     createSemesterRegistrationIntoDB,
     getAllSemesterRegistrationsFromDB,
-    // getSingleSemesterRegistrationsFromDB,
+    getSingleSemesterRegistrationsFromDB,
     // updateSemesterRegistrationIntoDB,
     // deleteSemesterRegistrationFromDB,
 };
