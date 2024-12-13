@@ -36,11 +36,30 @@ const getAllOfferedCourses = catchAsync(
     },
 );
 
+// Single Offer Course
+const getSingleOfferedCourses = catchAsync(
+    async (req, res) => {
+        const { id } = req.params;
+
+        const result =
+            await OfferedCourseServices.getSingleOfferedCourseFromDB(
+                id,
+            );
+
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Single Offer Course Get successfully',
+            data: result,
+        });
+    },
+);
+
 
 export const OfferedCourseControllers = {
     createOfferedCourse,
     getAllOfferedCourses,
-    // getSingleOfferedCourses,
+    getSingleOfferedCourses,
     // updateOfferedCourse,
     // deleteOfferedCourseFromDB,
 };
