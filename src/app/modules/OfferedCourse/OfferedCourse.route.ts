@@ -21,5 +21,11 @@ router.get('/', OfferedCourseControllers.getAllOfferedCourses);
 // Single Offer Course Route
 router.get('/:id', OfferedCourseControllers.getSingleOfferedCourses);
 
+// Update Offer Course Route
+router.patch(
+    '/:id',
+    validateRequest(OfferedCourseValidations.updateOfferedCourseValidationSchema),
+    OfferedCourseControllers.updateOfferedCourse,
+);
 
 export const offeredCourseRoutes = router;
