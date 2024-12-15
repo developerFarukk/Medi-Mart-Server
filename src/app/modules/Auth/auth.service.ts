@@ -1,13 +1,39 @@
 
-// import AppError from "../../errors/AppError";
-// import { User } from "../user/user.model";
+import httpStatus from "http-status";
+import AppError from "../../errors/AppError";
+import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 
 
 // LogIn User Function
 const loginUser = async (payload: TLoginUser) => {
 
-    console.log(payload);
+    // console.log(payload);
+
+    // Check User exixtse
+    const isUserExists = await User.findOne({ id: payload?.id});
+
+    console.log(isUserExists);
+
+    if ( !isUserExists ) {
+        throw new AppError(httpStatus.NOT_FOUND, 'This user ID is not found !');
+    }
+
+    // Check User deleted isu
+    const isDeleted = isUserExists?.isDeleted;
+    if ( isDeleted) {
+        throw new AppError(httpStatus.FORBIDDEN, 'This user is  delated !');
+    }
+
+    // Check User Blocked
+    const userStatus = isUserExists?.status;
+    if ( userStatus === 'blocked' ) {
+        throw new AppError(httpStatus.FORBIDDEN, 'This User is Blocked !');
+    }
+
+
+    return {};
+    
     
 
 
