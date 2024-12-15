@@ -1,55 +1,73 @@
 
+// import AppError from "../../errors/AppError";
+// import { User } from "../user/user.model";
+import { TLoginUser } from "./auth.interface";
 
+
+// LogIn User Function
 const loginUser = async (payload: TLoginUser) => {
-    // checking if the user is exist
-    const user = await User.isUserExistsByCustomId(payload.id);
 
-    if (!user) {
-        throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-    }
-    // checking if the user is already deleted
+    console.log(payload);
+    
 
-    const isDeleted = user?.isDeleted;
 
-    if (isDeleted) {
-        throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
-    }
 
-    // checking if the user is blocked
+    // // checking if the user is exist
+    // const user = await User.isUserExistsByCustomId(payload.id)
 
-    const userStatus = user?.status;
+    // if (!user) {
+    //     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+    // }
+    // // checking if the user is already deleted
 
-    if (userStatus === 'blocked') {
-        throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
-    }
+    // const isDeleted = user?.isDeleted;
 
-    //checking if the password is correct
+    // if (isDeleted) {
+    //     throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
+    // }
 
-    if (!(await User.isPasswordMatched(payload?.password, user?.password)))
-        throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
+    // // checking if the user is blocked
 
-    //create token and sent to the  client
+    // const userStatus = user?.status;
 
-    const jwtPayload = {
-        userId: user.id,
-        role: user.role,
-    };
+    // if (userStatus === 'blocked') {
+    //     throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
+    // }
 
-    const accessToken = createToken(
-        jwtPayload,
-        config.jwt_access_secret as string,
-        config.jwt_access_expires_in as string,
-    );
+    // //checking if the password is correct
 
-    const refreshToken = createToken(
-        jwtPayload,
-        config.jwt_refresh_secret as string,
-        config.jwt_refresh_expires_in as string,
-    );
+    // if (!(await User.isPasswordMatched(payload?.password, user?.password)))
+    //     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
 
-    return {
-        accessToken,
-        refreshToken,
-        needsPasswordChange: user?.needsPasswordChange,
-    };
+    // //create token and sent to the  client
+
+    // const jwtPayload = {
+    //     userId: user.id,
+    //     role: user.role,
+    // };
+
+    // const accessToken = createToken(
+    //     jwtPayload,
+    //     config.jwt_access_secret as string,
+    //     config.jwt_access_expires_in as string,
+    // );
+
+    // const refreshToken = createToken(
+    //     jwtPayload,
+    //     config.jwt_refresh_secret as string,
+    //     config.jwt_refresh_expires_in as string,
+    // );
+
+    // return {
+    //     accessToken,
+    //     refreshToken,
+    //     needsPasswordChange: user?.needsPasswordChange,
+    // };
+};
+
+
+export const AuthServices = {
+    loginUser,
+    // changePassword,
+    // refreshToken,
 };
