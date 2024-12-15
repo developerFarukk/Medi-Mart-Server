@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
+import bcrypt from 'bcrypt';
 
 
 // LogIn User Function
@@ -11,30 +12,40 @@ const loginUser = async (payload: TLoginUser) => {
     // console.log(payload);
 
     // Check User exixtse
-    const isUserExists = await User.findOne({ id: payload?.id});
+    const isUserExists = await User.findOne({ id: payload?.id });
 
     console.log(isUserExists);
 
-    if ( !isUserExists ) {
+    if (!isUserExists) {
         throw new AppError(httpStatus.NOT_FOUND, 'This user ID is not found !');
     }
 
     // Check User deleted isu
     const isDeleted = isUserExists?.isDeleted;
-    if ( isDeleted) {
+    if (isDeleted) {
         throw new AppError(httpStatus.FORBIDDEN, 'This user is  delated !');
     }
 
     // Check User Blocked
     const userStatus = isUserExists?.status;
-    if ( userStatus === 'blocked' ) {
+    if (userStatus === 'blocked') {
         throw new AppError(httpStatus.FORBIDDEN, 'This User is Blocked !');
     }
 
+    //checking if the password is correct
+    const isPasswordMatched = await bcrypt.compare(
+        payload?.password, isUserExists?.password
+    );
+
+    if (!isPasswordMatched) {
+        throw new AppError(httpStatus.FORBIDDEN, 'User Password do not match !');
+    }
+
+
 
     return {};
-    
-    
+
+
 
 
 
