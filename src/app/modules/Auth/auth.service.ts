@@ -50,7 +50,10 @@ const loginUser = async (payload: TLoginUser) => {
     );
 
 
-    return { accessToken };
+    return {
+        accessToken,
+        needsPasswordChange: user?.needsPasswordChange
+    };
 
 };
 
