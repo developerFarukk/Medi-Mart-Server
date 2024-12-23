@@ -13,6 +13,7 @@ const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
 
     const facultyQuery = new QueryBuilder(
         Faculty.find()
+            .populate('user')
             .populate({
                 path: 'academicDepartment',
                 populate: {
@@ -101,7 +102,7 @@ const deleteFacultyFromDB = async (id: string) => {
         await session.endSession();
 
         return deletedFaculty;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         await session.abortTransaction();
         await session.endSession();

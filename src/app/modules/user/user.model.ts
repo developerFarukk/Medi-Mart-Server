@@ -12,7 +12,8 @@ const userSchema = new Schema<TUser>(
         },
         password: {
             type: String,
-            required: [true, 'Password id is required']
+            required: [true, 'Password id is required'],
+            select: 0
         },
         needsPasswordChange: {
             type: Boolean,
