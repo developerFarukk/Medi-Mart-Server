@@ -71,9 +71,25 @@ const getMe = catchAsync(async (req, res) => {
     });
 });
 
+
+// Statuse User 
+const changeStatus = catchAsync(async (req, res) => {
+    const id = req.params.id;
+
+    const result = await UserServices.changeStatus(id, req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Status is updated succesfully',
+        data: result,
+    });
+});
+
 export const UserControllers = {
     createStudent,
     createAdmin,
     createFaculty,
-    getMe
+    getMe,
+    changeStatus
 };
