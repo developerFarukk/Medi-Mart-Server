@@ -10,7 +10,6 @@ const loginValidationSchema = z.object({
     }),
 });
 
-
 // Change Password validation
 const changePasswordValidationSchema = z.object({
     body: z.object({
