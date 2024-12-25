@@ -23,8 +23,11 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
     //if password is not given , use deafult password
     userData.password = password || (config.default_password as string);
 
-    //set student role
+    //set admin role
     userData.role = 'admin';
+
+    //set admin email
+    userData.email = payload.email;
 
     const session = await mongoose.startSession();
 
@@ -74,6 +77,9 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
     // Set student role
     userData.role = 'student';
+
+    //set student email
+    userData.email = payload.email;
 
     // find academic semester info
     const admissionSemester = await AcademicSemester.findById(
@@ -130,8 +136,12 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
     //if password is not given , use deafult password
     userData.password = password || (config.default_password as string);
 
-    //set student role
+    //set Faculty role
     userData.role = 'faculty';
+
+    //set Faculty email
+    userData.email = payload.email;
+
 
     // find academic department info
     const academicDepartment = await AcademicDepartment.findById(
@@ -172,7 +182,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
         await session.endSession();
 
         return newFaculty;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         await session.abortTransaction();
         await session.endSession();

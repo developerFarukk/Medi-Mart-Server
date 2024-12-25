@@ -7,6 +7,7 @@ import config from "../../config";
 import { createToken } from "./auth.utils";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { sendEmail } from "../../utils/sendEmail";
 
 
 // LogIn User Function
@@ -217,9 +218,9 @@ const forgetPassword = async (userId: string) => {
 
     const resetUILink = `${config.reset_pass_ui_link}?id=${user.id}&token=${resetToken} `;
 
-    // sendEmail(user.email, resetUILink);
+    sendEmail(user.email, resetUILink);
 
-    console.log(resetUILink);
+    // console.log(resetUILink);
 };
 
 
