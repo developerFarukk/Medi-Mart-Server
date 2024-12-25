@@ -31,11 +31,18 @@ router.post(
   AuthControllers.refreshToken,
 );
 
-// Forget Password of User
+// Forget Password Route
 router.post(
   '/forget-password',
   validateRequest(AuthValidation.forgetPasswordValidationSchema),
   AuthControllers.forgetPassword,
+);
+
+// resete Password Route
+router.post(
+  '/reset-password',
+  validateRequest(AuthValidation.resetPasswordValidationSchema),
+  AuthControllers.resetPassword,
 );
 
 
