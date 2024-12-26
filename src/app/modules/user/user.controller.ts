@@ -25,14 +25,21 @@ const createStudent = catchAsync(async (req, res) => {
 
     const { password, student: studentData } = req.body;
 
-    const result = await UserServices.createStudentIntoDB(password, studentData);
+    // const filePath = req.file as any;
+    
+    const result = await UserServices.createStudentIntoDB(
+        // filePath,
+        req.file,
+        password,
+        studentData,
+    );
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Creat Student and user data is succesfully',
+        message: 'Student is created succesfully',
         data: result,
-    })
+    });
 });
 
 

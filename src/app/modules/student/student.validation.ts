@@ -53,7 +53,8 @@ export const createStudentValidationSchema = z.object({
         password: z
             .string()
             .min(6, { message: 'Password must be at least 6 characters' })
-            .max(20, { message: 'Password must be less than 20 characters' }),
+            .max(20, { message: 'Password must be less than 20 characters' })
+            .optional(),
         student: z.object({
             name: createUserNameValidationNameSchema,
             gender: z.enum(['male', 'female', 'other']),
@@ -75,12 +76,12 @@ export const createStudentValidationSchema = z.object({
             guardian: creatGuardianValidationSchema,
             localGuardian: creatLocalGuardianValidationSchema,
             admissionSemester: z.string(),
-            profileImg: z
-                .string()
-                .optional()
-                .refine((value) => !value || /^(https?:\/\/[^\s$.?#].[^\s]*)$/i.test(value), {
-                    message: 'Invalid URL for Profile Image',
-                }),
+            // profileImg: z
+            //     .string()
+            //     .optional()
+            //     .refine((value) => !value || /^(https?:\/\/[^\s$.?#].[^\s]*)$/i.test(value), {
+            //         message: 'Invalid URL for Profile Image',
+            //     }),
             academicDepartment: z.string(),
         })
     })
