@@ -137,19 +137,21 @@ const createStudentIntoDB = async (
 };
 
 //  Faculty & User Create Funtionality
-const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
+const createFacultyIntoDB = async (
+    file: any,
+    password: string,
+    payload: TFaculty,
+) => {
     // create a user object
     const userData: Partial<TUser> = {};
 
     //if password is not given , use deafult password
     userData.password = password || (config.default_password as string);
 
-    //set Faculty role
+    //set faculty role
     userData.role = 'faculty';
-
-    //set Faculty email
+    //set faculty email
     userData.email = payload.email;
-
 
     // find academic department info
     const academicDepartment = await AcademicDepartment.findById(
@@ -167,6 +169,11 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
         //set  generated id
         userData.id = await generateFacultyId();
 
+        const imageName = `${userData.id}${payload?.name?.firstName}`;
+        const path = file?.path;
+        //send image to cloudinary
+        const { secure_url } = await sendImageToCloudinary(imageName, path) as { secure_url: string };
+
         // create a user (transaction-1)
         const newUser = await User.create([userData], { session }); // array
 
@@ -177,7 +184,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
         // set id , _id as user
         payload.id = newUser[0].id;
         payload.user = newUser[0]._id; //reference _id
-
+        payload.profileImg = secure_url;
         // create a faculty (transaction-2)
 
         const newFaculty = await Faculty.create([payload], { session });
