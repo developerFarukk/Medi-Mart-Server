@@ -60,7 +60,6 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
         await session.endSession();
 
         return newAdmin;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         await session.abortTransaction();
         await session.endSession();
@@ -69,21 +68,20 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
 };
 
 // Student &  User Creat Function
-const createStudentIntoDB = async (password: string, payload: TStudent, filepath: any ) => {
-
-    console.log(filepath);
-    
-    
-    // Create a user object
+const createStudentIntoDB = async (
+    file: any,
+    password: string,
+    payload: TStudent,
+) => {
+    // create a user object
     const userData: Partial<TUser> = {};
 
-    // If password is not given, use default password
+    //if password is not given , use deafult password
     userData.password = password || (config.default_password as string);
 
-    // Set student role
+    //set student role
     userData.role = 'student';
-
-    //set student email
+    // set student email
     userData.email = payload.email;
 
     // find academic semester info
@@ -91,22 +89,21 @@ const createStudentIntoDB = async (password: string, payload: TStudent, filepath
         payload.admissionSemester,
     );
 
-    // Start session
+    if (!admissionSemester) {
+        throw new AppError(400, 'Admission semester not found');
+    }
+
     const session = await mongoose.startSession();
 
     try {
         session.startTransaction();
-
-        //set  generated id user/student ID
+        //set  generated id
         userData.id = await generateStudentId(admissionSemester);
 
         const imageName = `${userData.id}${payload?.name?.firstName}`;
         const path = file?.path;
-        
         //send image to cloudinary
-
-        const { secure_url } = await sendImageToCloudinary(imageName, path)as { secure_url: string };
-
+        const { secure_url } = await sendImageToCloudinary(imageName, path) as { secure_url: string };
 
         // create a user (transaction-1)
         const newUser = await User.create([userData], { session }); // array
@@ -115,7 +112,6 @@ const createStudentIntoDB = async (password: string, payload: TStudent, filepath
         if (!newUser.length) {
             throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
         }
-
         // set id , _id as user
         payload.id = newUser[0].id;
         payload.user = newUser[0]._id; //reference _id
@@ -133,12 +129,10 @@ const createStudentIntoDB = async (password: string, payload: TStudent, filepath
         await session.endSession();
 
         return newStudent;
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
+    } catch (err: any) {
         await session.abortTransaction();
         await session.endSession();
-        throw new Error('Failed to create student');
+        throw new Error(err);
     }
 };
 
@@ -196,7 +190,6 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
         await session.endSession();
 
         return newFaculty;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         await session.abortTransaction();
         await session.endSession();
