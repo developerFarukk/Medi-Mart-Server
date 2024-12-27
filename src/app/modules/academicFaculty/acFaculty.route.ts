@@ -3,12 +3,15 @@ import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { AcademicFacultyValidation } from './acFaculty.validation';
 import { AcademicFacultyControllers } from './acFaculty.controller';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 
 // Creat faculty Route
 router.post(
     '/create-academic-faculty',
+    auth(USER_ROLE.superAdmin, USER_ROLE.admin),
     validateRequest(
         AcademicFacultyValidation.createAcademicFacultyValidationSchema,
     ),
@@ -16,11 +19,16 @@ router.post(
 );
 
 // Single Data get route
-router.get('/:facultyId', AcademicFacultyControllers.getSingleAcademicFaculty);
+router.get('/:facultyId',
+    auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student),
+    AcademicFacultyControllers.getSingleAcademicFaculty
+);
+
 
 // Update faculty data
 router.patch(
     '/:facultyId',
+    auth(USER_ROLE.superAdmin, USER_ROLE.admin),
     validateRequest(
         AcademicFacultyValidation.updateAcademicFacultyValidationSchema,
     ),
@@ -28,6 +36,10 @@ router.patch(
 );
 
 // All data get faculty data
-router.get('/', AcademicFacultyControllers.getAllAcademicFaculties);
+router.get('/',
+    auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student),
+    AcademicFacultyControllers.getAllAcademicFaculties
+
+);
 
 export const AcademicFacultyRoutes = router;
