@@ -11,6 +11,7 @@ import { TEnrolledCourse } from "./enrolledCourse.interface";
 import EnrolledCourse from "./enrolledCourse.model";
 import httpStatus from "http-status";
 import { Faculty } from "../Faculty/faculty.model";
+import { calculateGradeAndPoints } from "./enrolledCourse.utils";
 
 // Create Enrole course of Student
 const createEnrolledCourseIntoDB = async (

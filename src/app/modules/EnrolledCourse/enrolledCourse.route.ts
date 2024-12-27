@@ -20,7 +20,7 @@ router.post(
 
 router.patch(
     '/update-enrolled-course-marks',
-    // auth( USER_ROLE.faculty ),
+    auth( USER_ROLE.faculty ),
     validateRequest(
         EnrolledCourseValidations.updateEnrolledCourseMarksValidationZodSchema,
     ),
