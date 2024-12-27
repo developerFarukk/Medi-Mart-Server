@@ -41,7 +41,7 @@ router.post(
 // Faculty Creat Route
 router.post(
   '/create-faculty',
-  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   upload.single('file'),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
@@ -50,6 +50,7 @@ router.post(
   validateRequest(createFacultyValidationSchema),
   UserControllers.createFaculty,
 );
+
 
 // Status user Route
 router.post(
