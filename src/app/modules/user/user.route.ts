@@ -15,7 +15,7 @@ const router = express.Router();
 // Admin Creat Route
 router.post(
   '/create-admin',
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.superAdmin),
   upload.single('file'),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
@@ -28,7 +28,7 @@ router.post(
 // Student Create Route
 router.post(
   '/create-student',
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   upload.single('file'),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
@@ -41,7 +41,7 @@ router.post(
 // Faculty Creat Route
 router.post(
   '/create-faculty',
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   upload.single('file'),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
@@ -54,13 +54,16 @@ router.post(
 // Status user Route
 router.post(
   '/change-status/:id',
-  auth('admin'),
+  auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   validateRequest(UserValidation.changeStatusValidationSchema),
   UserControllers.changeStatus,
 );
 
 
 // Get Me Router
-router.get('/me', auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student), UserControllers.getMe);
+router.get('/me',
+  auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student, USER_ROLE.superAdmin),
+  UserControllers.getMe
+);
 
 export const UserRoutes = router;

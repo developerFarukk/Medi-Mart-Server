@@ -145,7 +145,11 @@ const studentSchema = new Schema<TStudent, StudentModel>(
             type: Schema.Types.ObjectId,
             ref: 'AcademicDepartment',
         },
-        profileImg: { type: String },
+        academicFaculty: {
+            type: Schema.Types.ObjectId,
+            ref: 'AcademicFaculty',
+        },
+        profileImg: { type: String, default: '' },
 
     },
     {
@@ -204,7 +208,7 @@ studentSchema.statics.isUserExists = async function (id: string) {
 };
 
 export const Student = model<TStudent, StudentModel>(
-    'Student', 
+    'Student',
     studentSchema);
 
 

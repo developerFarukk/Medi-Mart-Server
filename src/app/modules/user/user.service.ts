@@ -84,7 +84,7 @@ const createStudentIntoDB = async (
     // create a user object
     const userData: Partial<TUser> = {};
 
-    //if password is not given , use deafult password
+    //if password is not given , use default password
     userData.password = password || (config.default_password as string);
 
     //set student role
@@ -98,8 +98,18 @@ const createStudentIntoDB = async (
     );
 
     if (!admissionSemester) {
-        throw new AppError(400, 'Admission semester not found');
+        throw new AppError(httpStatus.BAD_REQUEST, 'Admission semester not found');
     }
+
+    // find department
+    const academicDepartment = await AcademicDepartment.findById(
+        payload.academicDepartment,
+    );
+
+    if (!academicDepartment) {
+        throw new AppError(httpStatus.BAD_REQUEST, 'Aademic department not found');
+    }
+    payload.academicFaculty = academicDepartment.academicFaculty;
 
     const session = await mongoose.startSession();
 
@@ -108,10 +118,14 @@ const createStudentIntoDB = async (
         //set  generated id
         userData.id = await generateStudentId(admissionSemester);
 
-        const imageName = `${userData.id}${payload?.name?.firstName}`;
-        const path = file?.path;
-        //send image to cloudinary
-        const { secure_url } = await sendImageToCloudinary(imageName, path) as { secure_url: string };
+        if (file) {
+            const imageName = `${userData.id}${payload?.name?.firstName}`;
+            const path = file?.path;
+
+            //send image to cloudinary
+            const { secure_url } = await sendImageToCloudinary(imageName, path) as { secure_url: string };
+            payload.profileImg = secure_url as string;
+        }
 
         // create a user (transaction-1)
         const newUser = await User.create([userData], { session }); // array
@@ -123,10 +137,8 @@ const createStudentIntoDB = async (
         // set id , _id as user
         payload.id = newUser[0].id;
         payload.user = newUser[0]._id; //reference _id
-        payload.profileImg = secure_url;
 
         // create a student (transaction-2)
-
         const newStudent = await Student.create([payload], { session });
 
         if (!newStudent.length) {
