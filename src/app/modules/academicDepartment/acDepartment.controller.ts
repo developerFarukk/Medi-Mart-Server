@@ -4,6 +4,8 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AcademicDepartmentServices } from './acDepartment.service';
 
+
+// Ceate AcademicDepartments
 const createAcademicDepartmemt = catchAsync(async (req, res) => {
     const result =
         await AcademicDepartmentServices.createAcademicDepartmentIntoDB(req.body);
@@ -16,9 +18,11 @@ const createAcademicDepartmemt = catchAsync(async (req, res) => {
     });
 });
 
+
+// All get AcademicDepartments
 const getAllAcademicDepartments = catchAsync(async (req, res) => {
     const result =
-        await AcademicDepartmentServices.getAllAcademicDepartmentsFromDB();
+        await AcademicDepartmentServices.getAllAcademicDepartmentsFromDB(req.query);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -28,6 +32,8 @@ const getAllAcademicDepartments = catchAsync(async (req, res) => {
     });
 });
 
+
+// Single get AcademicDepartments
 const getSingleAcademicDepartment = catchAsync(async (req, res) => {
     const { departmentId } = req.params;
     const result =

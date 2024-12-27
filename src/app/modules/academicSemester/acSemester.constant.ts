@@ -33,6 +33,7 @@ export const academicSemesterNameCodeMapper: TAcademicSemesterNameCodeMapper = {
 
 export const academicSearchableFields = [
     'name',
+    'id',
     'year',
     'code',
     'startMonth',

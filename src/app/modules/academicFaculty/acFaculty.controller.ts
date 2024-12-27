@@ -4,6 +4,7 @@ import { AcademicFacultyServices } from './acFaculty.service';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 
+// Create AcademicFaculty
 const createAcademicFaculty = catchAsync(async (req, res) => {
     const result = await AcademicFacultyServices.createAcademicFacultyIntoDB(
         req.body,
@@ -17,8 +18,10 @@ const createAcademicFaculty = catchAsync(async (req, res) => {
     });
 });
 
+
+// All Get AcademicFaculty
 const getAllAcademicFaculties = catchAsync(async (req, res) => {
-    const result = await AcademicFacultyServices.getAllAcademicFacultiesFromDB();
+    const result = await AcademicFacultyServices.getAllAcademicFacultiesFromDB(req.query);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -28,6 +31,8 @@ const getAllAcademicFaculties = catchAsync(async (req, res) => {
     });
 });
 
+
+// Single get AcademicFaculty
 const getSingleAcademicFaculty = catchAsync(async (req, res) => {
     const { facultyId } = req.params;
     const result =
@@ -41,6 +46,8 @@ const getSingleAcademicFaculty = catchAsync(async (req, res) => {
     });
 });
 
+
+// Update AcademicFaculty
 const updateAcademicFaculty = catchAsync(async (req, res) => {
     const { facultyId } = req.params;
     const result = await AcademicFacultyServices.updateAcademicFacultyIntoDB(
