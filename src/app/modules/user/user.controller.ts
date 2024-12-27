@@ -24,7 +24,6 @@ const createAdmin = catchAsync(async (req, res) => {
 });
 
 
-
 // Student Create Funtionality
 const createStudent = catchAsync(async (req, res) => {
 
