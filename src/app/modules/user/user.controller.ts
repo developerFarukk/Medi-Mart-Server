@@ -9,7 +9,11 @@ import catchAsync from '../../utils/catchAsync';
 const createAdmin = catchAsync(async (req, res) => {
     const { password, admin: adminData } = req.body;
 
-    const result = await UserServices.createAdminIntoDB(password, adminData);
+    const result = await UserServices.createAdminIntoDB(
+        req.file,
+        password,
+        adminData,
+    );
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -18,6 +22,7 @@ const createAdmin = catchAsync(async (req, res) => {
         data: result,
     });
 });
+
 
 
 // Student Create Funtionality
