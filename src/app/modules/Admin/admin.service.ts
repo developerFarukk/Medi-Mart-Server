@@ -17,8 +17,13 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
         .paginate()
         .fields();
 
+    const meta = await adminQuery.countTotal();
     const result = await adminQuery.modelQuery;
-    return result;
+
+    return {
+        meta,
+        result,
+    };
 };
 
 // Single Admin data get
@@ -84,7 +89,7 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
         }
     }
 
-    const result = await Admin.findByIdAndUpdate( id , modifiedUpdatedData, {
+    const result = await Admin.findByIdAndUpdate(id, modifiedUpdatedData, {
         new: true,
         runValidators: true,
     });

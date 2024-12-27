@@ -11,10 +11,10 @@ const router = express.Router();
 // router.post('/create-student', StudentControllers.createStudent);
 
 // All Student date get Route
-router.get('/', auth(USER_ROLE.admin, USER_ROLE.faculty), StudentControllers.getAllStudents);
+router.get('/',  StudentControllers.getAllStudents);
 
 // Single student data get route
-router.get('/:id', StudentControllers.getSingleStudent);
+router.get('/:id', auth(USER_ROLE.admin, USER_ROLE.faculty), StudentControllers.getSingleStudent);
 
 // Delete student data get route
 router.delete('/:id', StudentControllers.deleteStudent);

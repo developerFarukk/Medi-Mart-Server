@@ -1,4 +1,5 @@
-import { academicSemesterNameCodeMapper } from "./acSemester.constant";
+import QueryBuilder from "../../builder/QueryBuilder";
+import { academicSearchableFields, academicSemesterNameCodeMapper } from "./acSemester.constant";
 import { TAcademicSemester } from "./acSemester.interface";
 import { AcademicSemester } from "./acSemester.model";
 
@@ -15,9 +16,23 @@ const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
 };
 
 // all data get Academic semister
-const getAllAcademicSemestersFromDB = async () => {
-    const result = await AcademicSemester.find();
-    return result;
+const getAllAcademicSemestersFromDB = async (query: Record<string, unknown>) => {
+
+    const academicSemisterQuery = new QueryBuilder(AcademicSemester.find(), query)
+        .search(academicSearchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+
+
+    const meta = await academicSemisterQuery.countTotal();
+    const result = await academicSemisterQuery.modelQuery;
+
+    return {
+        meta,
+        result,
+    };
 };
 
 // single data get academic semister
