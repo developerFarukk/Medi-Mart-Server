@@ -10,7 +10,6 @@ import { TOfferedCourse } from "./OfferedCourse.interface";
 import { OfferedCourse } from "./OfferedCourse.model";
 import { hasTimeConflict } from "./OfferedCourse.utils";
 import QueryBuilder from "../../builder/QueryBuilder";
-import { Student } from "../student/student.model";
 
 
 // Create Offer Cource

@@ -52,7 +52,7 @@ router.delete(
 
 // Get Me Offer Course by Student
 router.get(
-    '/my-offered-courses',
+    '/my-offered-courses/ami',
     auth(USER_ROLE.student),
     OfferedCourseControllers.getMyOfferedCourses,
 );
