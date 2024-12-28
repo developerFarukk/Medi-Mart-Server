@@ -50,4 +50,12 @@ router.delete(
     OfferedCourseControllers.deleteOfferedCourseFromDB,
 );
 
+// Get Me Offer Course by Student
+router.get(
+    '/my-offered-courses',
+    auth(USER_ROLE.student),
+    OfferedCourseControllers.getMyOfferedCourses,
+);
+
 export const offeredCourseRoutes = router;
+

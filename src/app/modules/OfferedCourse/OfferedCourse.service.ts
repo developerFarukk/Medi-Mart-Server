@@ -10,6 +10,7 @@ import { TOfferedCourse } from "./OfferedCourse.interface";
 import { OfferedCourse } from "./OfferedCourse.model";
 import { hasTimeConflict } from "./OfferedCourse.utils";
 import QueryBuilder from "../../builder/QueryBuilder";
+import { Student } from "../student/student.model";
 
 
 // Create Offer Cource
@@ -256,10 +257,19 @@ const deleteOfferedCourseFromDB = async (id: string) => {
 };
 
 
+// Get Me Offer Course
+const getMyOfferedCoursesFromDB = async (userId: string) => {
+
+    console.log(userId);
+
+    return null;
+};
+
 export const OfferedCourseServices = {
     createOfferedCourseIntoDB,
     getAllOfferedCoursesFromDB,
     getSingleOfferedCourseFromDB,
     deleteOfferedCourseFromDB,
     updateOfferedCourseIntoDB,
+    getMyOfferedCoursesFromDB
 };

@@ -13,6 +13,8 @@ const loginUser = catchAsync(async (req, res) => {
     res.cookie('refreshToken', refreshToken, {
         secure: config.node_env === 'production',
         httpOnly: true,
+        sameSite: 'none',
+        maxAge: 1000 * 60 * 60 * 24 * 365,
     });
 
     sendResponse(res, {
@@ -68,8 +70,8 @@ const forgetPassword = catchAsync(async (req, res) => {
 // Resete Password Route
 const resetPassword = catchAsync(async (req, res) => {
 
-    const token = req.headers.authorization?? '';
-    
+    const token = req.headers.authorization ?? '';
+
     const result = await AuthServices.resetPassword(req.body, token);
     sendResponse(res, {
         statusCode: httpStatus.OK,
