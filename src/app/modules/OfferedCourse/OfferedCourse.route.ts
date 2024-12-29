@@ -24,16 +24,7 @@ router.get('/',
     OfferedCourseControllers.getAllOfferedCourses
 );
 
-// Single Offer Course Route
-router.get('/:id',
-    auth(
-        USER_ROLE.superAdmin,
-        USER_ROLE.admin,
-        USER_ROLE.faculty,
-        USER_ROLE.student,
-    ),
-    OfferedCourseControllers.getSingleOfferedCourses
-);
+
 
 // Update Offer Course Route
 router.patch(
@@ -52,9 +43,20 @@ router.delete(
 
 // Get Me Offer Course by Student
 router.get(
-    '/my-offered-courses/ami',
+    '/my-offered-courses',
     auth(USER_ROLE.student),
     OfferedCourseControllers.getMyOfferedCourses,
+);
+
+// Single Offer Course Route
+router.get('/:id',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+        USER_ROLE.faculty,
+        USER_ROLE.student,
+    ),
+    OfferedCourseControllers.getSingleOfferedCourses
 );
 
 export const offeredCourseRoutes = router;

@@ -88,22 +88,22 @@ const deleteOfferedCourseFromDB = catchAsync(
 
 
 // Get Me Offer Course
-const getMyOfferedCourses = catchAsync(async (req, res ) => {
+const getMyOfferedCourses = catchAsync(async (req, res) => {
     const userId = req.user.userId;
+    
     const result = await OfferedCourseServices.getMyOfferedCoursesFromDB(
-        userId
+        userId,
+        req.query,
     );
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'OfferedCourses retrieved successfully !',
-        // meta: result.meta,
-        data: result,
+        message: 'OfferedCourses my data retrieved successfully !',
+        meta: result.meta,
+        data: result.result,
     });
 });
-
-
 
 
 export const OfferedCourseControllers = {
