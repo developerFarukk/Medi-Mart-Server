@@ -37,7 +37,7 @@ export const createFacultyValidationSchema = z.object({
 });
 
 
-// ******************** Update  Faculty  Validation   ****************
+// ******************** Update  Faculty  Validation of Zod   ****************
 
 const updateUserNameValidationSchema = z.object({
     firstName: z.string().min(1).max(20).optional(),

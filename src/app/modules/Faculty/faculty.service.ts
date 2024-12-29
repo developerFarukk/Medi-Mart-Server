@@ -122,4 +122,4 @@ export const FacultyServices = {
     getSingleFacultyFromDB,
     updateFacultyIntoDB,
     deleteFacultyFromDB,
-};
+}; 
