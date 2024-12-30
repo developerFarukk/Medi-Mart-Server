@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { BloodGroup, Gender } from './faculty.constant';
 
-// ******************** Create  Faculty  Validation   ****************
+// ******************** Create  Faculty  Validation for zod  ****************
 
 const createUserNameValidationSchema = z.object({
     firstName: z
