@@ -27,9 +27,14 @@ const auth = (...requiredRoles: TUserRole[]) => {
                 token,
                 config.jwt_access_secret as string,
             ) as JwtPayload;
-        } catch ( err ) {
+        } catch (err) {
             throw new AppError(httpStatus.UNAUTHORIZED, 'Unautorized')
         }
+
+        // const decoded = jwt.verify(
+        //     token,
+        //     config.jwt_access_secret as string,
+        // ) as JwtPayload;
 
         const { role, userId, iat } = decoded;
 
