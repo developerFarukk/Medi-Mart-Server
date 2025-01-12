@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 
-import httpStatus from 'http-status';
+import httpStatus, { UNAUTHORIZED } from 'http-status';
 import AppError from '../errors/AppError';
 import catchAsync from '../utils/catchAsync';
 import jwt, { JwtPayload } from 'jsonwebtoken';
@@ -18,14 +19,20 @@ const auth = (...requiredRoles: TUserRole[]) => {
             throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
         }
 
+        let decoded;
+
         // checking if the given token is valid
-        const decoded = jwt.verify(
-            token,
-            config.jwt_access_secret as string,
-        ) as JwtPayload;
+        try {
+            decoded = jwt.verify(
+                token,
+                config.jwt_access_secret as string,
+            ) as JwtPayload;
+        } catch ( err ) {
+            throw new AppError(httpStatus.UNAUTHORIZED, 'Unautorized')
+        }
 
         const { role, userId, iat } = decoded;
-        
+
         // checking if the user is exist
         const user = await User.isUserExistsByCustomId(userId);
 
