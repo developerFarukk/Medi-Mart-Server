@@ -60,10 +60,10 @@ export const createStudentValidationSchema = z.object({
             gender: z.enum(['male', 'female', 'other']),
             dateOfBirth: z
                 .string()
-                .optional()
-                .refine((value) => !value || /^\d{4}-\d{2}-\d{2}$/.test(value), {
-                    message: 'Invalid Date Format, must be YYYY-MM-DD',
-                }),
+                .optional(),
+                // .refine((value) => !value || /^\d{4}-\d{2}-\d{2}$/.test(value), {
+                //     message: 'Invalid Date Format, must be YYYY-MM-DD',
+                // }),
             email: z.string().email({ message: 'Invalid email address' }),
             contactNo: z.string().min(10, { message: 'Contact Number is required' }),
             emergencyContactNo: z
