@@ -9,7 +9,7 @@ import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.constant';
 import { UserValidation } from './user.validation';
 import { upload } from '../../utils/sendImageToCloudinary';
-import { User } from './user.model';
+// import { User } from './user.model';
 
 const router = express.Router();
 
