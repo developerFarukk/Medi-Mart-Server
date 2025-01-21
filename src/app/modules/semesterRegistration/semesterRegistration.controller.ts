@@ -24,20 +24,19 @@ const createSemesterRegistration = catchAsync(
 
 
 // All Semister registation
-const getAllSemesterRegistrations = catchAsync(
-    async (req, res) => {
-        const result =
-            await SemesterRegistrationService.getAllSemesterRegistrationsFromDB(
-                req.query,
-            );
+const getAllSemesterRegistrations = catchAsync(async (req, res) => {
 
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
-            success: true,
-            message: 'Semester Registration is retrieved successfully !',
-            data: result,
-        });
-    },
+    const result = await SemesterRegistrationService.getAllSemesterRegistrationsFromDB(req.query);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Semester Registration is retrieved successfully !',
+        // meta: result?.meta,
+        // data: result?.result,
+        data: result,
+    });
+},
 );
 
 
@@ -46,10 +45,9 @@ const getSingleSemesterRegistration = catchAsync(
     async (req, res) => {
         const { id } = req.params;
 
-        const result =
-            await SemesterRegistrationService.getSingleSemesterRegistrationsFromDB(
-                id,
-            );
+        const result = await SemesterRegistrationService.getSingleSemesterRegistrationsFromDB(
+            id,
+        );
 
         sendResponse(res, {
             statusCode: httpStatus.OK,
@@ -82,7 +80,7 @@ const updateSemesterRegistration = catchAsync(
 
 // Delete Semister Course
 const deleteSemesterRegistration = catchAsync(
-    async  (req, res ) => {
+    async (req, res) => {
         const { id } = req.params;
         const result =
             await SemesterRegistrationService.deleteSemesterRegistrationFromDB(id);

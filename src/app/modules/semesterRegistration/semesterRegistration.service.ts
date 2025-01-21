@@ -78,7 +78,11 @@ const getAllSemesterRegistrationsFromDB = async (
         .fields();
 
     const result = await semesterRegistrationQuery.modelQuery;
-    return result;
+    const meta = await semesterRegistrationQuery.countTotal();
+    return {
+        meta,
+        result,
+    };;
 };
 
 // Single Semister Reg
@@ -223,7 +227,7 @@ const deleteSemesterRegistrationFromDB = async (id: string) => {
         await session.endSession();
 
         return null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         await session.abortTransaction();
         await session.endSession();
