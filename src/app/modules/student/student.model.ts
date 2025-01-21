@@ -21,7 +21,9 @@ const userNameSchema = new Schema<TUserName>({
         required: [true, 'Last Name is required'],
         maxlength: [20, 'Name can not be more than 20 characters'],
     },
-});
+},
+    { _id: false }
+);
 
 // user Guardian Schema
 const guardianSchema = new Schema<TGuardian>({
@@ -51,7 +53,9 @@ const guardianSchema = new Schema<TGuardian>({
         type: String,
         required: [true, 'Mother Contact No is required'],
     },
-});
+},
+    { _id: false }
+);
 
 // User Local gardian schema
 const localGuradianSchema = new Schema<TLocalGuardian>({
@@ -71,7 +75,9 @@ const localGuradianSchema = new Schema<TLocalGuardian>({
         type: String,
         required: [true, 'Address is required'],
     },
-});
+},
+    { _id: false }
+);
 
 // full student schema
 const studentSchema = new Schema<TStudent, StudentModel>(

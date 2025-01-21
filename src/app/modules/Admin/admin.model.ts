@@ -20,7 +20,9 @@ const userNameSchema = new Schema<TUserName>({
         required: [true, 'Last Name is required'],
         maxlength: [20, 'Name can not be more than 20 characters'],
     },
-});
+},
+    { _id: false }
+);
 
 
 const adminSchema = new Schema<TAdmin, AdminModel>(
