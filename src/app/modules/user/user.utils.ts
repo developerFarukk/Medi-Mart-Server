@@ -5,10 +5,10 @@ import { User } from './user.model';
 
 
 // *******************    Student Genaret ID Funtionality  *********************** //
-const findLastStudentId = async () => {
+const findLastStudentId = async (payload: string) => {
     const lastStudent = await User.findOne(
         {
-            role: 'student',
+            $and: [{ role: 'student' }, { id: { $regex: payload, $option: 'i' } }]
         },
         {
             id: 1,
@@ -25,12 +25,12 @@ const findLastStudentId = async () => {
 };
 
 export const generateStudentId = async (payload: TAcademicSemester | null) => {
+    const query = `${payload?.year}${payload?.code}`
+        // first time 0000
+        //0001  => 1
+        let currentId = (0).toString(); // 0000 by deafult
 
-    // first time 0000
-    //0001  => 1
-    let currentId = (0).toString(); // 0000 by deafult
-
-    const lastStudentId = await findLastStudentId();
+    const lastStudentId = await findLastStudentId(query);
     // 2030 01 0001
     const lastStudentSemesterCode = lastStudentId?.substring(4, 6); //01;
     const lastStudentYear = lastStudentId?.substring(0, 4); // 2030
