@@ -113,10 +113,11 @@ const removeFacultiesFromCourse = catchAsync(async (req, res) => {
 
 // Get Faculty With Course
 const getFacultiesWithCourse = catchAsync(async (req, res) => {
-    const { courseId } = req.params;
+    const { courseId: _id } = req.params;
 
-    const result = await CourseServices.getFacultiesWithCourseFromDB(courseId);
-
+    const result = await CourseServices.getFacultiesWithCourseFromDB(_id);
+    // console.log("id", _id);
+    
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

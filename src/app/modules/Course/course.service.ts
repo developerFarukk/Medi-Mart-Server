@@ -175,11 +175,13 @@ const removeFacultiesFromCourseFromDB = async (
     return result;
 };
 
-
 // Get Faculty with Course
-const getFacultiesWithCourseFromDB = async (courseId: string) => {
-    const result = await CourseFaculty.findOne({ course: courseId })
-        .populate('faculties');
+const getFacultiesWithCourseFromDB = async (course: string) => {
+
+    const result = await CourseFaculty.findOne({ course })
+        .populate('course')
+        .populate('faculties')
+
     return result;
 };
 
