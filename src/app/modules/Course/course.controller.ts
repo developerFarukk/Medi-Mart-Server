@@ -117,7 +117,7 @@ const getFacultiesWithCourse = catchAsync(async (req, res) => {
 
     const result = await CourseServices.getFacultiesWithCourseFromDB(_id);
     // console.log("id", _id);
-    
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -125,7 +125,6 @@ const getFacultiesWithCourse = catchAsync(async (req, res) => {
         data: result,
     });
 });
-
 
 
 export const CourseControllers = {

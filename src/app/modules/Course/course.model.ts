@@ -68,15 +68,11 @@ const courseFacultySchema = new Schema<TCoursefaculty>({
     faculties: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'AcademicFaculty',
+            ref: 'Faculty',
         },
     ],
 });
 
-// courseFacultySchema.pre('findOne', function (next) {
-//     // this.find({ isDeleted: { $ne: true } });
-//     next();
-// });
 
 export const CourseFaculty = model<TCoursefaculty>(
     'CourseFaculty',
