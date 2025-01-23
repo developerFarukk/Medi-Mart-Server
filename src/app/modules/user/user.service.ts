@@ -87,6 +87,7 @@ const createStudentIntoDB = async (
     // create a user object
     const userData: Partial<TUser> = {};
 
+
     //if password is not given , use default password
     userData.password = password || (config.default_password as string);
 
@@ -100,6 +101,7 @@ const createStudentIntoDB = async (
         payload.admissionSemester,
     );
 
+
     if (!admissionSemester) {
         throw new AppError(400, 'Admission semester not found');
     }
@@ -108,6 +110,7 @@ const createStudentIntoDB = async (
     const academicDepartment = await AcademicDepartment.findById(
         payload.academicDepartment,
     );
+
 
     if (!academicDepartment) {
         throw new AppError(400, 'Aademic department not found');
@@ -132,6 +135,7 @@ const createStudentIntoDB = async (
 
         // create a user (transaction-1)
         const newUser = await User.create([userData], { session }); // array
+
 
         //create a student
         if (!newUser.length) {
