@@ -8,7 +8,8 @@ import { User } from './user.model';
 const findLastStudentId = async (payload: string) => {
     const lastStudent = await User.findOne(
         {
-            $and: [{ role: 'student' }, { id: { $regex: payload, $option: 'i' } }]
+            $and: [{ role: 'student' }, { id: { $regex: payload, $options: 'i' } }]
+            // role: 'student',
         },
         {
             id: 1,

@@ -169,7 +169,9 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 
 //  virtual হলো Mongoose-এ এমন একটি ফিচার, যা স্কিমার (Schema) প্রপার্টি হিসেবে সংরক্ষণ না করেও একটি ডেরাইভড (derived) ভ্যালু তৈরি করতে দেয়। অর্থাৎ, এটি কোনো ডাটা ডাটাবেজে সংরক্ষণ না করেই একটি ফিল্ড তৈরি করে যা অবজেক্টে অ্যাক্সেস করার সময় পাওয়া যায়।
 studentSchema.virtual('fullName').get(function () {
-    return this.name?.firstName + this.name?.middleName + this.name?.lastName;
+    return [this.name?.firstName, this.name?.middleName, this.name?.lastName]
+        .filter(Boolean)
+        .join(' ');
 });
 
 // // pre save middleware/ hook : will work on create()  save()
