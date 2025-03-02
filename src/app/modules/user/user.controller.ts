@@ -1,6 +1,7 @@
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { UserServices } from "./user.service";
+import httpStatus from 'http-status';
 
 
 
@@ -8,7 +9,7 @@ import { UserServices } from "./user.service";
 const registerUser = catchAsync(async (req, res) => {
     // const { password, admin: adminData } = req.body;
 
-    const result = await UserServices.createUserIntoDB(req.body);
+    const result = await UserServices.registerUserIntoDB(req.body);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

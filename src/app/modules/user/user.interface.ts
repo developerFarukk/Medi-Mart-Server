@@ -10,6 +10,7 @@ export interface TUser {
     status: 'in-progress' | 'blocked';
     isDeleted: boolean;
     address: string;
+    image?: string;
 };
 
 

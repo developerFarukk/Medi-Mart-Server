@@ -9,7 +9,6 @@ const userSchema = new Schema<TUser>(
         name: {
             type: String,
             required: [true, 'user name is required'],
-            unique: true,
             trim: true
         },
         email: {
@@ -41,6 +40,11 @@ const userSchema = new Schema<TUser>(
             type: String,
             trim: true,
             required: false
+        },
+        image: {
+            type: String,
+            required: false,
+            default: ""
         }
     },
     {
