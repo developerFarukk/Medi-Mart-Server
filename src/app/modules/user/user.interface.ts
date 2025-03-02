@@ -11,6 +11,7 @@ export interface TUser {
     isDeleted: boolean;
     address: string;
     image?: string;
+    number: string;
 };
 
 

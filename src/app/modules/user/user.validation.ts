@@ -12,6 +12,9 @@ const userValidationSchema = z.object({
             .string()
             .min(3, { message: 'Name must be at least 3 characters long.' })
             .max(20, { message: 'Name cannot exceed 20 characters.' }),
+        number: z
+            .string()
+            .min(11, { message: 'Number must be at least 11 characters long.' }),
 
         email: z
             .string()

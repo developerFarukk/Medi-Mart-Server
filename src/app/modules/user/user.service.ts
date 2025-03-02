@@ -11,7 +11,8 @@ import httpStatus from 'http-status';
 const registerUserIntoDB = async (payload: TUser) => {
 
     // checking if the user is exist
-    const user = await User.findOne({email: payload?.email }).select('+password');
+    const user = await User.findOne({email: payload?.email, number: payload?.number }).select('+password');
+    
 
     if (user) {
         throw new AppError(httpStatus.NOT_FOUND, 'This user is already axist !');

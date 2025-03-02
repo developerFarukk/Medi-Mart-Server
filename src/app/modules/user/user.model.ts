@@ -17,6 +17,12 @@ const userSchema = new Schema<TUser>(
             unique: true,
             trim: true
         },
+        number: {
+            type: String,
+            required: [true, 'User number is required'],
+            unique: true,
+            trim: true
+        },
         password: {
             type: String,
             required: [true, 'Password id is required'],
