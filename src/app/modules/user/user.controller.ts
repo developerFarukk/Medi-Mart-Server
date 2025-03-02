@@ -1,16 +1,14 @@
 import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
+import { UserServices } from "./user.service";
 
 
 
 // Student Create Funtionality
-const createUser = catchAsync(async (req, res) => {
-    const { password, admin: adminData } = req.body;
+const registerUser = catchAsync(async (req, res) => {
+    // const { password, admin: adminData } = req.body;
 
-    const result = await UserServices.createAdminIntoDB(
-        req.file,
-        password,
-        adminData,
-    );
+    const result = await UserServices.createUserIntoDB(req.body);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -22,5 +20,5 @@ const createUser = catchAsync(async (req, res) => {
 
 
 export const UserControllers = {
-    createUser
+    registerUser
 };
