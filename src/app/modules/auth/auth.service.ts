@@ -1,8 +1,10 @@
 
-import { TAuth } from "./auth.interface";
+import { TAuth, TJwtPayload } from "./auth.interface";
 import { User } from "../user/user.model";
 import AppError from "../../errors/AppError";
 import httpStatus from 'http-status';
+import config from "../../config";
+import { createToken } from "./auth.utils";
 
 
 const loginUser = async (payload: TAuth) => {
@@ -38,20 +40,18 @@ const loginUser = async (payload: TAuth) => {
     }
 
 
-    // const jwtPayload: IJwtPayload = {
-    //     userId: user._id as string,
-    //     name: user.name as string,
-    //     email: user.email as string,
-    //     hasShop: user.hasShop,
-    //     isActive: user.isActive,
-    //     role: user.role,
-    // };
+    const jwtPayload: TJwtPayload = {
+        userId: user._id as string,
+        name: user.name as string,
+        email: user.email as string,
+        role: user.role,
+    };
 
-    // const accessToken = createToken(
-    //     jwtPayload,
-    //     config.jwt_access_secret as string,
-    //     config.jwt_access_expires_in as string
-    // );
+    const accessToken = createToken(
+        jwtPayload,
+        config.jwt_access_secret as string,
+        config.jwt_access_expires_in as string
+    );
 
     // const refreshToken = createToken(
     //     jwtPayload,
@@ -66,12 +66,11 @@ const loginUser = async (payload: TAuth) => {
     // );
 
 
-    // return {
-    //     accessToken,
-    //     refreshToken,
-    // };
+    return {
+        accessToken,
+        // refreshToken,
+    };
 
-    return null
 
 };
 
