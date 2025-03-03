@@ -18,6 +18,6 @@ const createMedicin = catchAsync(async (req, res) => {
 });
 
 
-export const BicycleControllers = {
+export const MedicinControllers = {
     createMedicin
 };

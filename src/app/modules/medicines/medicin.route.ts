@@ -1,6 +1,8 @@
 
 import express from 'express';
-import { BicycleControllers } from './medicin.controler';
+import validateRequest from '../../middlewares/validateRequest';
+import { MedicinValidation } from './medicine.validation';
+import { MedicinControllers } from './medicin.controler';
 
 const router = express.Router();
 
@@ -9,8 +11,8 @@ const router = express.Router();
 router.post(
     '/create-medicin',
     // auth(USER_ROLE.admin),
-    validateRequest(BicycleValidations.createBicycleValidationSchema),
-    BicycleControllers.createMedicin
+    validateRequest(MedicinValidation.medicinValidationSchema),
+    MedicinControllers.createMedicin
 );
 
 
