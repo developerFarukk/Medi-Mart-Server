@@ -18,6 +18,22 @@ const createMedicin = catchAsync(async (req, res) => {
 });
 
 
+// Get All Medicin
+const getAllMedicin = catchAsync(async (req, res) => {
+
+    const result = await MedicinServices.getAllMedicinIntoDB(req.query);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'All Medicin Data get successfully',
+        data: result,
+    });
+
+});
+
+
 export const MedicinControllers = {
-    createMedicin
+    createMedicin,
+    getAllMedicin
 };
