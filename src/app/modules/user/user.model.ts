@@ -93,7 +93,6 @@ userSchema.statics.isUserExistsByEmail = async function (email: string) {
 };
 
 
-
 // Password Matched
 userSchema.statics.isPasswordMatched = async function (
     plainTextPassword,
