@@ -3,12 +3,18 @@
 
 import { Model } from "mongoose";
 
+// Enum for User Roles
+export enum UserRole {
+    ADMIN = 'admin',
+    CUSTOMER = 'customers'
+ }
+
 export interface TUser {
-    _id?: string; // MongoDB-এর ডিফল্ট `_id` ফিল্ড
+    _id?: string;
     name: string;
     email: string;
     password: string;
-    role: 'admin' | 'customers';
+    role: UserRole;
     status: 'in-progress' | 'blocked';
     isDeleted: boolean;
     address: string;
