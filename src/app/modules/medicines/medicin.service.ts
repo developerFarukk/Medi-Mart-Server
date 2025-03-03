@@ -59,8 +59,23 @@ const updateMedicinIntoDB = async (id: string, payload: Partial<TMedicine>) => {
 };
 
 
+// Delete medicin
+const deleteMedicinFromDB = async (id: string) => {
+
+    const existingMedicin = await Medicin.findOne({ _id: id });
+
+    if (!existingMedicin) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Medicin id not found!');
+    }
+
+    const result = await Medicin.findByIdAndDelete(id);
+    return result;
+};
+
+
 export const MedicinServices = {
     createMedicinIntoDB,
     getAllMedicinIntoDB,
-    updateMedicinIntoDB
+    updateMedicinIntoDB,
+    deleteMedicinFromDB
 };

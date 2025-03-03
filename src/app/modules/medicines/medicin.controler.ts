@@ -34,9 +34,8 @@ const getAllMedicin = catchAsync(async (req, res) => {
 
 
 // Update Medicin
-// Update Bicycle data
 const updateMedicin = catchAsync(async (req, res) => {
-    
+
     const { medicinId } = req.params;
     const result = await MedicinServices.updateMedicinIntoDB(medicinId, req.body);
 
@@ -49,8 +48,23 @@ const updateMedicin = catchAsync(async (req, res) => {
 });
 
 
+// delete Medicin
+const deleteMedicin = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await MedicinServices.deleteMedicinFromDB(id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Medicin is deleted succesfully',
+        data: result,
+    });
+});
+
+
 export const MedicinControllers = {
     createMedicin,
     getAllMedicin,
-    updateMedicin
+    updateMedicin,
+    deleteMedicin
 };

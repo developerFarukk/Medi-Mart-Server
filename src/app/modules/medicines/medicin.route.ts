@@ -32,6 +32,13 @@ router.patch(
     MedicinControllers.updateMedicin
 );
 
+// delete medicin Route
+router.delete(
+    '/:id',
+    // auth(USER_ROLE.admin),
+    MedicinControllers.deleteMedicin
+);
+
 
 
 export const MedicinRoutes = router;
