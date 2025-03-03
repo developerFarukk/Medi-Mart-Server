@@ -6,7 +6,7 @@ import { Model } from "mongoose";
 // Enum for User Roles
 export enum UserRole {
     ADMIN = 'admin',
-    CUSTOMER = 'customers'
+    CUSTOMER = 'customer'
  }
 
 export interface TUser {

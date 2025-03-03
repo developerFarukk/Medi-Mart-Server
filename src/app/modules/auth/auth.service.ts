@@ -59,13 +59,6 @@ const loginUser = async (payload: TAuth) => {
     //     config.jwt_refresh_expires_in as string
     // );
 
-    // const updateUserInfo = await User.findByIdAndUpdate(
-    //     user._id,
-    //     { clientInfo: payload.clientInfo, lastLogin: Date.now() },
-    //     { new: true, session }
-    // );
-
-
     return {
         accessToken,
         // refreshToken,
