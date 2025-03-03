@@ -46,6 +46,7 @@ const loginUser = async (payload: TAuth) => {
         email: user.email as string,
         role: user.role,
     };
+    
 
     const accessToken = createToken(
         jwtPayload,

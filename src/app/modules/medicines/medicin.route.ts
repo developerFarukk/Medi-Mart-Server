@@ -3,6 +3,8 @@ import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { MedicinValidation } from './medicine.validation';
 import { MedicinControllers } from './medicin.controler';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 
@@ -10,7 +12,7 @@ const router = express.Router();
 // Create medicin Route
 router.post(
     '/create-medicin',
-    // auth(USER_ROLE.admin),
+    auth(USER_ROLE.admin),
     validateRequest(MedicinValidation.medicinValidationSchema),
     MedicinControllers.createMedicin
 );

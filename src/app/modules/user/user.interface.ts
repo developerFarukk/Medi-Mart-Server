@@ -2,6 +2,7 @@
 
 
 import { Model } from "mongoose";
+import { USER_ROLE } from "./user.constant";
 
 // Enum for User Roles
 export enum UserRole {
@@ -26,6 +27,7 @@ export interface TUser {
 export interface UserModel extends Model<TUser> {
     
     isUserExistsByEmail(id: string): Promise<TUser>;
+    
     checkUserExist(userId: string): Promise<TUser>;
 
     getPublicUserData(userId: string): Promise<Pick<TUser, '_id' | 'name' | 'email' | 'role' | 'status' | 'isDeleted' | 'number' | 'address' | 'image'>>;
@@ -36,3 +38,6 @@ export interface UserModel extends Model<TUser> {
         hashedPassword: string,
     ): Promise<boolean>;
 }
+
+
+export type TUserRole = keyof typeof USER_ROLE;
