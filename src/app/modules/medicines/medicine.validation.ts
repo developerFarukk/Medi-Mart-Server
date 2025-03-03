@@ -40,7 +40,34 @@ const medicinValidationSchema = z.object({
 });
 
 
+// Update validation Schema
+const updatemedicinValidationSchema = z.object({
+    body: z.object({
+        name: z.string()
+            .trim()
+            .min(1, 'Medicin Name is required')
+            .max(20, 'Medicin Name can not be more than 20 characters').optional(),
+        description: z.string()
+            .trim()
+            .min(1, 'Medicin description is required').optional(),
+        price: z.number()
+            .min(0, 'Price cannot be negative')
+            .int('Price must be an integer value')
+            .default(0).optional(),
+        quantity: z.number()
+            .min(0, 'Quantity cannot be negative')
+            .default(1).optional(),
+        category: medicinsCategory.optional(),
+        requiredPrescription: RequiredPrescriptions.optional(),
+        massUnit: z.number()
+            .default(0.1).optional(),
+        manufacturerDetails: manufacturerDetailsSchema.optional(),
+    })
+});
+
+
 
 export const MedicinValidation = {
-    medicinValidationSchema
+    medicinValidationSchema,
+    updatemedicinValidationSchema
 };

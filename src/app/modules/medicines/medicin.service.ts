@@ -37,7 +37,22 @@ const getAllMedicinIntoDB = async (query: Record<string, unknown>) => {
 }
 
 
+// Update Medicin
+const updateMedicinIntoDB = async ( id: string, payload: Partial<TMedicine> ) => {
+
+    const result = await Medicin.findOneAndUpdate(
+        { _id: id },
+        payload,
+        {
+            new: true,
+        },
+    );
+    return result;
+};
+
+
 export const MedicinServices = {
     createMedicinIntoDB,
-    getAllMedicinIntoDB
+    getAllMedicinIntoDB,
+    updateMedicinIntoDB
 };

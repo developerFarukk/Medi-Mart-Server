@@ -33,7 +33,24 @@ const getAllMedicin = catchAsync(async (req, res) => {
 });
 
 
+// Update Medicin
+// Update Bicycle data
+const updateMedicin = catchAsync(async (req, res) => {
+    
+    const { medicinId } = req.params;
+    const result = await MedicinServices.updateMedicinIntoDB(medicinId, req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Medicin is updated succesfully',
+        data: result,
+    });
+});
+
+
 export const MedicinControllers = {
     createMedicin,
-    getAllMedicin
+    getAllMedicin,
+    updateMedicin
 };

@@ -24,6 +24,14 @@ router.get(
 );
 
 
+// Update medicin Route
+router.patch(
+    '/:medicinId',
+    // auth(USER_ROLE.admin),
+    validateRequest(MedicinValidation.updatemedicinValidationSchema),
+    MedicinControllers.updateMedicin
+);
+
 
 
 export const MedicinRoutes = router;
