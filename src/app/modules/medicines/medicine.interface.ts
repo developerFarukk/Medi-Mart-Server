@@ -4,6 +4,9 @@ export type TrequiredPrescriptions = 'Yes' | 'No';
 
 export type TMedicinstatus = 'Stock' | 'Stock Out';
 
+export type TMedicinCategory = "Analgesics" | "Antibiotics" | "Antipyretics" | "Antihistamines" | "Antidepressants" | "Antacids"
+    | "Antidiabetics" | "Cardiovascular" | "Respiratory" | "Vitamins & Supplements"; 
+
 interface Manufacturer {
     name: string;
     address: string;
@@ -15,6 +18,7 @@ export interface TMedicine {
     id?: Types.ObjectId;
     name: string;
     description: string;
+    category: TMedicinCategory;
     price: number;
     quantity: number;
     stockAvailability: TMedicinstatus;

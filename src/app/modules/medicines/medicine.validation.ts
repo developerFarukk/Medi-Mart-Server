@@ -5,6 +5,8 @@ import { z } from 'zod';
 // Define enums for MedicinStatus and RequiredPrescriptions
 const RequiredPrescriptions = z.enum(['Yes', 'No']);
 
+const medicinsCategory = z.enum(["Analgesics", "Antibiotics", "Antipyretics", "Antihistamines", "Antidepressants", "Antacids", "Antidiabetics", "Cardiovascular", "Respiratory", "Vitamins & Supplements"]);
+
 // Define the schema for manufacturerDetails
 const manufacturerDetailsSchema = z.object({
     name: z.string().trim().max(20, 'Medicin manufacturer Name can not be more than 20 characters'),
@@ -29,6 +31,7 @@ const medicinValidationSchema = z.object({
         quantity: z.number()
             .min(0, 'Quantity cannot be negative')
             .default(1),
+        category: medicinsCategory,
         requiredPrescription: RequiredPrescriptions,
         massUnit: z.number()
             .default(0.1),

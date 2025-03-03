@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { TMedicine } from "./medicine.interface";
-import { MedicinStatus, RequiredPrescriptions } from "./medicine.constant";
+import { MedicinCategory, MedicinStatus, RequiredPrescriptions } from "./medicine.constant";
 
 
 const MedicinSchema = new Schema<TMedicine>(
@@ -33,6 +33,15 @@ const MedicinSchema = new Schema<TMedicine>(
             trim: true,
             min: 0,
             default: 1,
+        },
+        // category: MedicinCategory,
+        category: {
+            type: String,
+            trim: true,
+            enum: {
+                values: MedicinCategory,
+                message: '{VALUE} is not a valid category',
+            }
         },
         stockAvailability: {
             type: String,
@@ -86,4 +95,4 @@ const MedicinSchema = new Schema<TMedicine>(
 
 
 
-export const Medicin = model<TMedicine >('Medicin', MedicinSchema);
+export const Medicin = model<TMedicine>('Medicin', MedicinSchema);
