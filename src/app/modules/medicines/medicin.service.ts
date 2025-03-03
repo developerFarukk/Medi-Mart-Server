@@ -1,7 +1,9 @@
 import QueryBuilder from "../../builder/QueryBuilder";
+import AppError from "../../errors/AppError";
 import { medicinSearchableFields } from "./medicine.constant";
 import { TMedicine } from "./medicine.interface";
 import { Medicin } from "./medicine.model";
+import httpStatus from "http-status";
 
 
 // Create Medicin Function
@@ -38,7 +40,13 @@ const getAllMedicinIntoDB = async (query: Record<string, unknown>) => {
 
 
 // Update Medicin
-const updateMedicinIntoDB = async ( id: string, payload: Partial<TMedicine> ) => {
+const updateMedicinIntoDB = async (id: string, payload: Partial<TMedicine>) => {
+
+    const existingMedicin = await Medicin.findOne({ _id: id });
+
+    if (!existingMedicin) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Medicin id not found!');
+    }
 
     const result = await Medicin.findOneAndUpdate(
         { _id: id },
