@@ -10,13 +10,25 @@ import httpStatus from 'http-status';
 // Admin &  User Creat Function
 const registerUserIntoDB = async (payload: TUser) => {
 
-    // checking if the user is exist
-    const user = await User.findOne({email: payload?.email, number: payload?.number }).select('+password');
-    
+    // Check if the user already exists by email
+    const existingUser = await User.findOne({ email: payload.email });
 
-    if (user) {
-        throw new AppError(httpStatus.NOT_FOUND, 'This user is already axist !');
+    if (existingUser) {
+        throw new AppError(httpStatus.NOT_ACCEPTABLE, 'Email is already registered');
     }
+
+    // Check if the user already exists by number
+    const existingnumber = await User.findOne({ number: payload.number });
+    
+    if (existingnumber) {
+        throw new AppError(httpStatus.NOT_ACCEPTABLE, 'Number is already registered');
+    }
+
+    // const result = await User.create(payload);
+    const publicUserData = await User.create(payload);
+    const result = await User.getPublicUserData(publicUserData._id);
+
+    return result
 
 };
 

@@ -1,9 +1,9 @@
 import { model, Schema } from "mongoose";
-import { TUser } from "./user.interface";
+import { TUser, UserModel } from "./user.interface";
 import config from "../../config";
 import bcrypt from 'bcrypt';
 
-const userSchema = new Schema<TUser>(
+const userSchema = new Schema<TUser, UserModel>(
     {
 
         name: {
@@ -51,7 +51,11 @@ const userSchema = new Schema<TUser>(
             type: String,
             required: false,
             default: ""
-        }
+        },
+        passwordChangedAt: {
+            type: Date,
+            default: null,
+        },
     },
     {
         timestamps: true,
@@ -79,6 +83,17 @@ userSchema.post('save', function (doc, next) {
 });
 
 
+// Spasic data send function
+userSchema.statics.getPublicUserData = function (userId: string) {
+    return this.findById(userId).select('id name email isDeleted status role address number image');
+};
+
+userSchema.statics.isUserExistsByEmail = async function (email: string) {
+    return await User.findOne({ email }).select('+password');
+};
+
+
+
 // Password Matched
 userSchema.statics.isPasswordMatched = async function (
     plainTextPassword,
@@ -89,4 +104,4 @@ userSchema.statics.isPasswordMatched = async function (
 
 
 
-export const User = model<TUser>('User', userSchema);
+export const User = model<TUser, UserModel>('User', userSchema);
