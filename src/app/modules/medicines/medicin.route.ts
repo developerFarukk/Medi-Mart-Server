@@ -39,6 +39,13 @@ router.delete(
     MedicinControllers.deleteMedicin
 );
 
+// Get Single medicin Route
+router.get(
+    '/:id',
+    // auth(USER_ROLE.admin),
+    MedicinControllers.getSingleMedicin
+);
+
 
 
 export const MedicinRoutes = router;

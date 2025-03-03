@@ -62,9 +62,24 @@ const deleteMedicin = catchAsync(async (req, res) => {
 });
 
 
+// delete Medicin
+const getSingleMedicin = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await MedicinServices.getSingleMedicinFromDB(id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Single Medicin get succesfully',
+        data: result,
+    });
+});
+
+
 export const MedicinControllers = {
     createMedicin,
     getAllMedicin,
     updateMedicin,
-    deleteMedicin
+    deleteMedicin,
+    getSingleMedicin
 };

@@ -73,9 +73,24 @@ const deleteMedicinFromDB = async (id: string) => {
 };
 
 
+// Delete medicin
+const getSingleMedicinFromDB = async (id: string) => {
+
+    const existingMedicin = await Medicin.findOne({ _id: id });
+
+    if (!existingMedicin) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Medicin id not found!');
+    }
+
+    const result = await Medicin.findById(id);
+    return result;
+};
+
+
 export const MedicinServices = {
     createMedicinIntoDB,
     getAllMedicinIntoDB,
     updateMedicinIntoDB,
-    deleteMedicinFromDB
+    deleteMedicinFromDB,
+    getSingleMedicinFromDB
 };
