@@ -45,6 +45,7 @@ const loginUser = async (payload: TAuth) => {
         name: user.name as string,
         email: user.email as string,
         role: user.role,
+        image: user.image as string
     };
     
 

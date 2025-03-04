@@ -11,4 +11,5 @@ export interface TJwtPayload {
     name: string;
     email: string;
     role: UserRole;
+    image: string;
 }
