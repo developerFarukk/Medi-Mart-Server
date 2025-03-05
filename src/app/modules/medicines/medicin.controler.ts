@@ -7,6 +7,8 @@ import sendResponse from "../../utils/sendResponse";
 
 // Creat Bicycle Function
 const createMedicin = catchAsync(async (req, res) => {
+
+
     const result = await MedicinServices.createMedicinIntoDB(req.body);
 
     sendResponse(res, {
