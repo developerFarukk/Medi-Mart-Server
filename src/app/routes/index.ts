@@ -1,8 +1,8 @@
 
 import { Router } from 'express';
 import { UserRoutes } from '../modules/user/user.route';
-import { AuthRoutes } from '../modules/auth/auth.route';
 import { MedicinRoutes } from '../modules/medicines/medicin.route';
+import { AuthRoutes } from '../modules/auth/auth.route';
 
 
 
