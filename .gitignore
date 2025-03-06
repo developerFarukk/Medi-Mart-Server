@@ -5,3 +5,4 @@ dist
 
 # Environment Variable
 .env
+.vercel
