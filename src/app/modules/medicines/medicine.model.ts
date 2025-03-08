@@ -86,6 +86,10 @@ const MedicinSchema = new Schema<TMedicine>(
                 type: String,
                 trim: true
             }
+        },
+        expiryDate: {
+            type: Date,
+            trim: true
         }
     },
     {
