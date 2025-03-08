@@ -18,10 +18,9 @@ router.post(
 );
 
 
-// get medicin Route
+// get all medicin Route
 router.get(
     '/',
-    // auth(USER_ROLE.admin),
     MedicinControllers.getAllMedicin
 );
 
@@ -29,7 +28,7 @@ router.get(
 // Update medicin Route
 router.patch(
     '/:medicinId',
-    // auth(USER_ROLE.admin),
+    auth(USER_ROLE.admin),
     validateRequest(MedicinValidation.updatemedicinValidationSchema),
     MedicinControllers.updateMedicin
 );
@@ -37,7 +36,7 @@ router.patch(
 // delete medicin Route
 router.delete(
     '/:id',
-    // auth(USER_ROLE.admin),
+    auth(USER_ROLE.admin),
     MedicinControllers.deleteMedicin
 );
 
