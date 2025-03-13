@@ -4,13 +4,15 @@ import { Types, Document } from 'mongoose';
 
 export interface TOrderProduct {
     medicins: Types.ObjectId;
-    totalQuantity: number;
-    totalPrice: number;
+    orderQuantity: number;
+    subTotalPrice: number;
 }
 
-export interface IOrder extends Document {
+export interface TOrder extends Document {
     user: Types.ObjectId;
     products: TOrderProduct[];
+    totalQuantity: number;
+    totalPrice: number;
     status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
     shippingAddress: string;
     paymentMethod: 'Cash' | 'Card' | 'Online';
