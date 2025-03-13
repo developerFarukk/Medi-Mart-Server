@@ -142,7 +142,7 @@ const userSchema = new Schema<TUser, UserModel>(
         },
         role: {
             type: String,
-            enum: Object.values(UserRole), 
+            enum: Object.values(UserRole),
             default: UserRole.CUSTOMER,
         },
         status: {
@@ -176,7 +176,7 @@ const userSchema = new Schema<TUser, UserModel>(
 
 // Pre-save hook for hashing password
 userSchema.pre('save', async function (next) {
-    const user = this as TUser & Document; 
+    const user = this as TUser & Document;
     user.password = await bcrypt.hash(
         user.password,
         Number(config.bcrypt_salt_rounds),
@@ -186,7 +186,7 @@ userSchema.pre('save', async function (next) {
 
 // Post-save hook for setting password to empty string
 userSchema.post('save', function (doc, next) {
-    (doc as TUser & Document).password = ''; 
+    (doc as TUser & Document).password = '';
     next();
 });
 
@@ -199,6 +199,11 @@ userSchema.statics.getPublicUserData = function (userId: string) {
 userSchema.statics.isUserExistsByEmail = async function (email: string) {
     return await User.findOne({ email }).select('+password');
 };
+
+// Existing ID
+// userSchema.statics.isUserExistsByCustomId = async function (email: string) {
+//     return await User.findOne({ email })
+// };
 
 // Static method to check if password matches
 userSchema.statics.isPasswordMatched = async function (

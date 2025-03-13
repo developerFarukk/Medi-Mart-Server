@@ -1,4 +1,9 @@
+
+
 import { JwtPayload } from "jsonwebtoken";
+import { User } from "../user/user.model";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 
 // Create Order 
@@ -8,18 +13,20 @@ const createOrderIntoDB = async (
     // client_ip: string
 ) => {
 
-    console.log("pay", payload);
-    console.log("user", user);
+    // console.log("pay", payload);
     
-
 
     // const userId = user?.userId;
 
+    // console.log(userId);
+    
+
     // // Validate user existence
-    // const userData = await User.isUserExistsByCustomId(user.userEmail);
-    // if (!userData) {
-    //     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-    // }
+    const userData = await User.getPublicUserData(user?.userId);
+
+    if (!userData) {
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    }
 
     // // Validate payload
     // if (!payload?.products || payload?.products?.length === 0) {
@@ -105,7 +112,7 @@ const createOrderIntoDB = async (
     //     payment,
     //     paymentUrl: payment.checkout_url,
     // };
-    return null
+    return userData
 };
 
 
