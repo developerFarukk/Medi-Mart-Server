@@ -1,42 +1,72 @@
 
 
-import { User } from "../user/user.model";
+// import { User } from "../user/user.model";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 // import { Types } from "mongoose";
 import { TOrder } from "./order.interface";
 import { TJwtPayload } from "../auth/auth.interface";
+import mongoose from "mongoose";
+import { Medicin } from "../medicines/medicine.model";
 
 
 // Create Order 
 const createOrderIntoDB = async (
     // payload: { products: { medicins: string; orderQuantity: number; subTotalPrice: number }[] },
-    orderData:  Partial<TOrder>,
-    authUser: TJwtPayload 
+    orderData: Partial<TOrder>,
+    authUser: TJwtPayload
     // client_ip: string
 ) => {
 
-    console.log("order data", orderData);
-    
-    
+    console.log("Auth User", authUser);
+
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+        if (orderData.products) {
+
+            for (const medicinItem of orderData.products) {
+                const product = await Medicin.findById(medicinItem.medicins)
+
+                if (!product) {
+                    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+                }
+
+                console.log(product);
+                
+            }
+
+
+        }
+
+    } catch (error) {
+        console.log(error);
+        // Rollback the transaction in case of error
+        await session.abortTransaction();
+        session.endSession();
+        throw error;
+    }
+
+
 
     // console.log("pay", payload);
-    
+
 
     // const userId = user?.userId;
 
     // console.log(userId);
-    
+
 
     // // Validate user existence
-    const userData = await User.getPublicUserData(authUser?.userId);
+    // const userData = await User.getPublicUserData(authUser?.userId);
 
-    console.log(userData);
-    
+    // console.log(userData);
 
-    if (!userData) {
-        throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-    }
+
+    // if (!userData) {
+    //     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    // }
 
     // // Validate payload
     // if (!payload?.products || payload?.products?.length === 0) {
@@ -124,7 +154,7 @@ const createOrderIntoDB = async (
     //     payment,
     //     paymentUrl: payment.checkout_url,
     // };
-    return payload
+    return null
 };
 
 
