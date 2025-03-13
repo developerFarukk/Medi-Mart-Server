@@ -64,6 +64,11 @@ const orderSchema = new Schema<TOrder>({
         enum: ["Pending", "Paid", "Failed"],
         default: "Pending",
     },
+    precriptionImage: {
+        type: String,
+        required: false,
+        default: ""
+    }
     // transaction: {
     //     id: String,
     //     transactionStatus: String,

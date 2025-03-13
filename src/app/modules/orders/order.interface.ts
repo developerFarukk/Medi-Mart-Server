@@ -17,6 +17,7 @@ export interface TOrder extends Document {
     shippingAddress: string;
     paymentMethod: 'Cash' | 'Card' | 'Online';
     paymentStatus: 'Pending' | 'Paid' | 'Failed';
+    precriptionImage: string;
     createdAt?: Date;
     updatedAt?: Date;
     // payment?: IPayment | null;

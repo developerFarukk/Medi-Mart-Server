@@ -3,12 +3,13 @@ import { JwtPayload } from "jsonwebtoken";
 
 // Create Order 
 const createOrderIntoDB = async (
-    payload: { products: { product: string; quantity: number }[] },
+    payload: { products: { medicins: string; orderQuantity: number; subTotalPrice: number }[] },
     user: JwtPayload,
     // client_ip: string
 ) => {
 
-    console.log(payload, user);
+    console.log("pay", payload);
+    console.log("user", user);
     
 
 
