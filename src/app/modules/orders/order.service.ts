@@ -1,17 +1,24 @@
 
 
-import { JwtPayload } from "jsonwebtoken";
 import { User } from "../user/user.model";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
+// import { Types } from "mongoose";
+import { TOrder } from "./order.interface";
+import { TJwtPayload } from "../auth/auth.interface";
 
 
 // Create Order 
 const createOrderIntoDB = async (
-    payload: { products: { medicins: string; orderQuantity: number; subTotalPrice: number }[] },
-    user: JwtPayload,
+    // payload: { products: { medicins: string; orderQuantity: number; subTotalPrice: number }[] },
+    orderData:  Partial<TOrder>,
+    authUser: TJwtPayload 
     // client_ip: string
 ) => {
+
+    console.log("order data", orderData);
+    
+    
 
     // console.log("pay", payload);
     
@@ -22,7 +29,10 @@ const createOrderIntoDB = async (
     
 
     // // Validate user existence
-    const userData = await User.getPublicUserData(user?.userId);
+    const userData = await User.getPublicUserData(authUser?.userId);
+
+    console.log(userData);
+    
 
     if (!userData) {
         throw new AppError(httpStatus.NOT_FOUND, 'User not found');
@@ -35,9 +45,11 @@ const createOrderIntoDB = async (
 
     // // Process each product in the order
     // let totalPrice = 0;
-    // const productsWithObjectId = payload.products.map((product) => ({
-    //     product: new Types.ObjectId(product.product),
-    //     quantity: product.quantity,
+
+    // const productsWithObjectId = payload.products.map((medicin) => ({
+    //     medicins: new Types.ObjectId(medicin?.medicins),
+    //     orderQuantity: medicin?.orderQuantity,
+    //     subTotalPrice: medicin?.orderQuantity * medicin?.medicins
     // }));
 
     // for (const product of productsWithObjectId) {
@@ -112,7 +124,7 @@ const createOrderIntoDB = async (
     //     payment,
     //     paymentUrl: payment.checkout_url,
     // };
-    return userData
+    return payload
 };
 
 
