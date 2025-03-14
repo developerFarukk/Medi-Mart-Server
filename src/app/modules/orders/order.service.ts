@@ -27,13 +27,24 @@ const createOrderIntoDB = async (
         if (orderData.products) {
 
             for (const medicinItem of orderData.products) {
-                const product = await Medicin.findById(medicinItem.medicins).populate("Medicin").session(session);
+                
+                // console.log(medicinItem);
+                
+
+                const product = await Medicin.findById(medicinItem.medicins)
+                // .populate("Medicin")
+                // .session(session);
 
                 if (!product) {
                     throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
                 }
+                
 
-                console.log(product);
+                if (product.quantity < medicinItem.orderQuantity) {
+                    throw new Error(`Insufficient stock for product: ${product.name}`);
+                }
+
+                // console.log(product);
 
             }
 
