@@ -1,66 +1,122 @@
 
 
-// import { User } from "../user/user.model";
-import AppError from "../../errors/AppError";
-import httpStatus from "http-status";
-// import { Types } from "mongoose";
+// import { TOrder } from "./order.interface";
+// import { TJwtPayload } from "../auth/auth.interface";
+// import mongoose from "mongoose";
+// import { Medicin } from "../medicines/medicine.model";
+// import Order from "./order.model";
+
+// // Create Order 
+// const createOrderIntoDB = async (
+//     orderData: Partial<TOrder>,
+//     authUser: TJwtPayload
+// ) => {
+//     const session = await mongoose.startSession();
+//     session.startTransaction();
+//     try {
+//         if (orderData.products) {
+//             let totalPrice = 0;
+//             let totalQuantity = 0;
+
+//             for (const medicinItem of orderData.products) {
+//                 const product = await Medicin.findById(medicinItem.medicins).session(session);
+
+//                 if (product) {
+//                     if (product.quantity < medicinItem.orderQuantity) {
+//                         throw new Error(`Insufficient stock for product: ${product.name}`);
+//                     }
+
+//                     // Decrement the product stock
+//                     product.quantity -= medicinItem.orderQuantity;
+//                     await product.save({ session });
+
+//                     // Calculate subTotalPrice for each product
+//                     medicinItem.subTotalPrice = product.price * medicinItem.orderQuantity;
+
+//                     // Add to totalPrice
+//                     totalPrice += medicinItem.subTotalPrice;
+//                     totalQuantity = medicinItem.orderQuantity
+//                 } else {
+//                     throw new Error(`Product not found: ${medicinItem.medicins}`);
+//                 }
+//             }
+
+//             // Set totalPrice in orderData
+//             orderData.totalPrice = totalPrice;
+//             orderData.totalQuantity = totalQuantity
+//         }
+
+//         const order = new Order({
+//             ...orderData,
+//             user: authUser.userId,
+//         });
+
+//         console.log(order);
+
+
+//         const createdOrder = await order.save({ session });
+//         await session.commitTransaction();
+//         session.endSession();
+
+//         return createdOrder;
+//     } catch (error) {
+//         await session.abortTransaction();
+//         session.endSession();
+//         throw error;
+//     }
+// };
+
+// export const OrderService = {
+//     createOrderIntoDB,
+// };
+
+
 import { TOrder } from "./order.interface";
 import { TJwtPayload } from "../auth/auth.interface";
 import mongoose from "mongoose";
 import { Medicin } from "../medicines/medicine.model";
 import Order from "./order.model";
 
-
 // Create Order 
 const createOrderIntoDB = async (
-    // payload: { products: { medicins: string; orderQuantity: number; subTotalPrice: number }[] },
     orderData: Partial<TOrder>,
     authUser: TJwtPayload
-    // client_ip: string
 ) => {
-
-    // console.log("Auth User", authUser);
-
-
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
         if (orderData.products) {
+            let totalPrice = 0;
+            let totalQuantity = 0; // মোট quantity হিসাব করার জন্য ভেরিয়েবল
 
             for (const medicinItem of orderData.products) {
-
-                // console.log(medicinItem);
-
-
-                const product = await Medicin.findById(medicinItem.medicins)
-                    // .populate("Medicin")
-                    .session(session);
+                const product = await Medicin.findById(medicinItem.medicins).session(session);
 
                 if (product) {
-
-                    // if (!product) {
-                    //     throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
-                    // }
-
-
                     if (product.quantity < medicinItem.orderQuantity) {
                         throw new Error(`Insufficient stock for product: ${product.name}`);
                     }
 
                     // Decrement the product stock
-                    product.quantity -= medicinItem.orderQuantity
+                    product.quantity -= medicinItem.orderQuantity;
                     await product.save({ session });
+
+                    // Calculate subTotalPrice for each product
+                    medicinItem.subTotalPrice = product.price * medicinItem.orderQuantity;
+
+                    // Add to totalPrice
+                    totalPrice += medicinItem.subTotalPrice;
+
+                    // Add to totalQuantity
+                    totalQuantity += medicinItem.orderQuantity; // প্রতিটি প্রোডাক্টের orderQuantity যোগ করা হচ্ছে
                 } else {
                     throw new Error(`Product not found: ${medicinItem.medicins}`);
                 }
-
-
-
-                // console.log(product);
-
             }
 
-
+            // Set totalPrice and totalQuantity in orderData
+            orderData.totalPrice = totalPrice;
+            orderData.totalQuantity = totalQuantity; // মোট quantity সেট করা হচ্ছে
         }
 
         const order = new Order({
@@ -69,23 +125,20 @@ const createOrderIntoDB = async (
         });
 
         console.log(order);
-        
 
+        const createdOrder = await order.save({ session });
+        await createdOrder.populate("user products.medicins");
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return createdOrder;
     } catch (error) {
-        console.log(error);
-        // Rollback the transaction in case of error
         await session.abortTransaction();
         session.endSession();
         throw error;
     }
-
-
-
-
-    return null
 };
-
-
 
 export const OrderService = {
     createOrderIntoDB,
