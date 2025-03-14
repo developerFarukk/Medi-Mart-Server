@@ -1,12 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import express from 'express';
 import config from "../../config";
+import AppError from '../../errors/AppError';
+import SSLCommerzPayment from 'sslcommerz-lts';
 
 const app = express();
 
 const store_id = config.store_id as string;
 const store_passwd = config.store_passwd as string;
 const is_live = config.is_live as string;
+
 // const is_live = false; 
 
 const initPayment = async (paymentData: { total_amount: number, tran_id: string }) => {
@@ -16,9 +20,9 @@ const initPayment = async (paymentData: { total_amount: number, tran_id: string 
         total_amount,
         currency: 'BDT',
         tran_id, // Use unique tran_id for each API call
-        success_url: `${config.ssl.validation_url}?tran_id=${tran_id}`,
-        fail_url: config.ssl.failed_url as string,
-        cancel_url: config.ssl.cancel_url as string,
+        success_url: `${config.validation_url}?tran_id=${tran_id}`,
+        fail_url: config.failed_url as string,
+        cancel_url: config.cancel_url as string,
         ipn_url: 'http://next-mart-steel.vercel.app/api/v1/ssl/ipn',
         shipping_method: 'Courier',
         product_name: 'N/A.',
@@ -48,16 +52,19 @@ const initPayment = async (paymentData: { total_amount: number, tran_id: string 
     try {
         const apiResponse = await sslcz.init(data);
 
-        // Redirect the user to the payment gateway
-        const GatewayPageURL = apiResponse.GatewayPageURL;
+        console.log( "ssl Lof", apiResponse);
+        
 
-        if (GatewayPageURL) {
-            return GatewayPageURL;
-        } else {
-            throw new AppError(StatusCodes.BAD_GATEWAY, "Failed to generate payment gateway URL.");
-        }
+        // Redirect the user to the payment gateway
+        // const GatewayPageURL = apiResponse.GatewayPageURL;
+
+        // if (GatewayPageURL) {
+        //     return GatewayPageURL;
+        // } else {
+        //     throw new AppError(StatusCodes.BAD_GATEWAY, "Failed to generate payment gateway URL.");
+        // }
     } catch (error) {
-        throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "An error occurred while processing payment.");
+        throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "An error occurred while processing payment.");
     }
 };
 

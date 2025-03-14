@@ -1,11 +1,12 @@
 
 
-import { TOrder } from "./order.interface";
+import { TOrder, TPayment } from "./order.interface";
 import { TJwtPayload } from "../auth/auth.interface";
 import mongoose from "mongoose";
 import { Medicin } from "../medicines/medicine.model";
 import Order from "./order.model";
 import { generateTransactionId } from "../payment/payment.utils";
+import { sslService } from "../sslcommerz/sslcommerz.service";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -66,17 +67,20 @@ const createOrderIntoDB = async (
             paymentMethod: createdOrder?.paymentMethod,
             paymentStatus: createdOrder?.paymentStatus,
             amount: createdOrder?.totalPrice,
-        };
+        } as TPayment
 
-        const payment = await orderUtils.makePaymentAsync(payments);
+        const payment = await sslService.initPayment(payments);
+        console.log( "order", payment);
+        
 
-        await payment.save({ session });
+        // await payment.save({ session });
 
 
         await session.commitTransaction();
         session.endSession();
 
-        return createdOrder;
+        // return createdOrder;
+        return null;
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
