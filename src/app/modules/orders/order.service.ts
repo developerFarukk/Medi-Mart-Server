@@ -8,6 +8,7 @@ import { TOrder } from "./order.interface";
 import { TJwtPayload } from "../auth/auth.interface";
 import mongoose from "mongoose";
 import { Medicin } from "../medicines/medicine.model";
+import Order from "./order.model";
 
 
 // Create Order 
@@ -18,7 +19,7 @@ const createOrderIntoDB = async (
     // client_ip: string
 ) => {
 
-    console.log("Auth User", authUser);
+    // console.log("Auth User", authUser);
 
 
     const session = await mongoose.startSession();
@@ -27,22 +28,33 @@ const createOrderIntoDB = async (
         if (orderData.products) {
 
             for (const medicinItem of orderData.products) {
-                
+
                 // console.log(medicinItem);
-                
+
 
                 const product = await Medicin.findById(medicinItem.medicins)
-                // .populate("Medicin")
-                // .session(session);
+                    // .populate("Medicin")
+                    .session(session);
 
-                if (!product) {
-                    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
-                }
-                
+                if (product) {
 
-                if (product.quantity < medicinItem.orderQuantity) {
-                    throw new Error(`Insufficient stock for product: ${product.name}`);
+                    // if (!product) {
+                    //     throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+                    // }
+
+
+                    if (product.quantity < medicinItem.orderQuantity) {
+                        throw new Error(`Insufficient stock for product: ${product.name}`);
+                    }
+
+                    // Decrement the product stock
+                    product.quantity -= medicinItem.orderQuantity
+                    await product.save({ session });
+                } else {
+                    throw new Error(`Product not found: ${medicinItem.medicins}`);
                 }
+
+
 
                 // console.log(product);
 
@@ -50,6 +62,14 @@ const createOrderIntoDB = async (
 
 
         }
+
+        const order = new Order({
+            ...orderData,
+            user: authUser.userId,
+        });
+
+        console.log(order);
+        
 
     } catch (error) {
         console.log(error);
