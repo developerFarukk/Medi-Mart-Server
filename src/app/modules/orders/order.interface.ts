@@ -23,6 +23,8 @@ export interface TOrder extends Document {
     totalQuantity: number;
     totalPrice: number;
     status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+    paymentMethod: 'Cash' | 'Card' | 'Online';
+    paymentStatus: 'Pending' | 'Paid' | 'Failed';
     shippingAddress: string;
     precriptionImage: string;
     createdAt?: Date;

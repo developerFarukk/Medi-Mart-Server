@@ -38,7 +38,7 @@ const createOrderIntoDB = async (
                     totalPrice += medicinItem.subTotalPrice;
 
                     // Add to totalQuantity
-                    totalQuantity += medicinItem.orderQuantity; 
+                    totalQuantity += medicinItem.orderQuantity;
                 } else {
                     throw new Error(`Product not found: ${medicinItem.medicins}`);
                 }
@@ -59,8 +59,19 @@ const createOrderIntoDB = async (
 
 
         const transactionId = generateTransactionId();
-        console.log('transection',transactionId);
-        
+
+        // Payment integration
+        const payments = {
+            transactionId,
+            paymentMethod: createdOrder?.paymentMethod,
+            paymentStatus: createdOrder?.paymentStatus,
+            amount: createdOrder?.totalPrice,
+        };
+
+        const payment = await orderUtils.makePaymentAsync(payments);
+
+        await payment.save({ session });
+
 
         await session.commitTransaction();
         session.endSession();

@@ -51,6 +51,16 @@ const orderSchema = new Schema<TOrder>({
         enum: ["Pending", "Paid", "Shipped", "Completed", "Cancelled"],
         default: "Pending",
     },
+    paymentMethod: {
+        type: String,
+        enum: ["Cash", "card", "Online"],
+        default: "Online",
+    },
+    paymentStatus: {
+        type: String,
+        enum: ["Pending", "Paid", "Failed"],
+        default: "Pending",
+    },
     shippingAddress: {
         type: String,
         required: false,
