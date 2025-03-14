@@ -47,6 +47,7 @@ const orderSchema = new Schema<TOrder>({
     },
     status: {
         type: String,
+        required: true,
         enum: ["Pending", "Paid", "Shipped", "Completed", "Cancelled"],
         default: "Pending",
     },
@@ -54,30 +55,33 @@ const orderSchema = new Schema<TOrder>({
         type: String,
         required: false,
     },
-    paymentMethod: {
-        type: String,
-        enum: ["Cash", "card", "Online"],
-        default: "Online",
-    },
-    paymentStatus: {
-        type: String,
-        enum: ["Pending", "Paid", "Failed"],
-        default: "Pending",
-    },
+
     precriptionImage: {
         type: String,
         required: false,
         default: ""
-    }
-    // transaction: {
-    //     id: String,
-    //     transactionStatus: String,
-    //     bank_status: String,
-    //     sp_code: String,
-    //     sp_message: String,
-    //     method: String,
-    //     date_time: String,
-    // },
+    },
+    payment: {
+        transactionId: String,
+        paymentMethod: {
+            type: String,
+            enum: ["Cash", "card", "Online"],
+            default: "Online",
+        },
+        paymentStatus: {
+            type: String,
+            enum: ["Pending", "Paid", "Failed"],
+            default: "Pending",
+        },
+        amount: {
+            type: Number,
+            min: 0,
+        },
+        gatewayResponse: {
+            type: Schema.Types.Mixed,
+            default: null,
+        },
+    },
 
 },
     {

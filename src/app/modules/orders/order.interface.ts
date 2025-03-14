@@ -1,11 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Types, Document } from 'mongoose';
-// import { IPayment } from '../payment/payment.interface';
 
 export interface TOrderProduct {
     medicins: Types.ObjectId;
     orderQuantity: number;
     subTotalPrice: number;
+}
+
+
+export interface TPayment {
+    transactionId?: string;
+    paymentMethod: 'Cash' | 'Card' | 'Online';
+    paymentStatus: 'Pending' | 'Paid' | 'Failed';
+    amount: number;
+    gatewayResponse?: Record<string, any>;
 }
 
 export interface TOrder extends Document {
@@ -15,11 +24,9 @@ export interface TOrder extends Document {
     totalPrice: number;
     status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
     shippingAddress: string;
-    paymentMethod: 'Cash' | 'Card' | 'Online';
-    paymentStatus: 'Pending' | 'Paid' | 'Failed';
     precriptionImage: string;
     createdAt?: Date;
     updatedAt?: Date;
-    // payment?: IPayment | null;
+    payment?: TPayment | null;
 }
 

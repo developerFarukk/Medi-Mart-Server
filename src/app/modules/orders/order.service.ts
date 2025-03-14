@@ -5,6 +5,7 @@ import { TJwtPayload } from "../auth/auth.interface";
 import mongoose from "mongoose";
 import { Medicin } from "../medicines/medicine.model";
 import Order from "./order.model";
+import { generateTransactionId } from "../payment/payment.utils";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -53,10 +54,13 @@ const createOrderIntoDB = async (
             user: authUser.userId,
         });
 
-        console.log(order);
-
         const createdOrder = await order.save({ session });
         await createdOrder.populate("user products.medicins");
+
+
+        const transactionId = generateTransactionId();
+        console.log('transection',transactionId);
+        
 
         await session.commitTransaction();
         session.endSession();
