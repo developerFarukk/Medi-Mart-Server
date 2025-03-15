@@ -5,6 +5,7 @@ import config from "../../config";
 import AppError from '../../errors/AppError';
 import SSLCommerzPayment from 'sslcommerz-lts';
 import { TPayment } from '../orders/order.interface';
+import httpStatus from "http-status";
 
 const app = express();
 
@@ -12,7 +13,6 @@ const store_id = config.store_id as string;
 const store_passwd = config.store_passwd as string;
 const is_live = config.is_live as string;
 
-// const is_live = false; 
 
 const initPayment = async (
     // paymentData: { total_amount: number, tran_id: string }
@@ -21,13 +21,7 @@ const initPayment = async (
     const total_amount = payment.amount;
     const tran_id = payment.transactionId;
 
-    // console.log("payment", payment);
-    
 
-    // console.log("amount", total_amount);
-    // console.log("transection ID", tran_id);
-    
-    
 
     const data = {
         total_amount,
@@ -60,28 +54,29 @@ const initPayment = async (
         ship_country: 'Bangladesh',
     };
 
-    console.log(data);
-    
+    // console.log(data);
+
 
     const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
 
-    // try {
-    //     const apiResponse = await sslcz.init(data);
 
-    //     console.log("ssl Lof", apiResponse);
+    try {
+        const apiResponse = await sslcz.init(data);
+
+        console.log("ssl Lof", apiResponse);
 
 
-    //     Redirect the user to the payment gateway
-    //     const GatewayPageURL = apiResponse.GatewayPageURL;
+        // Redirect the user to the payment gateway
+        const GatewayPageURL = apiResponse.GatewayPageURL;
 
-    //     if (GatewayPageURL) {
-    //         return GatewayPageURL;
-    //     } else {
-    //         throw new AppError(StatusCodes.BAD_GATEWAY, "Failed to generate payment gateway URL.");
-    //     }
-    // } catch (error) {
-    //     throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "An error occurred while processing payment.");
-    // }
+        if (GatewayPageURL) {
+            return GatewayPageURL;
+        } else {
+            throw new AppError(httpStatus.BAD_GATEWAY, "Failed to generate payment gateway URL.");
+        }
+    } catch (error) {
+        throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "An error occurred while processing payment.");
+    }
 };
 
 
