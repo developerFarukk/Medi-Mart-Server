@@ -128,14 +128,15 @@ const createOrderIntoDB = async (
         await session.commitTransaction();
         session.endSession();
 
-        return result;
+        // return result;
 
         // return createdOrder;
-        // return {
-        //     createdOrder,
-        //     // payment
-        //     // order
-        // }
+        return {
+            createdOrder,
+            result
+            // payment
+            // order
+        }
         ;
     } catch (error) {
         await session.abortTransaction();

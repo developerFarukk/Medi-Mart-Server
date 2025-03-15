@@ -26,6 +26,10 @@ const moduleRoutes = [
         path: '/orders',
         route: OrderRoutes,
     },
+    // {
+    //     path: '/ssl',
+    //     route: SSLRoutes,
+    // },
 
 ];
 

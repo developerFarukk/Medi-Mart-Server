@@ -56,7 +56,7 @@ const initPayment = async (
         ship_country: 'Bangladesh',
     };
 
-    // console.log("data", data);
+    console.log("data", data);
 
 
     const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
@@ -64,28 +64,28 @@ const initPayment = async (
     // console.log("sslz", sslcz);
 
 
-    const apiResponse = await sslcz.init(data);
-    console.log("api Response", apiResponse);
+    // const apiResponse = await sslcz.init(data);
+    // console.log("api Response", apiResponse);
 
 
 
-    // try {
-    //     const apiResponse = await sslcz.init(data);
+    try {
+        const apiResponse = await sslcz.init(data);
 
-    //     console.log("api response", apiResponse);
+        console.log("api response", apiResponse);
 
 
-    //     // Redirect the user to the payment gateway
-    //     // const GatewayPageURL = apiResponse.GatewayPageURL;
+        // Redirect the user to the payment gateway
+        const GatewayPageURL = apiResponse.GatewayPageURL;
 
-    //     // if (GatewayPageURL) {
-    //     //     return GatewayPageURL;
-    //     // } else {
-    //     //     throw new AppError(httpStatus.BAD_GATEWAY, "Failed to generate payment gateway URL.");
-    //     // }
-    // } catch (error) {
-    //     throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "An error occurred while processing payment.");
-    // }
+        if (GatewayPageURL) {
+            return GatewayPageURL;
+        } else {
+            throw new AppError(httpStatus.BAD_GATEWAY, "Failed to generate payment gateway URL.");
+        }
+    } catch (error) {
+        throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "An error occurred while processing payment.");
+    }
 };
 
 
