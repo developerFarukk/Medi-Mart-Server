@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Types, Document } from 'mongoose';
+import { TPayment } from '../payment/payment.interface';
 
 export interface TOrderProduct {
     medicins: Types.ObjectId;
@@ -9,13 +9,13 @@ export interface TOrderProduct {
 }
 
 
-export interface TPayment {
-    transactionId?: string;
-    paymentMethod: 'Cash' | 'Card' | 'Online';
-    paymentStatus: 'Pending' | 'Paid' | 'Failed';
-    amount: number;
-    gatewayResponse?: Record<string, any>;
-}
+// export interface TPayment {
+//     transactionId?: string;
+//     paymentMethod: 'Cash' | 'Card' | 'Online';
+//     paymentStatus: 'Pending' | 'Paid' | 'Failed';
+//     amount: number;
+//     gatewayResponse?: Record<string, any>;
+// }
 
 export interface TOrder extends Document {
     user: Types.ObjectId;

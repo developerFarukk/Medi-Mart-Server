@@ -2,10 +2,10 @@
 import { Types } from "mongoose";
 
 
-export interface IPayment {
+export interface TPayment {
     user: Types.ObjectId;
     order: Types.ObjectId;
-    shop: Types.ObjectId;
+    medicin: Types.ObjectId;
     method: 'COD' | 'Online';
     status: 'Pending' | 'Paid' | 'Failed';
     transactionId?: string;
