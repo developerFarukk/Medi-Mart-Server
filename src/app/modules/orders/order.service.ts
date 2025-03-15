@@ -70,7 +70,7 @@ const createOrderIntoDB = async (
         } as TPayment
 
         const payment = await sslService.initPayment(payments);
-        console.log( "order", payment);
+        // console.log(payment);
         
 
         // await payment.save({ session });
