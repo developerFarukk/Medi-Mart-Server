@@ -29,7 +29,8 @@ const initPayment = async (
         total_amount,
         currency: 'BDT',
         tran_id, // Use unique tran_id for each API call
-        success_url: `${config.validation_url}?tran_id=${tran_id}`,
+        // success_url: `${config.validation_url}?tran_id=${tran_id}`,
+        success_url: 'http://localhost:3000/success',
         fail_url: config.failed_url as string,
         cancel_url: config.cancel_url as string,
         ipn_url: 'http://localhost:5001/api/v1/ipn',
@@ -61,7 +62,7 @@ const initPayment = async (
 
     const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
 
-    // console.log("sslz", sslcz);
+    console.log("sslz", sslcz);
 
 
     // const apiResponse = await sslcz.init(data);
