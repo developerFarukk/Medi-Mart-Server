@@ -1,27 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import express from 'express';
+
+
+// import express, { Request, Response } from 'express';
 import config from "../../config";
 import AppError from '../../errors/AppError';
 import SSLCommerzPayment from 'sslcommerz-lts';
 import { TPayment } from '../orders/order.interface';
 import httpStatus from "http-status";
 
-const app = express();
+// const app = express();
 
 const store_id = config.store_id as string;
 const store_passwd = config.store_passwd as string;
 const is_live = config.is_live as string;
 
-
 const initPayment = async (
+    payment: TPayment,
+    // request: Request, res: Response
     // paymentData: { total_amount: number, tran_id: string }
-    payment: TPayment
 ) => {
+    // const { total_amount, tran_id } = paymentData;
+
     const total_amount = payment.amount;
     const tran_id = payment.transactionId;
-
-
 
     const data = {
         total_amount,
@@ -30,7 +32,7 @@ const initPayment = async (
         success_url: `${config.validation_url}?tran_id=${tran_id}`,
         fail_url: config.failed_url as string,
         cancel_url: config.cancel_url as string,
-        ipn_url: 'http://next-mart-steel.vercel.app/api/v1/ssl/ipn',
+        ipn_url: 'http://localhost:5001/api/v1/ipn',
         shipping_method: 'Courier',
         product_name: 'N/A.',
         product_category: 'N/A',
@@ -54,33 +56,40 @@ const initPayment = async (
         ship_country: 'Bangladesh',
     };
 
-    // console.log(data);
+    // console.log("data", data);
 
 
     const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
 
-
-    try {
-        const apiResponse = await sslcz.init(data);
-
-        console.log("ssl Lof", apiResponse);
+    // console.log("sslz", sslcz);
 
 
-        // Redirect the user to the payment gateway
-        const GatewayPageURL = apiResponse.GatewayPageURL;
+    const apiResponse = await sslcz.init(data);
+    console.log("api Response", apiResponse);
 
-        if (GatewayPageURL) {
-            return GatewayPageURL;
-        } else {
-            throw new AppError(httpStatus.BAD_GATEWAY, "Failed to generate payment gateway URL.");
-        }
-    } catch (error) {
-        throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "An error occurred while processing payment.");
-    }
+
+
+    // try {
+    //     const apiResponse = await sslcz.init(data);
+
+    //     console.log("api response", apiResponse);
+
+
+    //     // Redirect the user to the payment gateway
+    //     // const GatewayPageURL = apiResponse.GatewayPageURL;
+
+    //     // if (GatewayPageURL) {
+    //     //     return GatewayPageURL;
+    //     // } else {
+    //     //     throw new AppError(httpStatus.BAD_GATEWAY, "Failed to generate payment gateway URL.");
+    //     // }
+    // } catch (error) {
+    //     throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "An error occurred while processing payment.");
+    // }
 };
+
 
 
 export const sslService = {
     initPayment,
-    // validatePaymentService
 };

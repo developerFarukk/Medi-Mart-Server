@@ -7,6 +7,7 @@ import { Medicin } from "../medicines/medicine.model";
 import Order from "./order.model";
 import { generateTransactionId } from "../payment/payment.utils";
 import { sslService } from "../sslcommerz/sslcommerz.service";
+import AppError from "../../errors/AppError";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -71,16 +72,42 @@ const createOrderIntoDB = async (
 
         const payment = await sslService.initPayment(payments);
         // console.log(payment);
-        
+
 
         // await payment.save({ session });
+
+        // let order
+
+        // if (payment?.paymentStatus == "Online") {
+        //     const updatedOrder = await Order.findByIdAndUpdate(
+        //         order._id,
+        //         {
+        //             payment: {
+        //                 total_amount: createdOrder?.totalPrice,
+        //                 tarn_id: transactionId
+        //             },
+        //         },
+        //         { new: true }
+        //     );
+
+        //     if (!updatedOrder) {
+        //         throw new AppError(httpStatus.NOT_FOUND, 'Order not found after update');
+        //     }
+
+        //     order = updatedOrder;
+        // }
 
 
         await session.commitTransaction();
         session.endSession();
 
         // return createdOrder;
-        return null;
+        return {
+            // createdOrder,
+            payment
+            // order
+        }
+            ;
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
