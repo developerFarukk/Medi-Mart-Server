@@ -5,7 +5,8 @@ import { Types } from "mongoose";
 export interface TPayment {
     user: Types.ObjectId;
     order: Types.ObjectId;
-    medicin: Types.ObjectId;
+    // medicin: Types.ObjectId;
+    totalQuantity: number;
     method: 'COD' | 'Online';
     status: 'Pending' | 'Paid' | 'Failed';
     transactionId?: string;

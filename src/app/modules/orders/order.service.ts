@@ -1,6 +1,5 @@
 
 
-import { TOrder, TPayment } from "./order.interface";
 import { TJwtPayload } from "../auth/auth.interface";
 import mongoose from "mongoose";
 import { Medicin } from "../medicines/medicine.model";
@@ -8,6 +7,8 @@ import Order from "./order.model";
 import { generateTransactionId } from "../payment/payment.utils";
 import { sslService } from "../sslcommerz/sslcommerz.service";
 import AppError from "../../errors/AppError";
+import { TOrder } from "./order.interface";
+import { Payment } from "../payment/payment.model";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -63,14 +64,40 @@ const createOrderIntoDB = async (
         const transactionId = generateTransactionId();
 
         // Payment integration
-        const payments = {
+        const payment = new Payment({
+            user: authUser.userId,
+            // medicin: createdOrder.products,
+            order: createdOrder._id,
+            method: orderData.paymentMethod,
             transactionId,
-            paymentMethod: createdOrder?.paymentMethod,
-            paymentStatus: createdOrder?.paymentStatus,
-            amount: createdOrder?.totalPrice,
-        } as TPayment
+            amount: createdOrder.totalPrice,
+            totalQuantity: createdOrder?.totalQuantity
+        });
 
-        const payment = await sslService.initPayment(payments);
+        await payment.save({ session });
+
+
+        let result;
+
+        if (createdOrder.paymentMethod == "Online") {
+            result = await sslService.initPayment({
+                total_amount: createdOrder.totalPrice,
+                tran_id: transactionId,
+            });
+            result = { paymentUrl: result };
+        } else {
+            result = order;
+        }
+
+
+        // const payments = {
+        //     transactionId,
+        //     paymentMethod: createdOrder?.paymentMethod,
+        //     paymentStatus: createdOrder?.paymentStatus,
+        //     amount: createdOrder?.totalPrice,
+        // } as TPayment
+
+        // const payment = await sslService.initPayment(payments);
         // console.log(payment);
 
 
@@ -101,13 +128,15 @@ const createOrderIntoDB = async (
         await session.commitTransaction();
         session.endSession();
 
+        return result;
+
         // return createdOrder;
-        return {
-            // createdOrder,
-            payment
-            // order
-        }
-            ;
+        // return {
+        //     createdOrder,
+        //     // payment
+        //     // order
+        // }
+        ;
     } catch (error) {
         await session.abortTransaction();
         session.endSession();

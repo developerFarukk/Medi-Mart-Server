@@ -14,10 +14,15 @@ const paymentSchema = new Schema<TPayment>(
             ref: 'Order',
             required: true,
         },
-        medicin: {
-            type: Schema.Types.ObjectId,
-            ref: 'Medicin',
+        // medicin: {
+        //     type: Schema.Types.ObjectId,
+        //     ref: 'Medicin',
+        //     required: true,
+        // },
+        totalQuantity: {
+            type: Number,
             required: true,
+            min: [1, "Order Quantity  must be at least 1"],
         },
         method: {
             type: String,

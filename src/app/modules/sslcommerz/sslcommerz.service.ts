@@ -6,7 +6,7 @@
 import config from "../../config";
 import AppError from '../../errors/AppError';
 import SSLCommerzPayment from 'sslcommerz-lts';
-import { TPayment } from '../orders/order.interface';
+// import { TPayment } from '../orders/order.interface';
 import httpStatus from "http-status";
 
 // const app = express();
@@ -16,14 +16,14 @@ const store_passwd = config.store_passwd as string;
 const is_live = config.is_live as string;
 
 const initPayment = async (
-    payment: TPayment,
+    // payment: TPayment,
     // request: Request, res: Response
-    // paymentData: { total_amount: number, tran_id: string }
+    paymentData: { total_amount: number, tran_id: string }
 ) => {
-    // const { total_amount, tran_id } = paymentData;
+    const { total_amount, tran_id } = paymentData;
 
-    const total_amount = payment.amount;
-    const tran_id = payment.transactionId;
+    // const total_amount = payment.amount;
+    // const tran_id = payment.transactionId;
 
     const data = {
         total_amount,
