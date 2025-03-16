@@ -35,6 +35,11 @@ const createOrderIntoDB = async (
                     product.quantity -= medicinItem.orderQuantity;
                     await product.save({ session });
 
+                    // Check if prescription is required
+                    if (product.requiredPrescription === 'Yes' && !orderData.precriptionImage) {
+                        throw new Error(`Prescription image is required for product: ${product.name}`);
+                    }
+
                     // Calculate subTotalPrice for each product
                     medicinItem.subTotalPrice = product.price * medicinItem.orderQuantity;
 
@@ -63,6 +68,7 @@ const createOrderIntoDB = async (
 
         let createdOrder = await orders.save({ session });
         await createdOrder.populate("user products.medicins");
+
 
         // console.log(createdOrder);
 
@@ -242,6 +248,8 @@ const createOrderIntoDB = async (
         throw error;
     }
 };
+
+
 
 
 // veryfy pament
