@@ -18,7 +18,7 @@ const createOrderIntoDB = async (
     authUser: TJwtPayload,
     client_ip: string
 ) => {
-    
+
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
@@ -334,8 +334,42 @@ const getAllOrderFromDB = async (query: Record<string, unknown>) => {
     };
 };
 
+// Get Me Order Data
+const getMeOrderFromDB = async (query: Record<string, unknown>, userEmail: string) => {
+
+    const orders = await Order.find()
+        .populate({
+            path: "user",
+            match: { email: userEmail },
+        })
+        .populate({
+            path: "products",
+            populate: {
+                path: 'Medicin',
+            },
+        })
+        
+    const filteredOrders = orders.filter(order => order.user !== null);
+
+    const orderQuery = new QueryBuilder(Order.find({ _id: { $in: filteredOrders.map(order => order._id) } }), query)
+        .search(OrderSearchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+
+    const meta = await orderQuery.countTotal();
+    const result = await orderQuery.modelQuery;
+
+    return {
+        meta,
+        result,
+    };
+};
+
 export const OrderService = {
     createOrderIntoDB,
     verifyPayment,
-    getAllOrderFromDB
+    getAllOrderFromDB,
+    getMeOrderFromDB
 };

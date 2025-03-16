@@ -36,5 +36,13 @@ router.get(
 );
 
 
+// All order route
+router.get(
+    '/me',
+    auth(USER_ROLE.customer),
+    OrderController.getMeOrder,
+);
+
+
 
 export const OrderRoutes = router;
