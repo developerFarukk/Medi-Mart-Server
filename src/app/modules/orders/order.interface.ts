@@ -8,6 +8,12 @@ export interface TOrderProduct {
     subTotalPrice: number;
 }
 
+export interface TUser {
+    name: string;
+    email: string;
+    number: string;
+}
+
 
 // export interface TPayment {
 //     transactionId?: string;
@@ -18,18 +24,18 @@ export interface TOrderProduct {
 // }
 
 export interface TOrder extends Document {
-    user: Types.ObjectId;
+    user: TUser;
     products: TOrderProduct[];
     totalQuantity: number;
     totalPrice: number;
     status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
-    paymentMethod: 'Cash' | 'Card' | 'Online';
-    paymentStatus: 'Pending' | 'Paid' | 'Failed';
+    paymentMethod: 'Cash' | 'Online';
     shippingAddress: string;
     precriptionImage: string;
     city: string;
     createdAt?: Date;
     updatedAt?: Date;
+    tranjectionId?: string;
     transaction: {
         id: string;
         transactionStatus: string;

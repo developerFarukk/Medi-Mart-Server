@@ -53,14 +53,14 @@ const orderSchema = new Schema<TOrder>({
     },
     paymentMethod: {
         type: String,
-        enum: ["Cash", "card", "Online"],
+        enum: ["Cash", "Online"],
         default: "Online",
     },
-    paymentStatus: {
-        type: String,
-        enum: ["Pending", "Paid", "Failed"],
-        default: "Pending",
-    },
+    // paymentStatus: {
+    //     type: String,
+    //     enum: ["Pending", "Paid", "Failed"],
+    //     default: "Pending",
+    // },
     shippingAddress: {
         type: String,
         required: false,
@@ -73,6 +73,9 @@ const orderSchema = new Schema<TOrder>({
         type: String,
         required: false,
         default: ""
+    },
+    tranjectionId: {
+        type: String,
     },
     // payment: {
     //     transactionId: String,
@@ -103,6 +106,7 @@ const orderSchema = new Schema<TOrder>({
         sp_message: String,
         method: String,
         date_time: String,
+        _id: false
     },
 
 },

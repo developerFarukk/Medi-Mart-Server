@@ -5,11 +5,10 @@ import mongoose from "mongoose";
 import { Medicin } from "../medicines/medicine.model";
 import Order from "./order.model";
 import { generateTransactionId } from "../payment/payment.utils";
-import { sslService } from "../sslcommerz/sslcommerz.service";
 import AppError from "../../errors/AppError";
 import { TOrder } from "./order.interface";
-import { Payment } from "../payment/payment.model";
 import { orderUtils } from "./order.utils";
+import httpStatus from "http-status";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -54,39 +53,118 @@ const createOrderIntoDB = async (
             orderData.totalQuantity = totalQuantity;
         }
 
-        const order = new Order({
+        // const transactionId = generateTransactionId();
+
+        const orders = new Order({
             ...orderData,
             user: authUser.userId,
+            // transactionId
         }) as TOrder;
 
-        const createdOrder = await order.save({ session });
+        let createdOrder = await orders.save({ session });
         await createdOrder.populate("user products.medicins");
 
         // console.log(createdOrder);
 
 
 
+        // let order = await Order.create(createdOrder);
+
+
+
         const transactionId = generateTransactionId();
 
+        if (orderData.paymentMethod === 'Online') {
+            const shurjopayPayload = {
+                amount: createdOrder?.totalPrice,
+                order_id: transactionId,
+                currency: "BDT",
+                customer_name: createdOrder?.user?.name,
+                customer_address: createdOrder?.shippingAddress,
+                customer_email: createdOrder?.user?.email,
+                customer_phone: createdOrder?.user?.number,
+                customer_city: createdOrder?.city,
+                client_ip,
+            };
 
-        const shurjopayPayload = {
-            amount: createdOrder?.totalPrice,
-            order_id: transactionId,
-            currency: "BDT",
-            customer_name: createdOrder?.user?.name,
-            customer_address: createdOrder?.shippingAddress,
-            customer_email: createdOrder?.user?.email,
-            customer_phone: createdOrder?.user?.number,
-            customer_city: createdOrder?.city,
-            client_ip,
-        };
+            const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
+            
+
+            if (payment?.transactionStatus) {
+                const updatedOrder = await Order.findByIdAndUpdate(
+                    createdOrder._id,
+                    {
+                        tranjectionId: payment?.sp_order_id,
+                        transaction: {
+                            id: payment.sp_order_id,
+                            transactionStatus: payment.transactionStatus,
+                        },
+                    },
+                    { new: true, session }
+                );
+
+                if (!updatedOrder) {
+                    throw new AppError(httpStatus.NOT_FOUND, 'Order not found after update');
+                }
+
+                createdOrder = updatedOrder;
+            }
+
+            await session.commitTransaction();
+            session.endSession();
+
+            return {
+                createdOrder,
+                paymentUrl: payment.checkout_url
+            };
+        } else {
+            await session.commitTransaction();
+            session.endSession();
+
+            return {
+                createdOrder,
+                paymentUrl: null
+            };
+        }
+
+
+        // const shurjopayPayload = {
+        //     amount: createdOrder?.totalPrice,
+        //     order_id: transactionId,
+        //     currency: "BDT",
+        //     customer_name: createdOrder?.user?.name,
+        //     customer_address: createdOrder?.shippingAddress,
+        //     customer_email: createdOrder?.user?.email,
+        //     customer_phone: createdOrder?.user?.number,
+        //     customer_city: createdOrder?.city,
+        //     client_ip,
+        // };
+
+
+        // const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
 
 
 
-        const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
+        // if (payment?.transactionStatus) {
+        //     const updatedOrder = await Order.findByIdAndUpdate(
+        //         createdOrder._id,
+        //         {
+        //             tranjectionId: transactionId,
+        //             transaction: {
+        //                 id: payment.sp_order_id,
+        //                 transactionStatus: payment.transactionStatus,
+        //             },
+        //         },
+        //         { new: true, session }
+        //     );
 
-        console.log(payment);
-        
+        //     if (!updatedOrder) {
+        //         throw new AppError(httpStatus.NOT_FOUND, 'Order not found after update');
+        //     }
+
+        //     createdOrder = updatedOrder;
+        // }
+
 
         // Payment integration
         // const payment = new Payment({
@@ -150,20 +228,14 @@ const createOrderIntoDB = async (
         // }
 
 
-        await session.commitTransaction();
-        session.endSession();
+        // await session.commitTransaction();
+        // session.endSession();
 
-        // return result;
+        // return {
+        //     createdOrder,
+        //     paymentUrl: payment.checkout_url
+        // }
 
-        // return createdOrder;
-        return {
-            createdOrder,
-            paymentUrl: payment.checkout_url
-            // result
-            // payment
-            // order
-        }
-            ;
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
