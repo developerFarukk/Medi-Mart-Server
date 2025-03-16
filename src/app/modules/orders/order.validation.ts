@@ -12,7 +12,10 @@ export const createOrderValidationSchema = z.object({
             }),
         ),
         shippingAddress: z.string().optional(),
-        precriptionImage: z.string().optional()
+        precriptionImage: z.string().optional(),
+        city: z.string()
+            .min(2, 'City Name is required')
+            .max(50, 'City Name can not be more than 50 characters'),
     }),
 });
 

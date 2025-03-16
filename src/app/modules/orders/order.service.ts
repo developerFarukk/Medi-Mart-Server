@@ -9,11 +9,13 @@ import { sslService } from "../sslcommerz/sslcommerz.service";
 import AppError from "../../errors/AppError";
 import { TOrder } from "./order.interface";
 import { Payment } from "../payment/payment.model";
+import { orderUtils } from "./order.utils";
 
 // Create Order 
 const createOrderIntoDB = async (
     orderData: Partial<TOrder>,
-    authUser: TJwtPayload
+    authUser: TJwtPayload,
+    client_ip: string
 ) => {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -55,39 +57,62 @@ const createOrderIntoDB = async (
         const order = new Order({
             ...orderData,
             user: authUser.userId,
-        });
+        }) as TOrder;
 
         const createdOrder = await order.save({ session });
         await createdOrder.populate("user products.medicins");
 
+        // console.log(createdOrder);
+
+
 
         const transactionId = generateTransactionId();
 
+
+        const shurjopayPayload = {
+            amount: createdOrder?.totalPrice,
+            order_id: transactionId,
+            currency: "BDT",
+            customer_name: createdOrder?.user?.name,
+            customer_address: createdOrder?.shippingAddress,
+            customer_email: createdOrder?.user?.email,
+            customer_phone: createdOrder?.user?.number,
+            customer_city: createdOrder?.city,
+            client_ip,
+        };
+
+
+
+        const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
+
+        console.log(payment);
+        
+
         // Payment integration
-        const payment = new Payment({
-            user: authUser.userId,
-            // medicin: createdOrder.products,
-            order: createdOrder._id,
-            method: orderData.paymentMethod,
-            transactionId,
-            amount: createdOrder.totalPrice,
-            totalQuantity: createdOrder?.totalQuantity
-        });
+        // const payment = new Payment({
+        //     user: authUser.userId,
+        //     // medicin: createdOrder.products,
+        //     order: createdOrder._id,
+        //     method: orderData.paymentMethod,
+        //     transactionId,
+        //     amount: createdOrder.totalPrice,
+        //     totalQuantity: createdOrder?.totalQuantity
+        // });
 
-        await payment.save({ session });
+        // await payment.save({ session });
 
 
-        let result;
+        // let result;
 
-        if (createdOrder.paymentMethod == "Online") {
-            result = await sslService.initPayment({
-                total_amount: createdOrder.totalPrice,
-                tran_id: transactionId,
-            });
-            result = { paymentUrl: result };
-        } else {
-            result = order;
-        }
+        // if (createdOrder.paymentMethod == "Online") {
+        //     result = await sslService.initPayment({
+        //         total_amount: createdOrder.totalPrice,
+        //         tran_id: transactionId,
+        //     });
+        //     result = { paymentUrl: result };
+        // } else {
+        //     result = order;
+        // }
 
 
         // const payments = {
@@ -133,11 +158,12 @@ const createOrderIntoDB = async (
         // return createdOrder;
         return {
             createdOrder,
-            result
+            paymentUrl: payment.checkout_url
+            // result
             // payment
             // order
         }
-        ;
+            ;
     } catch (error) {
         await session.abortTransaction();
         session.endSession();

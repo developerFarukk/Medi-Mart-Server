@@ -1,6 +1,6 @@
 
 import { Types, Document } from 'mongoose';
-import { TPayment } from '../payment/payment.interface';
+// import { TPayment } from '../payment/payment.interface';
 
 export interface TOrderProduct {
     medicins: Types.ObjectId;
@@ -27,8 +27,18 @@ export interface TOrder extends Document {
     paymentStatus: 'Pending' | 'Paid' | 'Failed';
     shippingAddress: string;
     precriptionImage: string;
+    city: string;
     createdAt?: Date;
     updatedAt?: Date;
-    payment?: TPayment | null;
+    transaction: {
+        id: string;
+        transactionStatus: string;
+        bank_status: string;
+        sp_code: string;
+        sp_message: string;
+        method: string;
+        date_time: string;
+    };
+    // payment?: TPayment | null;
 }
 
