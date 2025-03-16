@@ -1,7 +1,6 @@
 
 import { Types, Document } from 'mongoose';
 import { TMedicine } from '../medicines/medicine.interface';
-import { TUser } from '../user/user.interface';
 // import { TPayment } from '../payment/payment.interface';
 
 export interface TOrderProduct {
@@ -11,7 +10,7 @@ export interface TOrderProduct {
 }
 
 export interface TUserr {
-    user: Types.ObjectId | TUser;
+    userId: Types.ObjectId
     name: string;
     email: string;
     number: string;
@@ -54,3 +53,8 @@ export interface TOrder extends Document {
 }
 
 
+
+// export interface TOrderPopulated extends TOrder {
+//     user: TUserr & { users: TUser };
+//     products: (Omit<TOrderProduct, 'medicins'> & { medicins: TMedicine })[];
+// }

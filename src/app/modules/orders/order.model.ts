@@ -6,13 +6,29 @@ import { TOrder } from './order.interface';
 
 const orderSchema = new Schema<TOrder>({
 
+
     user: {
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            required: [true, 'User id is required']
-        },
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, 'User id is required']
     },
+    // user: [{
+    //     userId: {
+    //         type: Schema.Types.ObjectId,
+    //         ref: "User",
+    //         required: [true, 'User id is required']
+    //     },
+    //     name: {
+    //         type: String
+    //     },
+    //     email: {
+    //         type: String
+    //     },
+    //     number: {
+    //         type: String
+    //     }
+    // }],
+
 
     products: [
         {

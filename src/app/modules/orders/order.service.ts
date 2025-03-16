@@ -10,6 +10,7 @@ import { TOrder } from "./order.interface";
 import { orderUtils } from "./order.utils";
 import httpStatus from "http-status";
 import QueryBuilder from "../../builder/QueryBuilder";
+import { OrderSearchableFields } from "./order.constant";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -17,6 +18,7 @@ const createOrderIntoDB = async (
     authUser: TJwtPayload,
     client_ip: string
 ) => {
+    
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
@@ -63,14 +65,17 @@ const createOrderIntoDB = async (
 
         const orders = new Order({
             ...orderData,
-            user: {
-                user: authUser.userId
-            },
+            user: authUser.userId
+            // user: {
+            //     userId: authUser.userId,
+            //     // email: authUser.email,
+            // }
             // transactionId
-        }) as TOrder;
+        }) as TOrder
 
         let createdOrder = await orders.save({ session });
-        await createdOrder.populate("user.user products.medicins") as TOrderPopulated;
+        await createdOrder.populate("user products.medicins");
+
 
         // createdOrder = await Order.findById(createdOrder._id)
         //     .populate('user')
@@ -102,6 +107,9 @@ const createOrderIntoDB = async (
             };
 
             const payment = await orderUtils.makePaymentAsync(shurjopayPayload);
+
+            // console.log(payment);
+
 
 
             if (payment?.transactionStatus) {
