@@ -348,7 +348,7 @@ const getMeOrderFromDB = async (query: Record<string, unknown>, userEmail: strin
                 path: 'Medicin',
             },
         })
-        
+
     const filteredOrders = orders.filter(order => order.user !== null);
 
     const orderQuery = new QueryBuilder(Order.find({ _id: { $in: filteredOrders.map(order => order._id) } }), query)
@@ -367,9 +367,26 @@ const getMeOrderFromDB = async (query: Record<string, unknown>, userEmail: strin
     };
 };
 
+
+// Delete Order Data
+const deleteOrderFromDB = async (id: string) => {
+
+    const order = await Order.findById(id);
+
+    // Check blog Exist
+    if (!order) {
+        throw new AppError(httpStatus.NOT_FOUND, 'This Order is not found !');
+    }
+
+    const result = Order.findByIdAndDelete(id)
+    return result;
+};
+
+
 export const OrderService = {
     createOrderIntoDB,
     verifyPayment,
     getAllOrderFromDB,
-    getMeOrderFromDB
+    getMeOrderFromDB,
+    deleteOrderFromDB
 };

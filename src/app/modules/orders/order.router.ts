@@ -44,5 +44,12 @@ router.get(
 );
 
 
+// Delete Order Route
+router.delete('/:id',
+    auth(USER_ROLE.admin, USER_ROLE.customer),
+    OrderController.deleteOrder
+);
+
+
 
 export const OrderRoutes = router;
