@@ -28,5 +28,13 @@ router.get(
 );
 
 
+// All order route
+router.get(
+    '/',
+    auth(USER_ROLE.admin, USER_ROLE.customer),
+    OrderController.getAllOrder,
+);
+
+
 
 export const OrderRoutes = router;

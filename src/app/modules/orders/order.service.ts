@@ -136,7 +136,7 @@ const createOrderIntoDB = async (
             session.endSession();
 
             return {
-                createdOrder,
+                // createdOrder,
                 paymentUrl: payment.checkout_url
             };
         } else {
@@ -314,7 +314,7 @@ const getAllOrderFromDB = async (query: Record<string, unknown>) => {
         .populate({
             path: "products",
             populate: {
-                path: 'product',
+                path: 'medicins',
             },
         }),
         query,
