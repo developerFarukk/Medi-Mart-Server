@@ -9,6 +9,7 @@ import AppError from "../../errors/AppError";
 import { TOrder } from "./order.interface";
 import { orderUtils } from "./order.utils";
 import httpStatus from "http-status";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -62,12 +63,19 @@ const createOrderIntoDB = async (
 
         const orders = new Order({
             ...orderData,
-            user: authUser.userId,
+            user: {
+                user: authUser.userId
+            },
             // transactionId
         }) as TOrder;
 
         let createdOrder = await orders.save({ session });
-        await createdOrder.populate("user products.medicins");
+        await createdOrder.populate("user.user products.medicins") as TOrderPopulated;
+
+        // createdOrder = await Order.findById(createdOrder._id)
+        //     .populate('user')
+        //     .populate('products.medicins')
+        //     .session(session) as TOrderPopulated;
 
 
         // console.log(createdOrder);
@@ -250,8 +258,6 @@ const createOrderIntoDB = async (
 };
 
 
-
-
 // veryfy pament
 const verifyPayment = async (order_id: string) => {
     const verifiedPayment = await orderUtils.verifyPaymentAsync(order_id);
@@ -291,7 +297,37 @@ const verifyPayment = async (order_id: string) => {
     return verifiedPayment;
 };
 
+
+// get All Order
+const getAllOrderFromDB = async (query: Record<string, unknown>) => {
+
+    const orderQuery = new QueryBuilder(Order.find()
+        .populate("user")
+        .populate({
+            path: "products",
+            populate: {
+                path: 'product',
+            },
+        }),
+        query,
+    )
+        .search(OrderSearchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+
+    const meta = await orderQuery.countTotal();
+    const result = await orderQuery.modelQuery;
+
+    return {
+        meta,
+        result,
+    };
+};
+
 export const OrderService = {
     createOrderIntoDB,
-    verifyPayment
+    verifyPayment,
+    getAllOrderFromDB
 };

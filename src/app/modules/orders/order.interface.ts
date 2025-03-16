@@ -1,14 +1,17 @@
 
 import { Types, Document } from 'mongoose';
+import { TMedicine } from '../medicines/medicine.interface';
+import { TUser } from '../user/user.interface';
 // import { TPayment } from '../payment/payment.interface';
 
 export interface TOrderProduct {
-    medicins: Types.ObjectId;
+    medicins: Types.ObjectId | TMedicine;
     orderQuantity: number;
     subTotalPrice: number;
 }
 
-export interface TUser {
+export interface TUserr {
+    user: Types.ObjectId | TUser;
     name: string;
     email: string;
     number: string;
@@ -24,7 +27,8 @@ export interface TUser {
 // }
 
 export interface TOrder extends Document {
-    user: TUser;
+    // user: Types.ObjectId;
+    user: TUserr;
     products: TOrderProduct[];
     totalQuantity: number;
     totalPrice: number;
@@ -48,4 +52,5 @@ export interface TOrder extends Document {
     };
     // payment?: TPayment | null;
 }
+
 
