@@ -56,11 +56,11 @@ const orderSchema = new Schema<TOrder>({
         enum: ["Cash", "Online"],
         default: "Online",
     },
-    // paymentStatus: {
-    //     type: String,
-    //     enum: ["Pending", "Paid", "Failed"],
-    //     default: "Pending",
-    // },
+    paymentStatus: {
+        type: String,
+        enum: ["Pending", "Paid", "Failed"],
+        default: "Pending",
+    },
     shippingAddress: {
         type: String,
         required: false,

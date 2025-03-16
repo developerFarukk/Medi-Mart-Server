@@ -19,5 +19,14 @@ router.post(
 );
 
 
+// verify order Route
+router.get(
+    '/verify',
+    auth(USER_ROLE.customer),
+    // validateRequest(OrderValidations.createOrderValidationSchema),
+    OrderController.verifyPayment,
+);
+
+
 
 export const OrderRoutes = router;

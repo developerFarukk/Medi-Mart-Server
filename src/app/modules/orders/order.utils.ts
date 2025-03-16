@@ -3,7 +3,7 @@
 
 import Shurjopay, {
     PaymentResponse,
-    // VerificationResponse,
+    VerificationResponse,
     //  VerificationResponse 
 } from "shurjopay";
 import config from "../../config";
@@ -31,7 +31,18 @@ const makePaymentAsync = async (paymentPayload: any): Promise<PaymentResponse> =
 };
 
 
+const verifyPaymentAsync = (order_id: string): Promise<VerificationResponse[]> => {
+    return new Promise((resolve, reject) => {
+        shurjopay.verifyPayment(
+            order_id,
+            (response) => resolve(response),
+            (error) => reject(error)
+        );
+    });
+};
+
+
 export const orderUtils = {
     makePaymentAsync,
-    // verifyPaymentAsync,
+    verifyPaymentAsync,
 };

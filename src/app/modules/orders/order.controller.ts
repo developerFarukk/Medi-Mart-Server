@@ -14,7 +14,7 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
     const user = req.user
 
     const result = await OrderService.createOrderIntoDB(
-        req.body, 
+        req.body,
         user as TJwtPayload,
         req.ip!
     );
@@ -29,6 +29,26 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
 });
 
 
+// Veryfy payment
+const verifyPayment = catchAsync(async (req, res) => {
+
+    const order = await OrderService.verifyPayment(req.query.order_id as string);;
+
+
+    // const result = await OrderService.createOrderIntoDB(req.body, user, req.ip!);
+    // console.log(result);
+
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Order verify succesfully',
+        data: order,
+    });
+});
+
+
 export const OrderController = {
     createOrder,
+    verifyPayment
 };
