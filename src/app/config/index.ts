@@ -14,6 +14,9 @@ export default {
     jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
     // jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
 
+    sender_email: process.env.SENADER_EMAIL,
+    sender_email_password: process.env.SENDER_EMAIL_PASSWORD,
+
 
     // ssl Commerz api 
     // store_id: process.env.STORE_ID,

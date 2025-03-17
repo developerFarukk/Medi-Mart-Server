@@ -10,13 +10,15 @@ export const sendEmail = async (to: string, html: string) => {
         secure: config.node_env === 'production',
         auth: {
             // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-            user: 'farukk7920@gmail.com',
-            pass: 'phoo qhjv jmst ydnh',
+            // user: 'farukk7920@gmail.com',
+            // pass: 'phoo qhjv jmst ydnh',
+            user: config.sender_email,
+            pass: config.sender_email_password,
         },
     });
 
     await transporter.sendMail({
-        from: 'farukk7920@gmail.com', // sender address
+        from: config.sender_email, // sender address
         to, // List of Recever email address
         subject: 'Order Status Updated!', // Subject line
         text: 'Your order status has been updated.', // plain text body
