@@ -10,7 +10,7 @@ import { TOrder } from "./order.interface";
 import { orderUtils } from "./order.utils";
 import httpStatus from "http-status";
 import QueryBuilder from "../../builder/QueryBuilder";
-import { OrderSearchableFields } from "./order.constant";
+import { isValidStatusTransition, OrderSearchableFields } from "./order.constant";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -383,10 +383,91 @@ const deleteOrderFromDB = async (id: string) => {
 };
 
 
+// Update Order
+const updateOrderIntoDB = async (id: string, payload: Partial<TOrder>) => {
+    // Find the order
+    const order = await Order.findById(id).populate('products.medicins');
+    if (!order) {
+        throw new AppError(httpStatus.NOT_FOUND, 'This Order is not found!');
+    }
+
+    // Check if status is being updated
+    if (payload.status && payload.status !== order.status) {
+        if (!isValidStatusTransition(order.status, payload.status)) {
+            throw new AppError(
+                httpStatus.BAD_REQUEST,
+                `Invalid status transition from ${order.status} to ${payload.status}`
+            );
+        }
+    }
+
+
+    // if (payload.products) {
+    //     for (const updatedProduct of payload.products) {
+    //         // Find the corresponding product in the order
+    //         const existingProduct = order.products.find(
+    //             (p) => p.medicins?._id.toString() === updatedProduct?.medicins.toString()
+    //         );
+
+    //         if (!existingProduct) {
+    //             throw new AppError(httpStatus.NOT_FOUND, 'Product not found in the order!');
+    //         }
+
+    //         // Find the bicycle in the database
+    //         const bicycle = await Bicycle.isBicycleExists(updatedProduct.product.toString());
+    //         if (!bicycle) {
+    //             throw new AppError(httpStatus.NOT_FOUND, 'Bicycle not found!');
+    //         }
+
+    //         // Check if the requested quantity is available in stock
+    //         const quantityDifference = updatedProduct.quantity - existingProduct.quantity;
+    //         if (quantityDifference > 0 && bicycle.quantity < quantityDifference) {
+    //             throw new AppError(httpStatus.BAD_REQUEST, 'Insufficient stock for this bicycle!');
+    //         }
+
+    //         // Update the bicycle stock quantity
+    //         await Bicycle.findByIdAndUpdate(
+    //             bicycle.id,
+    //             { $inc: { quantity: -quantityDifference } },
+    //             { new: true }
+    //         );
+
+    //         // Update the product quantity in the order
+    //         existingProduct.quantity = updatedProduct.quantity;
+    //     }
+    // }
+
+    // Recalculate the total price of the order
+    // if (payload.products) {
+    //     let totalPrice = 0;
+    //     for (const product of order.products) {
+    //         const bicycle = await Bicycle.isBicycleExists(product.product.toString());
+    //         if (!bicycle) {
+    //             throw new AppError(httpStatus.NOT_FOUND, 'Bicycle not found!');
+    //         }
+    //         totalPrice += bicycle.price * product.quantity;
+    //     }
+    //     payload.totalPrice = totalPrice;
+    // }
+
+    // Update the order
+    
+    
+    const result = await Order.findOneAndUpdate(
+        { _id: id },
+        { ...payload, products: order.products },
+        { new: true }
+    );
+
+    return result;
+};
+
+
 export const OrderService = {
     createOrderIntoDB,
     verifyPayment,
     getAllOrderFromDB,
     getMeOrderFromDB,
-    deleteOrderFromDB
+    deleteOrderFromDB,
+    updateOrderIntoDB
 };

@@ -101,10 +101,31 @@ const deleteOrder = catchAsync(async (req, res) => {
 });
 
 
+// Update Order
+const updateOrder = catchAsync(async (req, res) => {
+    
+    const { orderId } = req.params;
+    // console.log(orderId);
+
+    const result = await OrderService.updateOrderIntoDB(orderId, req.body);
+
+    // console.log(result);
+
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Order is updated succesfully',
+        data: result,
+    });
+});
+
+
 export const OrderController = {
     createOrder,
     verifyPayment,
     getAllOrder,
     getMeOrder,
-    deleteOrder
+    deleteOrder,
+    updateOrder
 };

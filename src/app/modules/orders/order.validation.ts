@@ -3,6 +3,8 @@
 import { z } from "zod";
 
 
+export const TOrderStatusSchema = z.enum(["Pending", 'Processing', "Shipped", "Delivered", "Cancelled"]);
+
 export const createOrderValidationSchema = z.object({
     body: z.object({
         products: z.array(
@@ -20,6 +22,18 @@ export const createOrderValidationSchema = z.object({
 });
 
 
+
+
+// Update Zod Route Validation
+export const updateOrderValidationSchema = z.object({
+    body: z.object({
+        // quantity: z.number().positive().optional(),
+        status: TOrderStatusSchema.optional()
+    })
+});
+
+
 export const OrderValidations = {
     createOrderValidationSchema,
+    updateOrderValidationSchema
 };
