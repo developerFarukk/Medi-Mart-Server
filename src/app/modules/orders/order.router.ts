@@ -55,7 +55,7 @@ router.delete('/:id',
 // Update Order Route
 router.patch(
     '/:orderId',
-    auth(USER_ROLE.customer, USER_ROLE.admin),
+    auth(USER_ROLE.admin),
     validateRequest(OrderValidations.updateOrderValidationSchema),
     OrderController.updateOrder,
 );

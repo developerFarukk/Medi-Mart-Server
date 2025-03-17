@@ -11,6 +11,8 @@ import { orderUtils } from "./order.utils";
 import httpStatus from "http-status";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { isValidStatusTransition, OrderSearchableFields } from "./order.constant";
+import { sendEmail } from "../../utils/sendEmail";
+import { User } from "../user/user.model";
 
 // Create Order 
 const createOrderIntoDB = async (
@@ -387,6 +389,7 @@ const deleteOrderFromDB = async (id: string) => {
 const updateOrderIntoDB = async (id: string, payload: Partial<TOrder>) => {
     // Find the order
     const order = await Order.findById(id).populate('products.medicins');
+
     if (!order) {
         throw new AppError(httpStatus.NOT_FOUND, 'This Order is not found!');
     }
@@ -400,6 +403,16 @@ const updateOrderIntoDB = async (id: string, payload: Partial<TOrder>) => {
             );
         }
     }
+
+    const user = await User.findById(order.user);
+
+    
+    if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+    }
+
+    // console.log(users);
+
 
 
     // if (payload.products) {
@@ -451,13 +464,113 @@ const updateOrderIntoDB = async (id: string, payload: Partial<TOrder>) => {
     // }
 
     // Update the order
-    
-    
+
+    // const emailHtml = `
+    //     <h1>Your Order Status Has Been Updated</h1>
+    //     <p>Order ID: ${order.tranjectionId}</p>
+    //     <p>New Status: ${payload.status}</p>
+    //     <p>Thank you for shopping with us!</p>
+    // `;
+
+    const emailHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .email-body {
+            padding: 20px;
+            color: #333333;
+        }
+        .email-body h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .email-body p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0 0 15px;
+        }
+        .email-footer {
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #666666;
+        }
+        .email-footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .email-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>Order Status Update</h1>
+        </div>
+        <div class="email-body">
+            <h2>Hello ${user.name},</h2>
+            <p>Your order status has been updated. Here are the details:</p>
+            <p><strong>Order ID:</strong> ${order.tranjectionId}</p>
+            <p><strong>New Status:</strong> ${payload.status}</p>
+            <p>Thank you for shopping with us. If you have any questions, feel free to contact us.</p>
+        </div>
+        <div class="email-footer">
+            <p>If you did not make this request, please ignore this email.</p>
+            <p>© 2025 MediMart. All rights reserved.</p>
+            <p><a href="https://medimart-client-one.vercel.app">Visit our website</a></p>
+        </div>
+    </div>
+</body>
+</html>
+`;
+
+
+    await sendEmail(user.email, emailHtml);
+
+
+    // sendEmail(user.email, emailHtml);
+
+
     const result = await Order.findOneAndUpdate(
         { _id: id },
         { ...payload, products: order.products },
         { new: true }
     );
+
+
+    // console.log(sendEmail);
+
 
     return result;
 };
