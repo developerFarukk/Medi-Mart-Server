@@ -10,8 +10,6 @@ export const sendEmail = async (to: string, html: string) => {
         secure: config.node_env === 'production',
         auth: {
             // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-            // user: 'farukk7920@gmail.com',
-            // pass: 'phoo qhjv jmst ydnh',
             user: config.sender_email,
             pass: config.sender_email_password,
         },
