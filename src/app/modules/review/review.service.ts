@@ -52,11 +52,11 @@ const deleteReviewFromDB = async (id: string) => {
     }
 
     const result = await Review.findByIdAndDelete(existinReview);
-
-    console.log(result);
     
     return result;
 };
+
+
 
 export const ReviewServices = {
     createReviewIntoDB,
