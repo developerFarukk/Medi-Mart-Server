@@ -19,6 +19,7 @@ const orderSchema = new Schema<TReview>({
         type: Number,
         required: true,
         min: [1, "Review  count  must be at least 1"],
+        max: [5, "Review count maximum at least 5"]
     },
     title: {
         type: String,
