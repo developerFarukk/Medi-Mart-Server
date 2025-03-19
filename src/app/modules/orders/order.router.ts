@@ -23,7 +23,6 @@ router.post(
 router.get(
     '/verify',
     auth(USER_ROLE.customer),
-    // validateRequest(OrderValidations.createOrderValidationSchema),
     OrderController.verifyPayment,
 );
 
@@ -31,7 +30,7 @@ router.get(
 // All order route
 router.get(
     '/',
-    auth(USER_ROLE.admin, USER_ROLE.customer),
+    auth(USER_ROLE.admin),
     OrderController.getAllOrder,
 );
 
@@ -46,7 +45,7 @@ router.get(
 
 // Delete Order Route
 router.delete('/:id',
-    auth(USER_ROLE.admin, USER_ROLE.customer),
+    auth(USER_ROLE.admin),
     OrderController.deleteOrder
 );
 
