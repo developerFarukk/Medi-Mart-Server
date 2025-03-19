@@ -10,17 +10,12 @@ const orderSchema = new Schema<TReview>({
         ref: "User",
         required: [true, 'User id is required']
     },
-    prodect: {
+    product: {
         type: Schema.Types.ObjectId,
         ref: "Medicin",
         required: [true, 'Medicin id is required']
     },
-    reviewCount: {
-        type: Number,
-        required: true,
-        min: [1, "Review  count  must be at least 1"],
-        max: [5, "Review count maximum at least 5"]
-    },
+    
     title: {
         type: String,
         trim: true,
@@ -31,6 +26,13 @@ const orderSchema = new Schema<TReview>({
         trim: true,
         required: [true, 'Review  message is required'],
     },
+    reviewCount: {
+        type: Number,
+        required: true,
+        min: [1, "Review  count  must be at least 1"],
+        max: [5, "Review count maximum at least 5"],
+        default: 1
+    },
 
 },
     {
@@ -39,5 +41,5 @@ const orderSchema = new Schema<TReview>({
 
 )
 
-const Order = model<TReview>('Review', orderSchema)
-export default Order;
+const Review = model<TReview>('Review', orderSchema)
+export default Review;

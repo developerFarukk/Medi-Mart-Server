@@ -1,15 +1,50 @@
 
 
+import mongoose from "mongoose";
+import { TJwtPayload } from "../auth/auth.interface";
+import { TReview } from "./review.interface";
+import { Medicin } from "../medicines/medicine.model";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
+import Review from "./review.model";
+import { User } from "../user/user.model";
+
+
 
 // // Create Medicin Function
-// const createReviewIntoDB = async (payload: TMedicine) => {
+const createReviewIntoDB = async (
+    authUser: TJwtPayload,
+    // reviewData: Partial<TReview>
+    payload: TReview
+) => {
 
-//     const result = await Medicin.create(payload);
+    const productId = await Medicin.findById(payload?.product)
 
-//     return result;
+    if (!productId) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+    }
 
-// };
+    const userId = await User.findById(authUser?.userId)
 
-// export const MedicinServices = {
-//     createReviewIntoDB
-// };
+    if (!userId) {
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    }
+
+    const review = {
+        ...payload,
+        user: authUser?.userId
+    }
+
+    const creatreview = await Review.create(review)
+
+    console.log(creatreview);
+
+
+
+    return creatreview
+
+};
+
+export const reviewServices = {
+    createReviewIntoDB
+};
