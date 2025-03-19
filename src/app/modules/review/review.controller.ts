@@ -30,7 +30,7 @@ const createReview = catchAsync(async (req, res) => {
 // Delete Review
 const deleteReview = catchAsync(async (req, res) => {
     const { id } = req.params;
-    
+
     const result = await ReviewServices.deleteReviewFromDB(id);
 
     sendResponse(res, {
@@ -42,8 +42,23 @@ const deleteReview = catchAsync(async (req, res) => {
 });
 
 
+// All Review
+const getAllReview = catchAsync(async (req, res) => {
+
+    const result = await ReviewServices.getAllReviewFromDB(req.query);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'All Review get successfully',
+        data: result
+    });
+});
+
+
 
 export const ReviewController = {
     createReview,
-    deleteReview
+    deleteReview,
+    getAllReview
 };

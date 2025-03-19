@@ -25,4 +25,10 @@ router.delete('/:id',
     ReviewController.deleteReview
 );
 
+// All Review Route
+router.get(
+    '/',
+    ReviewController.getAllReview,
+);
+
 export const ReviewRoutes = router;
