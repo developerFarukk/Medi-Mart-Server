@@ -6,7 +6,6 @@ import { TOrder } from './order.interface';
 
 const orderSchema = new Schema<TOrder>({
 
-
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
