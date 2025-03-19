@@ -11,7 +11,7 @@ import { User } from "../user/user.model";
 
 
 
-// // Create Medicin Function
+// // Create review Function
 const createReviewIntoDB = async (
     authUser: TJwtPayload,
     // reviewData: Partial<TReview>
@@ -37,14 +37,29 @@ const createReviewIntoDB = async (
 
     const creatreview = await Review.create(review)
 
-    console.log(creatreview);
-
-
 
     return creatreview
 
 };
 
-export const reviewServices = {
-    createReviewIntoDB
+// Delete Review
+const deleteReviewFromDB = async (id: string) => {
+
+    const existinReview = await Review.findById({ _id: id });
+    
+    if (!existinReview) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Review id not found!');
+    }
+
+    const result = await Review.findByIdAndDelete(existinReview);
+
+    console.log(result);
+    
+    return result;
 };
+
+export const ReviewServices = {
+    createReviewIntoDB,
+    deleteReviewFromDB
+};
+

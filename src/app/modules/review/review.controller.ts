@@ -1,10 +1,10 @@
 
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
-import { reviewServices } from "./review.service";
 // import { TJwtPayload } from "../auth/auth.interface";
 import httpStatus from "http-status";
 import { TJwtPayload } from "../auth/auth.interface";
+import { ReviewServices } from "./review.service";
 
 // Creat review Function
 const createReview = catchAsync(async (req, res) => {
@@ -13,7 +13,7 @@ const createReview = catchAsync(async (req, res) => {
     const user = req.user
 
 
-    const result = await reviewServices.createReviewIntoDB(
+    const result = await ReviewServices.createReviewIntoDB(
         user as TJwtPayload,
         req.body,
     );
@@ -27,7 +27,23 @@ const createReview = catchAsync(async (req, res) => {
 });
 
 
+// Delete Review
+const deleteReview = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    
+    const result = await ReviewServices.deleteReviewFromDB(id);
 
-export const reviewController = {
-    createReview
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Review is deleted succesfully',
+        data: result,
+    });
+});
+
+
+
+export const ReviewController = {
+    createReview,
+    deleteReview
 };
