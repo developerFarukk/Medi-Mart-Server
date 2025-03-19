@@ -1,6 +1,5 @@
 
 
-import mongoose from "mongoose";
 import { TJwtPayload } from "../auth/auth.interface";
 import { TReview } from "./review.interface";
 import { Medicin } from "../medicines/medicine.model";
@@ -16,7 +15,6 @@ import { ReviewSearchableFields } from "./review.constant";
 // // Create review Function
 const createReviewIntoDB = async (
     authUser: TJwtPayload,
-    // reviewData: Partial<TReview>
     payload: TReview
 ) => {
 
