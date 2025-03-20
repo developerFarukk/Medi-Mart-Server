@@ -30,6 +30,16 @@ const createReviewIntoDB = async (
         throw new AppError(httpStatus.NOT_FOUND, 'User not found');
     }
 
+    // Check if the user has already reviewed the product
+    const existingReview = await Review.findOne({
+        user: authUser?.userId,
+        product: payload?.product,
+    });
+
+    if (existingReview) {
+        throw new AppError(httpStatus.BAD_REQUEST, 'You have already reviewed this product');
+    }
+
     const review = {
         ...payload,
         user: authUser?.userId
