@@ -55,8 +55,6 @@ const getSingleUser = catchAsync(async (req, res) => {
 
     const { userId } = req.user
 
-    console.log(req.user);
-    
 
     const result = await UserServices.getSingleUserIntoDB(userId);
 
