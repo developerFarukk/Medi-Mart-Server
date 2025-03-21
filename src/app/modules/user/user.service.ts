@@ -80,6 +80,7 @@ const updateUserIntoDB = async (id: string, payload: Partial<TUser>) => {
 // get single user
 const getSingleUserIntoDB = async (userId: string) => {
 
+
     const existingUser = await User.findOne({ _id: userId });
 
     if (!existingUser) {

@@ -12,4 +12,7 @@ export interface TJwtPayload {
     email: string;
     role: UserRole;
     image: string;
+    status: 'in-progress' | 'blocked';
+    address: string;
+    number: string;
 }

@@ -45,9 +45,12 @@ const loginUser = async (payload: TAuth) => {
         name: user.name as string,
         email: user.email as string,
         role: user.role,
-        image: user.image as string
+        image: user.image as string,
+        status: user?.status,
+        address: user?.address,
+        number: user?.number
     };
-    
+
 
     const accessToken = createToken(
         jwtPayload,
