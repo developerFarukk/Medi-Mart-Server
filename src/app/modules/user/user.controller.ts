@@ -50,8 +50,25 @@ const updateUser = catchAsync(async (req, res) => {
 });
 
 
+// get Single User 
+const getSingleUser = catchAsync(async (req, res) => {
+
+    const { userId } = req.user
+
+    const result = await UserServices.getSingleUserIntoDB(userId);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Single User get succesfully',
+        data: result,
+    });
+})
+
+
 export const UserControllers = {
     registerUser,
     getAllUser,
-    updateUser
+    updateUser,
+    getSingleUser
 };

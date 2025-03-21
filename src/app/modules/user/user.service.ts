@@ -1,5 +1,4 @@
 
-
 import QueryBuilder from "../../builder/QueryBuilder";
 import AppError from "../../errors/AppError";
 import { userSearchableFields } from "./user.constant";
@@ -78,10 +77,27 @@ const updateUserIntoDB = async (id: string, payload: Partial<TUser>) => {
 };
 
 
+// get single user
+const getSingleUserIntoDB = async (userId: string) => {
+
+    const existingUser = await User.findOne({ _id: userId });
+
+    if (!existingUser) {
+        throw new AppError(httpStatus.NOT_FOUND, 'User id not found!');
+    }
+
+    const result = await User.findById(existingUser)
+
+    return result
+
+}
+
+
 
 
 export const UserServices = {
     registerUserIntoDB,
     getAllUserIntoDB,
-    updateUserIntoDB
+    updateUserIntoDB,
+    getSingleUserIntoDB
 };
