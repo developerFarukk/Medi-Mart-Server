@@ -99,7 +99,7 @@ const getSingleMedicinFromDB = async (id: string) => {
 
 // get panfing Prescription
 const getAllstockMediFromDB = async () => {
-    const result = await Medicin.find({ stockAvailability: 'Stock' });
+    const result = await Medicin.find({ stockAvailability: 'Stock Out' });
     
     return result;
 };
