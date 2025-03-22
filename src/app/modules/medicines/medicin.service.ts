@@ -49,9 +49,9 @@ const updateMedicinIntoDB = async (id: string, payload: Partial<TMedicine>) => {
 
     // Check if quantity is being updated
     if (payload.quantity !== undefined) {
-     
+
         if (payload.quantity === 0) {
-            payload.stockAvailability = 'Stock Out'; 
+            payload.stockAvailability = 'Stock Out';
         } else if (payload.quantity > 0) {
             payload.stockAvailability = 'Stock';
         }
@@ -97,10 +97,20 @@ const getSingleMedicinFromDB = async (id: string) => {
 };
 
 
+// get panfing Prescription
+const getAllstockMediFromDB = async () => {
+    const result = await Medicin.find({ stockAvailability: 'Stock' });
+    console.log(result);
+    
+    return result;
+};
+
+
 export const MedicinServices = {
     createMedicinIntoDB,
     getAllMedicinIntoDB,
     updateMedicinIntoDB,
     deleteMedicinFromDB,
-    getSingleMedicinFromDB
+    getSingleMedicinFromDB,
+    getAllstockMediFromDB
 };

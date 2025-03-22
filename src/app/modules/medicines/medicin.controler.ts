@@ -78,10 +78,25 @@ const getSingleMedicin = catchAsync(async (req, res) => {
 });
 
 
+// get All Panding order
+const getAllStockMedi = catchAsync(async (req, res) => {
+
+    const result = await MedicinServices.getAllstockMediFromDB();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'All Stock medicine  get successfully',
+        data: result
+    });
+});
+
+
 export const MedicinControllers = {
     createMedicin,
     getAllMedicin,
     updateMedicin,
     deleteMedicin,
-    getSingleMedicin
+    getSingleMedicin,
+    getAllStockMedi
 };

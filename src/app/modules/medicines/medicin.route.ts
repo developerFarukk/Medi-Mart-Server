@@ -24,6 +24,13 @@ router.get(
     MedicinControllers.getAllMedicin
 );
 
+// Get Stock medicin Route
+router.get(
+    '/stockmedicin',
+    auth(USER_ROLE.admin),
+    MedicinControllers.getAllStockMedi,
+);
+
 
 // Update medicin Route
 router.patch(
@@ -46,6 +53,9 @@ router.get(
     // auth(USER_ROLE.admin),
     MedicinControllers.getSingleMedicin
 );
+
+
+
 
 
 
