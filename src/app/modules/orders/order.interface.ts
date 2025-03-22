@@ -34,6 +34,7 @@ export interface TOrder extends Document {
     status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
     paymentMethod: 'Cash' | 'Online';
     paymentStatus: 'Pending' | 'Paid' | 'Cancelled';
+    prescriptionStatus?: 'Pending' | 'Approved' | "Rejected" ;
     shippingAddress: string;
     precriptionImage: string;
     city: string;

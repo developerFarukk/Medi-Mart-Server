@@ -78,6 +78,11 @@ const orderSchema = new Schema<TOrder>({
         enum: ["Pending", "Paid", "Failed"],
         default: "Pending",
     },
+    prescriptionStatus: {
+        type: String,
+        enum: ["Pending", "Approved" , "Rejected" ],
+        default: "Pending"
+    },
     shippingAddress: {
         type: String,
         required: false,
