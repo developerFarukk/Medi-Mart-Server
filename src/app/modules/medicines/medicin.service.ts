@@ -41,11 +41,20 @@ const getAllMedicinIntoDB = async (query: Record<string, unknown>) => {
 
 // Update Medicin
 const updateMedicinIntoDB = async (id: string, payload: Partial<TMedicine>) => {
-
     const existingMedicin = await Medicin.findOne({ _id: id });
 
     if (!existingMedicin) {
         throw new AppError(httpStatus.NOT_FOUND, 'Medicin id not found!');
+    }
+
+    // Check if quantity is being updated
+    if (payload.quantity !== undefined) {
+     
+        if (payload.quantity === 0) {
+            payload.stockAvailability = 'Stock Out'; 
+        } else if (payload.quantity > 0) {
+            payload.stockAvailability = 'Stock';
+        }
     }
 
     const result = await Medicin.findOneAndUpdate(
@@ -55,6 +64,7 @@ const updateMedicinIntoDB = async (id: string, payload: Partial<TMedicine>) => {
             new: true,
         },
     );
+
     return result;
 };
 
