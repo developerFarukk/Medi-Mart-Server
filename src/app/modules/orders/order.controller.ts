@@ -103,7 +103,7 @@ const deleteOrder = catchAsync(async (req, res) => {
 
 // Update Order
 const updateOrder = catchAsync(async (req, res) => {
-    
+
     const { orderId } = req.params;
     // console.log(orderId);
 
@@ -121,11 +121,28 @@ const updateOrder = catchAsync(async (req, res) => {
 });
 
 
+// get All Panding order
+const getAllPandingOrder = catchAsync(async (req, res) => {
+
+    const result = await OrderService.getAllPendingOrderFromDB();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'All Panding Order get successfully',
+        // meta: result?.meta,
+        // data: result?.result,
+        data: result
+    });
+});
+
+
 export const OrderController = {
     createOrder,
     verifyPayment,
     getAllOrder,
     getMeOrder,
     deleteOrder,
-    updateOrder
+    updateOrder,
+    getAllPandingOrder
 };

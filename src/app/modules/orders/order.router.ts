@@ -34,6 +34,13 @@ router.get(
     OrderController.getAllOrder,
 );
 
+// All Panding order route
+router.get(
+    '/pendingorder',
+    auth(USER_ROLE.admin),
+    OrderController.getAllPandingOrder,
+);
+
 
 // All order route
 router.get(
