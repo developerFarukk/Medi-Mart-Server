@@ -103,26 +103,51 @@ An online platform for browsing, searching, and purchasing medicines with secure
 1. Clone the repository:
    ```bash
    git clone https://github.com/developerFarukk/Medi-Mart-Server.git
-
-   npm install
-
-   npm run dev
+   cd Medi-Mart-Server
    ```
+
+2. **Install Dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment**  
+    Create a `.env` file in the root directory. Refer to `.env.example` for guidance:
+
+   ```
+   NODE_ENV=development
+   PORT=5001
+   DATABASE_URL=<mongodb+srv://<Username>:<password>@****.***.mongodb.net/<database-name>?***=true&w=***&appName=project-name>
+   BCRYPT_SALT_ROUNDS=8
+   JWT_ACCESS_SECRET=*********
+   JWT_ACCESS_EXPIRES_IN=<12d, 30m etc>
+   
+   # sender Email
+   SENADER_EMAIL=*****
+   SENDER_EMAIL_PASSWORD=******
+   
+   # Surjopay API
+   SP_ENDPOINT=*********
+   SP_USERNAME=**********
+   SP_PASSWORD=*********
+   SP_PREFIX=******
+   SP_RETURN_URL=**************
+   ```
+
+   Refer to `.env.example` for additional configuration options.
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+```
+The app will run at `http://localhost:5001`.
+
 ## License
 Distributed under the MIT License. See LICENSE for more information.
 
 ## Contact
-Project Maintainer: OMAR FARUK
-
-Email: 
-```
-web.omarfaruk.dev@gmail.com
-```
-Portfolio Link: 
-```
-https://developerfaruk.com
-```
-GitHub Link:
-```
-https://github.com/developerFarukk
-```
+For issues or inquiries, reach out to [Developerfaruk](mailto:web.omarfaruk.dev@gmail.com). Thank you 💜
